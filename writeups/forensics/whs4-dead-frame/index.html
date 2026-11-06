@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e0e10"><link rel="icon" type="image/png" href="/favicon.png"><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css"></noscript><meta name="description" content="출금 서버 ext4 이미지에서 삭제된 최종 PSBT를 복구해 실제 전송된 거래의 서명자와 wtxid를 확정한다."><link rel="alternate" type="application/rss+xml" title="kirin" href="/rss.xml"><link rel="sitemap" href="/sitemap.xml"><title>Dead Frame | kirin</title><style>.ls[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);margin:0;padding:0;list-style:none}li[data-astro-cid-i36apd2x]{gap:var(--space-4);padding:var(--space-1) var(--space-3);border-left:2px solid #0000;grid-template-columns:10ch 10ch 9ch minmax(0,1fr) auto;align-items:baseline;display:grid}.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{grid-template-columns:10ch 10ch minmax(0,1fr) auto}li[data-astro-cid-i36apd2x]:hover,li[data-astro-cid-i36apd2x]:focus-within{background:var(--panel);border-left-color:var(--gold)}.perm[data-astro-cid-i36apd2x],time[data-astro-cid-i36apd2x]{color:var(--muted)}.locked[data-astro-cid-i36apd2x] .perm[data-astro-cid-i36apd2x]{color:var(--vermilion)}.kind[data-astro-cid-i36apd2x]{color:var(--celadon)}a[data-astro-cid-i36apd2x]{font-family:var(--font-sans);font-size:var(--text-base);color:var(--ink);text-decoration:none}a[data-astro-cid-i36apd2x]:hover{color:var(--gold);text-decoration:underline}.lock[data-astro-cid-i36apd2x]{margin-left:var(--space-2);font-size:var(--text-xs);color:var(--vermilion)}.tags[data-astro-cid-i36apd2x]{color:var(--muted);text-align:right}.empty[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted)}@media (width<=48rem){li[data-astro-cid-i36apd2x],.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{gap:0 var(--space-3);grid-template-columns:auto auto 1fr}.perm[data-astro-cid-i36apd2x]{display:none}a[data-astro-cid-i36apd2x]{grid-column:1/-1}.tags[data-astro-cid-i36apd2x]{text-align:left;grid-column:1/-1}}
+</style><link rel="stylesheet" href="/_astro/_..CotCdawi.css"><style>.site-header[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-6);padding:var(--space-4) 0;margin-bottom:var(--space-8);border-bottom:1px solid var(--line);grid-template-columns:auto minmax(0,1fr) auto;display:grid}.brand[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-3);color:var(--ink);font-family:var(--font-mono);font-weight:600;text-decoration:none;display:flex}.path[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted);white-space:nowrap;text-overflow:ellipsis;margin:0;overflow:hidden}.who[data-astro-cid-nen7h5rs]{color:var(--gold)}.where[data-astro-cid-nen7h5rs]{color:var(--celadon)}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-4);font-size:var(--text-sm);flex-wrap:wrap;margin:0;padding:0;list-style:none;display:flex}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--muted);text-decoration:none}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover,nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs][aria-current=page]{color:var(--ink);text-decoration:underline}@media (width<=48rem){.site-header[data-astro-cid-nen7h5rs]{grid-template-columns:auto 1fr}@media (width<=40rem){.site-header[data-astro-cid-nen7h5rs]{gap:var(--space-3);grid-template-columns:1fr}nav[data-astro-cid-nen7h5rs]{justify-self:start}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-3)}}.path[data-astro-cid-nen7h5rs]{display:none}nav[data-astro-cid-nen7h5rs]{justify-self:end}}:root{color-scheme:dark;--bg:#0e0e10;--panel:#17171a;--line:#2b2b30;--ink:#e8e3d4;--muted:#a0a0a8;--gold:#e2b24c;--celadon:#6fb08c;--vermilion:#e2705a;--cloud:#f4efe2;--font-mono:"IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, monospace;--font-sans:"IBM Plex Sans KR", system-ui, sans-serif;--text-xs:.8rem;--text-sm:.875rem;--text-base:1.0625rem;--text-lg:1.33rem;--text-xl:1.66rem;--text-2xl:2.3rem;--measure:68ch;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--radius:6px;--duration:.14s}*,:before,:after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{background:var(--bg);color:var(--ink);font:400 var(--text-base) / 1.7 var(--font-sans);word-break:keep-all;overflow-wrap:break-word;margin:0}a{color:var(--gold);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{text-decoration-thickness:2px}:focus-visible{outline:2px solid var(--gold);outline-offset:2px}::selection{background:var(--gold);color:var(--bg)}h1,h2,h3{margin:0;font-weight:600;line-height:1.3}code,kbd,samp,pre{font-family:var(--font-mono);font-size:.92em}:not(pre)>code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:.05em .3em}.sr-only{clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}.sr-only:focus{top:var(--space-2);left:var(--space-2);clip-path:none;width:auto;height:auto;padding:var(--space-2) var(--space-3);background:var(--panel);z-index:10;position:fixed}.page{max-width:76rem;padding:0 var(--space-4) var(--space-16);margin:0 auto}.prompt{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--ink);font-weight:400}.prompt .who{color:var(--gold)}.prompt .where{color:var(--celadon)}.prompt .sigil{color:var(--muted);margin-right:.6ch}@media (prefers-reduced-motion:reduce){*,:before,:after{transition:none!important;animation:none!important}}
+</style></head><body><a class="sr-only" href="#main">본문으로 건너뛰기</a><div class="page"><header class="site-header" data-astro-cid-nen7h5rs><a class="brand" href="/" aria-label="kirin 홈" data-astro-cid-nen7h5rs><img src="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp" srcset="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp 1x, /_astro/kirin-avatar.C3aIZXQV_Ztxad8.webp 2x" alt data-astro-cid-nen7h5rs="true" loading="lazy" decoding="async" width="40" height="40"><span data-astro-cid-nen7h5rs>kirin</span></a><p class="path" aria-hidden="true" data-astro-cid-nen7h5rs><span class="who" data-astro-cid-nen7h5rs>kirin@pwnlab</span>:<span class="where" data-astro-cid-nen7h5rs>~/writeups/forensics/whs4-dead-frame</span>$</p><nav aria-label="주요 메뉴" data-astro-cid-nen7h5rs><ul data-astro-cid-nen7h5rs><li data-astro-cid-nen7h5rs><a href="/writeups/" aria-current="page" data-astro-cid-nen7h5rs>Writeups</a></li><li data-astro-cid-nen7h5rs><a href="/cve/" data-astro-cid-nen7h5rs>CVE</a></li><li data-astro-cid-nen7h5rs><a href="/notes/" data-astro-cid-nen7h5rs>Notes</a></li><li data-astro-cid-nen7h5rs><a href="/projects/" data-astro-cid-nen7h5rs>Projects</a></li><li data-astro-cid-nen7h5rs><a href="/search/" data-astro-cid-nen7h5rs>Search</a></li><li data-astro-cid-nen7h5rs><a href="/about/" data-astro-cid-nen7h5rs>About</a></li></ul></nav></header><main id="main"><article class="post" data-pagefind-body data-astro-cid-g5songws><header data-astro-cid-g5songws><div data-pagefind-ignore data-astro-cid-g5songws><p class="prompt"><span class="who">kirin@pwnlab</span>:<span class="where">~/writeups</span><span class="sigil">$</span>cat whs4-dead-frame.md</p></div><h1 data-astro-cid-g5songws>Dead Frame</h1><p class="kind" data-pagefind-ignore data-astro-cid-g5songws><a href="/writeups/" data-pagefind-filter="kind" data-astro-cid-g5songws>Writeups</a></p><dl class="meta" data-pagefind-ignore data-astro-cid-g5songws><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>date</dt><dd data-astro-cid-g5songws>2026-11-05</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>event</dt><dd data-astro-cid-g5songws>WHS 4th CTF</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>tags</dt><dd data-astro-cid-g5songws>ext4, sqlite, bitcoin</dd></div></dl></header><aside class="toc" data-pagefind-ignore data-astro-cid-g5songws><nav class="toc" aria-labelledby="toc-title" data-toc data-astro-cid-7k3pnqyz><details data-toc-details data-astro-cid-7k3pnqyz><summary data-astro-cid-7k3pnqyz><p class="prompt" id="toc-title"><span class="who">kirin@pwnlab</span>:<span class="where">~/writeups</span><span class="sigil">$</span>grep -n &#39;^#&#39; whs4-dead-frame.md<span class="sr-only" data-astro-cid-7k3pnqyz>목차</span></p><span class="count" data-astro-cid-7k3pnqyz>(18)</span></summary><ol data-astro-cid-7k3pnqyz><li class="d2" data-astro-cid-7k3pnqyz><a href="#획득한-flag" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 15</span><span class="t" data-astro-cid-7k3pnqyz>획득한 Flag</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#풀이-방법" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 23</span><span class="t" data-astro-cid-7k3pnqyz>풀이 방법</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#1-파일-꺼내기와-로그-읽기" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 27</span><span class="t" data-astro-cid-7k3pnqyz>1. 파일 꺼내기와 로그 읽기</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#2-db-구조" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 48</span><span class="t" data-astro-cid-7k3pnqyz>2. DB 구조</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#3-복호화-방식-찾기" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 52</span><span class="t" data-astro-cid-7k3pnqyz>3. 복호화 방식 찾기</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#4-지워진-final-카빙" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 67</span><span class="t" data-astro-cid-7k3pnqyz>4. 지워진 final 카빙</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#5-실제로-전송된-쪽-고르기" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 71</span><span class="t" data-astro-cid-7k3pnqyz>5. 실제로 전송된 쪽 고르기</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#6-서명자-확인" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 84</span><span class="t" data-astro-cid-7k3pnqyz>6. 서명자 확인</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#7-wtxid" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 93</span><span class="t" data-astro-cid-7k3pnqyz>7. wtxid</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#헷갈리기-쉬운-부분" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>104</span><span class="t" data-astro-cid-7k3pnqyz>헷갈리기 쉬운 부분</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#획득한-단서" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>111</span><span class="t" data-astro-cid-7k3pnqyz>획득한 단서</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#보류된-31a0의-서명자는-a와-c" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>113</span><span class="t" data-astro-cid-7k3pnqyz>보류된 31A0의 서명자는 A와 C</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#하루-사이-두-건의-대형-출금" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>128</span><span class="t" data-astro-cid-7k3pnqyz>하루 사이 두 건의 대형 출금</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#돈이-간-곳" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>141</span><span class="t" data-astro-cid-7k3pnqyz>돈이 간 곳</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#psbt-안의-독자-필드" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>152</span><span class="t" data-astro-cid-7k3pnqyz>PSBT 안의 독자 필드</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#환경상-문제점" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>156</span><span class="t" data-astro-cid-7k3pnqyz>환경상 문제점</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#타임라인-kst" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>160</span><span class="t" data-astro-cid-7k3pnqyz>타임라인 (KST)</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#아직-모르는-것" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>180</span><span class="t" data-astro-cid-7k3pnqyz>아직 모르는 것</span></a></li></ol></details></nav><script>
+  // is:inline keeps this in the page, so on protected posts it is encrypted with it
+  // instead of becoming a separate unencrypted /_astro/*.js file.
+  // Runs after parsing: the headings come after this script and the page height must be final.
+  // (Protected posts are written in by staticrypt after load, so also handle an already-parsed document.)
+  const init = () => {
+    const nav = document.querySelector('[data-toc]');
+    if (!nav) return;
+    // The desktop column is always open; on mobile the list starts collapsed.
+    const details = nav.querySelector('[data-toc-details]');
+    const desktop = matchMedia('(min-width: 64rem)');
+    const sync = () => (details.open = desktop.matches);
+    desktop.addEventListener('change', sync);
+    sync();
+
+    // Mark the last heading that has scrolled past the top of the viewport.
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+    const TOP = 120;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      let active = 0;
+      targets.forEach((el, i) => {
+        if (el && el.getBoundingClientRect().top <= TOP) active = i;
+      });
+      // Short last sections never reach the top; at the bottom of the page the last one is the one being read.
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = targets.length - 1;
+      links.forEach((a, i) => (i === active ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  };
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', init);
+  else init();
+</script></aside><div class="body" data-astro-cid-g5songws><blockquote>
+<p>WHS 4th CTF · Phase 2 · 400점</p>
+</blockquote>
+<h2 id="획득한-flag">획득한 Flag</h2>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.t2nri.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">WHS4{B_D_a3a8b3d5d0a9d0f4}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="WHS4{B_D_a3a8b3d5d0a9d0f4}"><div></div></button></div></figure></div>
+<p>형식: <code>WHS4{서명자1_서명자2_wtxid앞16자리}</code> (서명자 알파벳순)</p>
+<h2 id="풀이-방법">풀이 방법</h2>
+<p>콜드월렛 출금 관리 서버의 데이터 디스크(<code>wdsrv_data.img</code>, ext4)가 주어진다. 설정에 “전송이 끝나면 최종 PSBT 삭제” 정책이 걸려 있어 실제로 전송된 거래의 최종 PSBT가 DB에 없다. 지워진 PSBT를 복구해 서명한 두 명과 wtxid(<code>decoderawtransaction</code>의 <code>hash</code>) 앞 16자리를 구한다.</p>
+<h3 id="1-파일-꺼내기와-로그-읽기">1. 파일 꺼내기와 로그 읽기</h3>
+<p><code>debugfs -R "rdump / out" wdsrv_data.img</code>로 전부 꺼냈다. 주요 파일은 <code>vaultd.toml</code>, <code>vaultd.log</code>, <code>vaultd.db</code>(+WAL), <code>master.key</code>, <code>machine-id</code>, Go 바이너리 <code>vaultd</code>다.</p>
+<p><code>vaultd.toml</code>에 지갑 구성이 있다. 2-of-4 <code>wsh(sortedmulti(2, …))</code>, 경로 <code>m/48'/0'/0'/2'/0/*</code>이고 서명자는 A(wallet manager), B(security researcher), C(finance manager), D(security engineer)다. <code>[retention] keep_final_psbt = false</code>가 문제의 전제다.</p>
+<p><code>vaultd.log</code>에서 풀이 방향이 정해진다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">2026-11-02T15:02:11Z withdrawal WD-20261102-31A0 created by console amount=1200000000</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">2026-11-02T15:06:50Z WARN  WD-20261102-31A0 broadcast deferred by operator (status=hold)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">2026-11-03T12:16:29Z WD-20261103-7F92 signatures 2/2 collected, psbt finalized</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">2026-11-03T12:16:31Z ERROR WD-20261103-7F92 broadcast failed: rpc error -26 (min relay fee not met)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">2026-11-03T12:17:39Z WD-20261103-7F92 resigned, psbt finalized</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">2026-11-03T12:17:42Z WD-20261103-7F92 broadcast ok</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">2026-11-03T12:18:05Z retention: purged final psbt for WD-20261103-7F92</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">2026-11-03T12:30:00Z backup: wal checkpoint (RESTART) ok</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="2026-11-02T15:02:11Z withdrawal WD-20261102-31A0 created by console amount=12000000002026-11-02T15:06:50Z WARN  WD-20261102-31A0 broadcast deferred by operator (status=hold)2026-11-03T12:16:29Z WD-20261103-7F92 signatures 2/2 collected, psbt finalized2026-11-03T12:16:31Z ERROR WD-20261103-7F92 broadcast failed: rpc error -26 (min relay fee not met)2026-11-03T12:17:39Z WD-20261103-7F92 resigned, psbt finalized2026-11-03T12:17:42Z WD-20261103-7F92 broadcast ok2026-11-03T12:18:05Z retention: purged final psbt for WD-20261103-7F922026-11-03T12:30:00Z backup: wal checkpoint (RESTART) ok"><div></div></button></div></figure></div>
+<p>7F92는 두 번 finalize됐으니 최종본이 둘이다. 12:18:05에 지워졌지만 12:30 WAL 체크포인트 때문에 옛 페이지가 이미지에 남았을 수 있다.</p>
+<h3 id="2-db-구조">2. DB 구조</h3>
+<p><code>withdrawals</code>에는 4건이 있다. 7F92는 <code>status=broadcast</code>, <code>txid=9868deb94e6abf0deeb23562fa3b9e2a7a81435003a2ec1a4d344aa14edad438</code>이다. <code>psbts</code>에는 5건이 있는데 7F92는 draft만 있고, final은 31A0(보류 건) 하나뿐이다. PSBT BLOB은 모두 암호화돼 있다.</p>
+<h3 id="3-복호화-방식-찾기">3. 복호화 방식 찾기</h3>
+<p><code>vaultd</code>는 스트립되지 않은 Go 바이너리라 함수 이름이 남아 있다. <code>main.openPSBT</code>가 <code>crypto/sha256.Sum256</code>, <code>hkdf.Key</code>, <code>chacha20poly1305.New</code>를 부르고, 문자열 <code>vaultd/psbt-at-rest/v1</code>이 있다. 남은 모호한 값(<code>master.key</code>를 hex 디코드할지, salt 형태, AAD)은 조합을 전부 돌려 Poly1305 태그가 맞는 하나를 골랐다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="python"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">mk  = </span><span style="--0:#7FC8D6">bytes</span><span style="--0:#E8E3D4">.fromhex(</span><span style="--0:#E2B24C">open</span><span style="--0:#E8E3D4">(</span><span style="--0:#8FCFA6">"etc/vaultd/master.key"</span><span style="--0:#E8E3D4">).read().strip())</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">mid = </span><span style="--0:#E2B24C">open</span><span style="--0:#E8E3D4">(</span><span style="--0:#8FCFA6">"etc/machine-id"</span><span style="--0:#E8E3D4">).read().strip()</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">key = HKDF(</span><span style="--0:#E89A7A">algorithm</span><span style="--0:#E8E3D4">=hashes.SHA256(), </span><span style="--0:#E89A7A">length</span><span style="--0:#E8E3D4">=</span><span style="--0:#F0C674">32</span><span style="--0:#E8E3D4">, </span><span style="--0:#E89A7A">salt</span><span style="--0:#E8E3D4">=hashlib.sha256(mid.encode()).digest(),</span></div></div><div class="ec-line"><div class="code"><span class="indent">           </span><span style="--0:#E89A7A">info</span><span style="--0:#E8E3D4">=</span><span style="--0:#7FC8D6">b</span><span style="--0:#8FCFA6">"vaultd/psbt-at-rest/v1"</span><span style="--0:#E8E3D4">).derive(mk)          </span><span style="--0:#8E8E97"># b4070d62…1c8203c2</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">aad = </span><span style="--0:#7FC8D6">f</span><span style="--0:#8FCFA6">"</span><span style="--0:#8FCFA6">{</span><span style="--0:#E8E3D4">withdrawal_id</span><span style="--0:#8FCFA6">}</span><span style="--0:#8FCFA6">|</span><span style="--0:#8FCFA6">{</span><span style="--0:#E8E3D4">rev</span><span style="--0:#8FCFA6">}</span><span style="--0:#8FCFA6">|</span><span style="--0:#8FCFA6">{</span><span style="--0:#E8E3D4">stage</span><span style="--0:#8FCFA6">}</span><span style="--0:#8FCFA6">"</span><span style="--0:#E8E3D4">.encode()</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">pt  = ChaCha20Poly1305(key).decrypt(blob[:</span><span style="--0:#F0C674">12</span><span style="--0:#E8E3D4">], blob[</span><span style="--0:#F0C674">12</span><span style="--0:#E8E3D4">:], aad)  </span><span style="--0:#8E8E97"># nonce(12) ‖ ct ‖ tag(16)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="mk  = bytes.fromhex(open(&quot;etc/vaultd/master.key&quot;).read().strip())mid = open(&quot;etc/machine-id&quot;).read().strip()key = HKDF(algorithm=hashes.SHA256(), length=32, salt=hashlib.sha256(mid.encode()).digest(),           info=b&quot;vaultd/psbt-at-rest/v1&quot;).derive(mk)          # b4070d62…1c8203c2aad = f&quot;{withdrawal_id}|{rev}|{stage}&quot;.encode()pt  = ChaCha20Poly1305(key).decrypt(blob[:12], blob[12:], aad)  # nonce(12) ‖ ct ‖ tag(16)"><div></div></button></div></figure></div>
+<p>DB의 5건이 모두 풀렸고 전부 <code>psbt\xff</code>로 시작한다.</p>
+<h3 id="4-지워진-final-카빙">4. 지워진 final 카빙</h3>
+<p><code>debugfs -R lsdel</code>은 0건이다. 지워진 건 파일이 아니라 SQLite 행이다. 이미지 전체에서 <code>WD-20261103-7F92</code>를 찾고, 레코드 컬럼 순서상 <code>final</code> 문자열 바로 뒤가 BLOB 시작이라는 점을 이용했다. 길이(200<del>1200 B)와 rev(0</del>5)를 바꿔 가며 태그가 맞는 것만 남겼다. 오탐은 섞일 수 없다. 여러 사본에서 rev 1과 rev 2 final을 모두 복구했다.</p>
+<h3 id="5-실제로-전송된-쪽-고르기">5. 실제로 전송된 쪽 고르기</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>rev 1</th>
+<th>rev 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>입력</td>
+<td><code>28ab9a70…f1e5:0</code> (1,248,000,000 sat)</td>
+<td>같음</td>
+</tr>
+<tr>
+<td>출금</td>
+<td>1,240,000,000 sat</td>
+<td>같음</td>
+</tr>
+<tr>
+<td>거스름</td>
+<td>7,999,820 sat</td>
+<td>7,994,400 sat</td>
+</tr>
+<tr>
+<td>수수료</td>
+<td>180 sat</td>
+<td>5,600 sat</td>
+</tr>
+<tr>
+<td>txid</td>
+<td><code>441f328a…79a3</code></td>
+<td><code>9868deb9…d438</code></td>
+</tr>
+<tr>
+<td>DB txid와 일치</td>
+<td>X</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>rev 1은 약 190 vB 거래에 수수료가 180 sat라 최소 릴레이 수수료에 못 미쳐 로그의 <code>-26</code> 오류와 맞는다. 실제 전송본은 rev 2다. 두 거래는 같은 UTXO를 쓰고 <code>nSequence=0xfffffffd</code>라 수수료를 올린 RBF 교체다.</p>
+<h3 id="6-서명자-확인">6. 서명자 확인</h3>
+<p>rev 2의 <code>PSBT_IN_FINAL_SCRIPTWITNESS</code> 스택은 <code>[빈 항목, 서명1, 서명2, witnessScript]</code>이다. <code>sha256(witnessScript)</code>가 UTXO의 scriptPubKey와 같아서 스크립트가 진짜임을 확인했다. 스크립트에는 4명의 공개키가 모두 들어 있으므로 서명자는 검증으로 가려야 한다.</p>
+<ul>
+<li>각자의 xpub에서 <code>/0/37</code>을 BIP32 공개 파생해 스크립트의 공개키 네 개를 A~D에 대응시켰다.</li>
+<li>BIP143 sighash(SIGHASH_ALL) <code>3764ef53…7238</code>을 계산해 ECDSA로 검증했더니 서명 1은 B, 서명 2는 D에서 통과했다. A와 C는 어느 서명에서도 통과하지 않았다.</li>
+</ul>
+<p>디스크립터 대괄호 안의 <code>b5b2f963</code> 등은 마스터 키 지문이라 account xpub 지문과 다르다. 지문 비교가 아니라 파생 공개키와 서명 검증으로 판단했다.</p>
+<h3 id="7-wtxid">7. wtxid</h3>
+<p>wtxid는 위트니스를 포함한 직렬화의 double-SHA256을 뒤집어 쓴 값이다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">txid  = 9868deb94e6abf0deeb23562fa3b9e2a7a81435003a2ec1a4d344aa14edad438</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">wtxid = a3a8b3d5d0a9d0f4afb675d06d61d443ad2747f944eab118aab79f9c453226c3</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="txid  = 9868deb94e6abf0deeb23562fa3b9e2a7a81435003a2ec1a4d344aa14edad438wtxid = a3a8b3d5d0a9d0f4afb675d06d61d443ad2747f944eab118aab79f9c453226c3"><div></div></button></div></figure></div>
+<p>환경에 bitcoin 라이브러리가 없어 secp256k1, base58check, BIP32, 트랜잭션 직렬화, BIP143, ECDSA 검증, PSBT 파서를 직접 짰다(약 160줄).</p>
+<h3 id="헷갈리기-쉬운-부분">헷갈리기 쉬운 부분</h3>
+<ul>
+<li>DB에 남은 final은 다른 출금(31A0)이다. 쓰면 <code>A_C_c944fd9c9941a800</code>이 나온다.</li>
+<li>rev 1을 쓰면 서명자는 같고 wtxid만 <code>b89ab31f2cdb76b8</code>로 달라진다.</li>
+<li>31A0은 hold인데도 txid가 채워져 있다. txid는 서명만 끝나도 계산되므로 전송 여부는 <code>status</code>와 <code>broadcast_at</code>으로 본다.</li>
+<li>segwit 거래라 txid와 wtxid가 다르다.</li>
+</ul>
+<h2 id="획득한-단서">획득한 단서</h2>
+<h3 id="보류된-31a0의-서명자는-a와-c">보류된 31A0의 서명자는 A와 C</h3>
+<p>DB에 남아 있던 31A0 final도 끝까지 복호화해 검증했다. 서명자는 A와 C, txid <code>220b214f…</code>, wtxid 앞 16자리 <code>c944fd9c9941a800</code>이다. Empty Slot과 시각을 맞춰 보면 이렇다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">11-02 23:41:06 KST  금고 slot 3 (A의 지갑) absent     Empty Slot</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">11-02 23:47:18 KST  금고 slot 2 (C의 지갑) absent     Empty Slot</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">11-02 23:49:29 KST  금고 문 닫힘                      Empty Slot</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">11-03 00:02:11 KST  WD-20261102-31A0 생성, console</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">11-03 00:06:48 KST  서명 2/2 (A, C)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">11-03 00:06:50 KST  status=hold</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="11-02 23:41:06 KST  금고 slot 3 (A의 지갑) absent     Empty Slot11-02 23:47:18 KST  금고 slot 2 (C의 지갑) absent     Empty Slot11-02 23:49:29 KST  금고 문 닫힘                      Empty Slot11-03 00:02:11 KST  WD-20261102-31A0 생성, console11-03 00:06:48 KST  서명 2/2 (A, C)11-03 00:06:50 KST  status=hold"><div></div></button></div></figure></div>
+<p>금고에서 나간 두 지갑의 주인이 12분 42초 뒤 물리 콘솔에서 만든 12 BTC 거래의 서명자와 같다.</p>
+<h3 id="하루-사이-두-건의-대형-출금">하루 사이 두 건의 대형 출금</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>WD-20261102-31A0</th>
+<th>WD-20261103-7F92</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>생성 (KST)</td>
+<td>11-03 00:02:11</td>
+<td>11-03 21:15:58</td>
+</tr>
+<tr>
+<td>요청 경로</td>
+<td>console (물리 접근)</td>
+<td>api-relay</td>
+</tr>
+<tr>
+<td>금액</td>
+<td>12.0 BTC</td>
+<td>12.4 BTC</td>
+</tr>
+<tr>
+<td>서명자</td>
+<td>A, C</td>
+<td>B, D</td>
+</tr>
+<tr>
+<td>목적지</td>
+<td><code>bc1qfedhvwa3zdsh54ta2k4dz8txdgkagmnfqfn5zl</code></td>
+<td><code>bc1qed8wc736s5gpq9kerchcugm92hrpmykqwtdq2p</code></td>
+</tr>
+<tr>
+<td>결과</td>
+<td>hold, 전송 안 됨</td>
+<td>전송 완료</td>
+</tr>
+</tbody>
+</table>
+<p>과거 정상 출금은 0.35 BTC(09-15)와 0.52 BTC(10-01)였다. 두 건은 그보다 24~35배 크고 서명자 조합과 목적지가 서로 다르다.</p>
+<h3 id="돈이-간-곳">돈이 간 곳</h3>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">입력  28ab9a70…f1e5:0  1,248,000,000 sat  m/.../0/37의 2-of-4 (금고 소유)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">출력1 1,240,000,000 sat  bc1qed8wc736s5gpq9kerchcugm92hrpmykqwtdq2p  (P2WPKH 단일 서명 주소)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">출력2     7,994,400 sat  m/.../0/38의 2-of-4  (거스름, 금고에 남음)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">수수료        5,600 sat</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="입력  28ab9a70…f1e5:0  1,248,000,000 sat  m/.../0/37의 2-of-4 (금고 소유)출력1 1,240,000,000 sat  bc1qed8wc736s5gpq9kerchcugm92hrpmykqwtdq2p  (P2WPKH 단일 서명 주소)출력2     7,994,400 sat  m/.../0/38의 2-of-4  (거스름, 금고에 남음)수수료        5,600 sat"><div></div></button></div></figure></div>
+<p>거스름 주소를 직접 재구성해 금고 소유임을 확인했다. 금고 밖으로 나간 건 정확히 12.4 BTC이고, 받는 쪽은 멀티시그가 아닌 단일 서명 주소다.</p>
+<h3 id="psbt-안의-독자-필드">PSBT 안의 독자 필드</h3>
+<p>두 final 모두 <code>whsvault</code> proprietary 필드가 있다. subtype 1은 <code>WD-20261103-7F92</code>, subtype 2는 <code>f2964b72…6326</code>이고 DB의 <code>request_digest</code>와 같다. 출금 요청 원문의 다이제스트인데 원문은 이 이미지에 없다.</p>
+<h3 id="환경상-문제점">환경상 문제점</h3>
+<p><code>keep_final_psbt = false</code>는 사건 당일에 바뀐 게 아니라 09-15부터 매번 동작했다. <code>audit</code> 테이블에는 백업 기록 3줄뿐이고 서명·승인 기록이 없다. <code>requested_by</code>가 사람이 아니라 경로명(<code>api-relay</code>, <code>console</code>)이다. 콘솔 출금에 추가 인증이 없고 금액 한도도 없다. <code>master.key</code>가 같은 디스크에 평문으로 있어 이미지 하나로 전부 복호화됐다.</p>
+<h3 id="타임라인-kst">타임라인 (KST)</h3>
+<table>
+<thead>
+<tr>
+<th>시각</th>
+<th>사건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>09-15 11:10~11:12</td>
+<td>정상 출금 0.35 BTC (api-relay)</td>
+</tr>
+<tr>
+<td>10-01 11:10~11:12</td>
+<td>정상 출금 0.52 BTC (api-relay)</td>
+</tr>
+<tr>
+<td>11-02 23:41 / 23:47</td>
+<td>(Empty Slot) A, C의 지갑 금고에서 반출</td>
+</tr>
+<tr>
+<td>11-03 00:02:11</td>
+<td>31A0 생성 (console, 12.0 BTC)</td>
+</tr>
+<tr>
+<td>00:06:48</td>
+<td>31A0 서명 A, C</td>
+</tr>
+<tr>
+<td>00:06:50</td>
+<td>31A0 보류</td>
+</tr>
+<tr>
+<td>01:55 / 02:45</td>
+<td>(Unplugged) 자택 서재에서 <code>WALLET</code>, <code>CCTV-BAK</code> 디스크 반출</td>
+</tr>
+<tr>
+<td>21:15:58</td>
+<td>7F92 생성 (api-relay, 12.4 BTC)</td>
+</tr>
+<tr>
+<td>21:16:29</td>
+<td>rev 1 finalize (B, D)</td>
+</tr>
+<tr>
+<td>21:16:31</td>
+<td>전송 실패 (수수료 180 sat)</td>
+</tr>
+<tr>
+<td>21:17:39</td>
+<td>rev 2 재서명 (수수료 5,600 sat)</td>
+</tr>
+<tr>
+<td>21:17:42</td>
+<td>전송 성공, 12.4 BTC 유출</td>
+</tr>
+<tr>
+<td>21:18:05</td>
+<td>retention이 final PSBT 삭제</td>
+</tr>
+<tr>
+<td>21:30:00</td>
+<td>WAL 체크포인트, 지워진 행이 이미지에 남음</td>
+</tr>
+<tr>
+<td>11-04 09:12:44</td>
+<td>(Empty Slot) C 분실 신고</td>
+</tr>
+</tbody>
+</table>
+<h3 id="아직-모르는-것">아직 모르는 것</h3>
+<p>목적지 <code>bc1qed8w…</code>의 주인, 배지 <code>0x3F2A91</code>·<code>0x51C0D7</code>의 주인, <code>request_digest</code>의 원문은 주어진 자료로 알 수 없다. 자택의 <code>WALLET</code> 디스크와 금고의 하드웨어 지갑이 같은 자산이라는 증거도 없다.</p>
+</div></article></main></div></body></html>
