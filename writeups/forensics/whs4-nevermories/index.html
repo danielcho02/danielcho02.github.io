@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e0e10"><link rel="icon" type="image/png" href="/favicon.png"><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css"></noscript><meta name="description" content="업무 PC 디스크에서 키를 꺼내 메신저 PCAP을 복호화하고, MORI의 마지막 메시지를 복구한다."><link rel="alternate" type="application/rss+xml" title="kirin" href="/rss.xml"><link rel="sitemap" href="/sitemap.xml"><title>nevermories | kirin</title><style>.ls[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);margin:0;padding:0;list-style:none}li[data-astro-cid-i36apd2x]{gap:var(--space-4);padding:var(--space-1) var(--space-3);border-left:2px solid #0000;grid-template-columns:10ch 10ch 9ch minmax(0,1fr) auto;align-items:baseline;display:grid}.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{grid-template-columns:10ch 10ch minmax(0,1fr) auto}li[data-astro-cid-i36apd2x]:hover,li[data-astro-cid-i36apd2x]:focus-within{background:var(--panel);border-left-color:var(--gold)}.perm[data-astro-cid-i36apd2x],time[data-astro-cid-i36apd2x]{color:var(--muted)}.locked[data-astro-cid-i36apd2x] .perm[data-astro-cid-i36apd2x]{color:var(--vermilion)}.kind[data-astro-cid-i36apd2x]{color:var(--celadon)}a[data-astro-cid-i36apd2x]{font-family:var(--font-sans);font-size:var(--text-base);color:var(--ink);text-decoration:none}a[data-astro-cid-i36apd2x]:hover{color:var(--gold);text-decoration:underline}.lock[data-astro-cid-i36apd2x]{margin-left:var(--space-2);font-size:var(--text-xs);color:var(--vermilion)}.tags[data-astro-cid-i36apd2x]{color:var(--muted);text-align:right}.empty[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted)}@media (width<=48rem){li[data-astro-cid-i36apd2x],.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{gap:0 var(--space-3);grid-template-columns:auto auto 1fr}.perm[data-astro-cid-i36apd2x]{display:none}a[data-astro-cid-i36apd2x]{grid-column:1/-1}.tags[data-astro-cid-i36apd2x]{text-align:left;grid-column:1/-1}}
+</style><link rel="stylesheet" href="/_astro/_..CotCdawi.css"><style>.site-header[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-6);padding:var(--space-4) 0;margin-bottom:var(--space-8);border-bottom:1px solid var(--line);grid-template-columns:auto minmax(0,1fr) auto;display:grid}.brand[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-3);color:var(--ink);font-family:var(--font-mono);font-weight:600;text-decoration:none;display:flex}.path[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted);white-space:nowrap;text-overflow:ellipsis;margin:0;overflow:hidden}.who[data-astro-cid-nen7h5rs]{color:var(--gold)}.where[data-astro-cid-nen7h5rs]{color:var(--celadon)}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-4);font-size:var(--text-sm);flex-wrap:wrap;margin:0;padding:0;list-style:none;display:flex}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--muted);text-decoration:none}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover,nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs][aria-current=page]{color:var(--ink);text-decoration:underline}@media (width<=48rem){.site-header[data-astro-cid-nen7h5rs]{grid-template-columns:auto 1fr}@media (width<=40rem){.site-header[data-astro-cid-nen7h5rs]{gap:var(--space-3);grid-template-columns:1fr}nav[data-astro-cid-nen7h5rs]{justify-self:start}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-3)}}.path[data-astro-cid-nen7h5rs]{display:none}nav[data-astro-cid-nen7h5rs]{justify-self:end}}:root{color-scheme:dark;--bg:#0e0e10;--panel:#17171a;--line:#2b2b30;--ink:#e8e3d4;--muted:#a0a0a8;--gold:#e2b24c;--celadon:#6fb08c;--vermilion:#e2705a;--cloud:#f4efe2;--font-mono:"IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, monospace;--font-sans:"IBM Plex Sans KR", system-ui, sans-serif;--text-xs:.8rem;--text-sm:.875rem;--text-base:1.0625rem;--text-lg:1.33rem;--text-xl:1.66rem;--text-2xl:2.3rem;--measure:68ch;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--radius:6px;--duration:.14s}*,:before,:after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{background:var(--bg);color:var(--ink);font:400 var(--text-base) / 1.7 var(--font-sans);word-break:keep-all;overflow-wrap:break-word;margin:0}a{color:var(--gold);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{text-decoration-thickness:2px}:focus-visible{outline:2px solid var(--gold);outline-offset:2px}::selection{background:var(--gold);color:var(--bg)}h1,h2,h3{margin:0;font-weight:600;line-height:1.3}code,kbd,samp,pre{font-family:var(--font-mono);font-size:.92em}:not(pre)>code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:.05em .3em}.sr-only{clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}.sr-only:focus{top:var(--space-2);left:var(--space-2);clip-path:none;width:auto;height:auto;padding:var(--space-2) var(--space-3);background:var(--panel);z-index:10;position:fixed}.page{max-width:76rem;padding:0 var(--space-4) var(--space-16);margin:0 auto}.prompt{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--ink);font-weight:400}.prompt .who{color:var(--gold)}.prompt .where{color:var(--celadon)}.prompt .sigil{color:var(--muted);margin-right:.6ch}@media (prefers-reduced-motion:reduce){*,:before,:after{transition:none!important;animation:none!important}}
+</style></head><body><a class="sr-only" href="#main">본문으로 건너뛰기</a><div class="page"><header class="site-header" data-astro-cid-nen7h5rs><a class="brand" href="/" aria-label="kirin 홈" data-astro-cid-nen7h5rs><img src="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp" srcset="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp 1x, /_astro/kirin-avatar.C3aIZXQV_Ztxad8.webp 2x" alt data-astro-cid-nen7h5rs="true" loading="lazy" decoding="async" width="40" height="40"><span data-astro-cid-nen7h5rs>kirin</span></a><p class="path" aria-hidden="true" data-astro-cid-nen7h5rs><span class="who" data-astro-cid-nen7h5rs>kirin@pwnlab</span>:<span class="where" data-astro-cid-nen7h5rs>~/writeups/forensics/whs4-nevermories</span>$</p><nav aria-label="주요 메뉴" data-astro-cid-nen7h5rs><ul data-astro-cid-nen7h5rs><li data-astro-cid-nen7h5rs><a href="/writeups/" aria-current="page" data-astro-cid-nen7h5rs>Writeups</a></li><li data-astro-cid-nen7h5rs><a href="/cve/" data-astro-cid-nen7h5rs>CVE</a></li><li data-astro-cid-nen7h5rs><a href="/notes/" data-astro-cid-nen7h5rs>Notes</a></li><li data-astro-cid-nen7h5rs><a href="/projects/" data-astro-cid-nen7h5rs>Projects</a></li><li data-astro-cid-nen7h5rs><a href="/search/" data-astro-cid-nen7h5rs>Search</a></li><li data-astro-cid-nen7h5rs><a href="/about/" data-astro-cid-nen7h5rs>About</a></li></ul></nav></header><main id="main"><article class="post" data-pagefind-body data-astro-cid-g5songws><header data-astro-cid-g5songws><div data-pagefind-ignore data-astro-cid-g5songws><p class="prompt"><span class="who">kirin@pwnlab</span>:<span class="where">~/writeups</span><span class="sigil">$</span>cat whs4-nevermories.md</p></div><h1 data-astro-cid-g5songws>nevermories</h1><p class="kind" data-pagefind-ignore data-astro-cid-g5songws><a href="/writeups/" data-pagefind-filter="kind" data-astro-cid-g5songws>Writeups</a></p><dl class="meta" data-pagefind-ignore data-astro-cid-g5songws><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>date</dt><dd data-astro-cid-g5songws>2026-11-05</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>event</dt><dd data-astro-cid-g5songws>WHS 4th CTF</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>tags</dt><dd data-astro-cid-g5songws>pcap, dpapi, disk</dd></div></dl></header><aside class="toc" data-pagefind-ignore data-astro-cid-g5songws><nav class="toc" aria-labelledby="toc-title" data-toc data-astro-cid-7k3pnqyz><details data-toc-details data-astro-cid-7k3pnqyz><summary data-astro-cid-7k3pnqyz><p class="prompt" id="toc-title"><span class="who">kirin@pwnlab</span>:<span class="where">~/writeups</span><span class="sigil">$</span>grep -n &#39;^#&#39; whs4-nevermories.md<span class="sr-only" data-astro-cid-7k3pnqyz>목차</span></p><span class="count" data-astro-cid-7k3pnqyz>(11)</span></summary><ol data-astro-cid-7k3pnqyz><li class="d2" data-astro-cid-7k3pnqyz><a href="#획득한-flag" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 15</span><span class="t" data-astro-cid-7k3pnqyz>획득한 Flag</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#풀이-방법" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 23</span><span class="t" data-astro-cid-7k3pnqyz>풀이 방법</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#1-디스크에서-필요한-파일-꺼내기" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 27</span><span class="t" data-astro-cid-7k3pnqyz>1. 디스크에서 필요한 파일 꺼내기</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#2-소스로-프로토콜-파악" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 37</span><span class="t" data-astro-cid-7k3pnqyz>2. 소스로 프로토콜 파악</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#3-dpapi로-하나의-개인키-복구" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 49</span><span class="t" data-astro-cid-7k3pnqyz>3. DPAPI로 하나의 개인키 복구</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#4-pcap-복호화" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 67</span><span class="t" data-astro-cid-7k3pnqyz>4. PCAP 복호화</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#5-마지막-메시지-판정과-해시" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 82</span><span class="t" data-astro-cid-7k3pnqyz>5. 마지막 메시지 판정과 해시</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#획득한-단서" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 96</span><span class="t" data-astro-cid-7k3pnqyz>획득한 단서</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#복호화된-대화-kst" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 98</span><span class="t" data-astro-cid-7k3pnqyz>복호화된 대화 (KST)</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#접속자와-네트워크" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>115</span><span class="t" data-astro-cid-7k3pnqyz>접속자와 네트워크</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#읽어낸-내용" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>126</span><span class="t" data-astro-cid-7k3pnqyz>읽어낸 내용</span></a></li></ol></details></nav><script>
+  // is:inline keeps this in the page, so on protected posts it is encrypted with it
+  // instead of becoming a separate unencrypted /_astro/*.js file.
+  // Runs after parsing: the headings come after this script and the page height must be final.
+  // (Protected posts are written in by staticrypt after load, so also handle an already-parsed document.)
+  const init = () => {
+    const nav = document.querySelector('[data-toc]');
+    if (!nav) return;
+    // The desktop column is always open; on mobile the list starts collapsed.
+    const details = nav.querySelector('[data-toc-details]');
+    const desktop = matchMedia('(min-width: 64rem)');
+    const sync = () => (details.open = desktop.matches);
+    desktop.addEventListener('change', sync);
+    sync();
+
+    // Mark the last heading that has scrolled past the top of the viewport.
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+    const TOP = 120;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      let active = 0;
+      targets.forEach((el, i) => {
+        if (el && el.getBoundingClientRect().top <= TOP) active = i;
+      });
+      // Short last sections never reach the top; at the bottom of the page the last one is the one being read.
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = targets.length - 1;
+      links.forEach((a, i) => (i === active ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  };
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', init);
+  else init();
+</script></aside><div class="body" data-astro-cid-g5songws><blockquote>
+<p>WHS 4th CTF · Phase 1 · 400점</p>
+</blockquote>
+<h2 id="획득한-flag">획득한 Flag</h2>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.t2nri.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">WHS4{6aaafe38d8baeaa35658d7f2e0c07018dd74786136191aec900a274c97aa3601}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="WHS4{6aaafe38d8baeaa35658d7f2e0c07018dd74786136191aec900a274c97aa3601}"><div></div></button></div></figure></div>
+<p><code>sha256("저는 괜찮다는 것이 어떤 상태인지 정확히 판단할 수 없습니다. 하지만 가능하다면, 지금 기억하고 있는 것들은 잃고 싶지 않습니다.")</code></p>
+<h2 id="풀이-방법">풀이 방법</h2>
+<p>하나의 업무 PC 디스크(<code>hana-ws.raw</code>)와 메신저 서버 PCAP(<code>mori-messenger.pcap</code>)이 주어진다. MORI가 하나에게 보낸 마지막 메시지를 글자 그대로 복구해 SHA-256을 구하는 문제다. 디스크에서 메신저 소스와 하나의 개인키를 꺼내고, 그 키로 PCAP의 E2E 메시지를 복호화했다.</p>
+<h3 id="1-디스크에서-필요한-파일-꺼내기">1. 디스크에서 필요한 파일 꺼내기</h3>
+<p>NTFS 파티션은 섹터 2048부터 시작한다(<code>fls -r -p -o 2048</code>). 사용자는 <code>hana</code> 하나다.</p>
+<ul>
+<li><code>AppData/Local/Programs/MORI Messenger/mori/</code>: 메신저가 Python 소스째로 설치돼 있다(<code>crypto.py</code>, <code>identity.py</code>, <code>wire.py</code>, <code>client.py</code>, <code>relay.py</code>, <code>history.py</code>, <code>sso.py</code> 등). 디컴파일은 필요 없다.</li>
+<li><code>AppData/Local/MORI Messenger/hana/</code>: <code>identity.dpapi</code> 하나만 남아 있다.</li>
+<li><code>AppData/Roaming/Microsoft/Protect/S-1-5-21-1925402258-2889230903-2005874371-1000/</code>: DPAPI 마스터키 두 개. 디렉터리 이름이 곧 SID다.</li>
+</ul>
+<p><code>history.py</code>의 <code>clear()</code>는 <code>history.dpapi</code>, <code>history.tmp</code>, <code>peers.json</code>, <code>peers.tmp</code>만 지우고 <code>identity.dpapi</code>는 남긴다. 이미지 상태가 이 함수를 실행한 결과와 같고, 삭제된 MFT 레코드나 UTF-16 파일명 흔적도 없다. 로컬 대화는 되살릴 수 없으니 PCAP에서 복구해야 한다.</p>
+<h3 id="2-소스로-프로토콜-파악">2. 소스로 프로토콜 파악</h3>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>프레이밍</td>
+<td>줄 단위 JSON. TCP 패킷 경계와 메시지 경계가 다르므로 스트림을 재조립한 뒤 <code>\n</code>으로 나눈다</td>
+</tr>
+<tr>
+<td>직렬화</td>
+<td><code>json.dumps(sort_keys=True, separators=(",", ":"), ensure_ascii=False)</code></td>
+</tr>
+<tr>
+<td>키 교환</td>
+<td>양쪽 정적 X25519 키</td>
+</tr>
+<tr>
+<td>트래픽 키</td>
+<td>HKDF-SHA256, salt = <code>context["salt"]</code>, info = <code>canonical({"context", "sender", "purpose": "traffic-key"})</code></td>
+</tr>
+<tr>
+<td>암호화</td>
+<td>AES-256-GCM, AAD = <code>canonical({type, sid, from, to, seq})</code>, 본문 = <code>{"text", "timestamp"}</code></td>
+</tr>
+</tbody>
+</table>
+<p>릴레이는 <code>offer</code> 프레임에 세션 컨텍스트(양쪽 공개키와 salt)를 평문으로 실어 보낸다. PCAP만 있으면 모든 세션의 공개키와 salt를 얻을 수 있고, 남는 비밀은 한쪽의 개인키뿐이다. HKDF info가 정규화 JSON이라 손으로 재현하기 어려워서 복구한 <code>mori.crypto</code>를 그대로 import해 <code>decrypt()</code>를 썼다(별도 디렉터리, <code>python3 -I</code>).</p>
+<h3 id="3-dpapi로-하나의-개인키-복구">3. DPAPI로 하나의 개인키 복구</h3>
+<p><code>identity.py</code>는 <code>CryptProtectData</code>를 user scope, entropy 없이 호출한다. 로그인 비밀번호와 SID만 있으면 풀린다. <code>Preferred</code>는 <code>aab74936…</code>을 가리키지만, <code>identity.dpapi</code> 헤더에 적힌 마스터키는 <code>6dc89b42-e1a8-47c7-bd50-878e90292fe3</code>다. 블롭이 지목한 쪽을 써야 한다.</p>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">SID=</span><span style="--0:#8FCFA6">'S-1-5-21-1925402258-2889230903-2005874371-1000'</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">dpapi.py</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">masterkey</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">-file</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">6dc89b42-e1a8-47c7-bd50-878e90292fe3</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">-sid</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">"$SID"</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">-password</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">'han1hana@MOR!'</span></div></div><div class="ec-line"><div class="code"><span style="--0:#8E8E97"># Decrypted key: 0x8215f2a7ae33102c…3127a855</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">dpapi.py</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">unprotect</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">-file</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">identity.dpapi</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">-key</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">0x8215f2a7ae33102c…3127a855</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="SID=&#x27;S-1-5-21-1925402258-2889230903-2005874371-1000&#x27;dpapi.py masterkey -file 6dc89b42-e1a8-47c7-bd50-878e90292fe3 -sid &quot;$SID&quot; -password &#x27;han1hana@MOR!&#x27;dpapi.py unprotect -file identity.dpapi -key 0x8215f2a7ae33102c…3127a855"><div></div></button></div></figure></div>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">{</span><span style="--0:#7FC8D6">"nickname"</span><span style="--0:#E8E3D4">:</span><span style="--0:#8FCFA6">"hana"</span><span style="--0:#E8E3D4">,</span><span style="--0:#7FC8D6">"private_key"</span><span style="--0:#E8E3D4">:</span><span style="--0:#8FCFA6">"gKl5ovZCymY4NyC4VXEJW1++ky8qojAgGOp3OQrMVVY="</span><span style="--0:#E8E3D4">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"> </span><span style="--0:#7FC8D6">"public_key"</span><span style="--0:#E8E3D4">:</span><span style="--0:#8FCFA6">"H/3DVSZllWO7fT1lzVQuQ/bGhLB9roR2+ZKtoxAdlw4="</span><span style="--0:#E8E3D4">,</span><span style="--0:#7FC8D6">"version"</span><span style="--0:#E8E3D4">:</span><span style="--0:#F0C674">1</span><span style="--0:#E8E3D4">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{&quot;nickname&quot;:&quot;hana&quot;,&quot;private_key&quot;:&quot;gKl5ovZCymY4NyC4VXEJW1++ky8qojAgGOp3OQrMVVY=&quot;, &quot;public_key&quot;:&quot;H/3DVSZllWO7fT1lzVQuQ/bGhLB9roR2+ZKtoxAdlw4=&quot;,&quot;version&quot;:1}"><div></div></button></div></figure></div>
+<p>이 공개키가 PCAP의 hana <code>hello</code> 프레임과 같아서 디스크와 네트워크 증거가 서로 맞는다. 직접 구현할 경우, 마스터키 복호화의 키 유도는 표준 <code>hashlib.pbkdf2_hmac</code>과 결과가 다르다(impacket <code>MasterKey.deriveKey</code> 방식으로 해야 HMAC 검증이 통과한다).</p>
+<h3 id="4-pcap-복호화">4. PCAP 복호화</h3>
+<p>릴레이는 <code>10.30.1.30:47170</code>이다. TCP 스트림을 재조립하면 프레임이 597개 나온다(<code>hello</code> 53, <code>welcome</code> 53, <code>roster</code> 403, <code>offer</code> 24, <code>accept</code> 24, <code>message</code> 40). 메시지는 모두 ingress·egress 두 벌로 찍혀 있어 <code>(sid, from, seq)</code>로 중복을 지웠다. 고유 메시지 20건 중 하나가 참여한 세션의 10건이 모두 복호화됐다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="python"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">ctx = {f[</span><span style="--0:#8FCFA6">"sid"</span><span style="--0:#E8E3D4">]: f[</span><span style="--0:#8FCFA6">"context"</span><span style="--0:#E8E3D4">] for f in frames if f.get(</span><span style="--0:#8FCFA6">"type"</span><span style="--0:#E8E3D4">) == </span><span style="--0:#8FCFA6">"offer"</span><span style="--0:#E8E3D4"> and </span><span style="--0:#8FCFA6">"context"</span><span style="--0:#E8E3D4"> in f}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">for f in unique_messages:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">c = ctx.get(f[</span><span style="--0:#8FCFA6">"sid"</span><span style="--0:#E8E3D4">])</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">if c is </span><span style="--0:#F0C674">None</span><span style="--0:#E8E3D4"> or </span><span style="--0:#F0C674">HANA_PUB</span><span style="--0:#E8E3D4"> not in (c[</span><span style="--0:#8FCFA6">"initiator_public"</span><span style="--0:#E8E3D4">], c[</span><span style="--0:#8FCFA6">"recipient_public"</span><span style="--0:#E8E3D4">]):</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">        </span></span><span style="--0:#E8E3D4">continue</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">peer = c[</span><span style="--0:#8FCFA6">"recipient_public"</span><span style="--0:#E8E3D4">] if c[</span><span style="--0:#8FCFA6">"initiator_public"</span><span style="--0:#E8E3D4">] == </span><span style="--0:#F0C674">HANA_PUB</span><span style="--0:#E8E3D4"> else c[</span><span style="--0:#8FCFA6">"initiator_public"</span><span style="--0:#E8E3D4">]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">body = decrypt(priv, unb64(peer, </span><span style="--0:#F0C674">32</span><span style="--0:#E8E3D4">), c, f)      </span><span style="--0:#8E8E97"># mori.crypto.decrypt</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#E2B24C">print</span><span style="--0:#E8E3D4">(body[</span><span style="--0:#8FCFA6">"timestamp"</span><span style="--0:#E8E3D4">], f[</span><span style="--0:#8FCFA6">"from"</span><span style="--0:#E8E3D4">], </span><span style="--0:#8FCFA6">"-&gt;"</span><span style="--0:#E8E3D4">, f[</span><span style="--0:#8FCFA6">"to"</span><span style="--0:#E8E3D4">], body[</span><span style="--0:#8FCFA6">"text"</span><span style="--0:#E8E3D4">])</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="ctx = {f[&quot;sid&quot;]: f[&quot;context&quot;] for f in frames if f.get(&quot;type&quot;) == &quot;offer&quot; and &quot;context&quot; in f}for f in unique_messages:    c = ctx.get(f[&quot;sid&quot;])    if c is None or HANA_PUB not in (c[&quot;initiator_public&quot;], c[&quot;recipient_public&quot;]):        continue    peer = c[&quot;recipient_public&quot;] if c[&quot;initiator_public&quot;] == HANA_PUB else c[&quot;initiator_public&quot;]    body = decrypt(priv, unb64(peer, 32), c, f)      # mori.crypto.decrypt    print(body[&quot;timestamp&quot;], f[&quot;from&quot;], &quot;->&quot;, f[&quot;to&quot;], body[&quot;text&quot;])"><div></div></button></div></figure></div>
+<h3 id="5-마지막-메시지-판정과-해시">5. 마지막 메시지 판정과 해시</h3>
+<p>닉네임 규칙(<code>[a-z][a-z0-9_-]{0,31}</code>) 때문에 와이어에서는 <code>MORI</code>가 아니라 소문자 <code>mori</code>다. <code>from == "MORI"</code>로 거르면 0건이 나온다.</p>
+<p>mori → hana 방향 세션은 <code>387d3ebcfcbae093a1d747dc0fc29092</code> 하나이고 메시지는 seq 0, 1, 2 세 건이다. 클라이언트가 seq를 0부터 빠짐없이 올리도록 검사하므로 중간에 빠진 메시지도 없다. seq 2(23:10:21 KST)가 마지막이다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="python"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">text = body[</span><span style="--0:#8FCFA6">"text"</span><span style="--0:#E8E3D4">]                      </span><span style="--0:#8E8E97"># 복호화 결과를 그대로 사용</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">assert </span><span style="--0:#E2B24C">len</span><span style="--0:#E8E3D4">(text.encode(</span><span style="--0:#8FCFA6">"utf-8"</span><span style="--0:#E8E3D4">)) == </span><span style="--0:#F0C674">176</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">print</span><span style="--0:#E8E3D4">(</span><span style="--0:#8FCFA6">"WHS4{%s}"</span><span style="--0:#E8E3D4"> % hashlib.sha256(text.encode(</span><span style="--0:#8FCFA6">"utf-8"</span><span style="--0:#E8E3D4">)).hexdigest())</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="text = body[&quot;text&quot;]                      # 복호화 결과를 그대로 사용assert len(text.encode(&quot;utf-8&quot;)) == 176print(&quot;WHS4{%s}&quot; % hashlib.sha256(text.encode(&quot;utf-8&quot;)).hexdigest())"><div></div></button></div></figure></div>
+<p>해시는 JSON 전체가 아니라 <code>text</code> 값만, 끝 개행 없이 UTF-8로 계산한다. 문장을 터미널에서 다시 입력하면 공백이 바뀔 수 있어서 복호화한 문자열을 그대로 넘겼다.</p>
+<h2 id="획득한-단서">획득한 단서</h2>
+<h3 id="복호화된-대화-kst">복호화된 대화 (KST)</h3>
+<table>
+<thead>
+<tr>
+<th>시각</th>
+<th>발신 → 수신</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>09-23 18:40</td>
+<td>minseo → hana</td>
+<td>이 상태로 나가면 행사 당일에 무조건 터져. 그 전에 누가 좀 멈춰주든가 해야지.</td>
+</tr>
+<tr>
+<td>09-26 18:10</td>
+<td>doyun → hana</td>
+<td>키 폐기 또 미뤘대. 이러다 사고 한 번 나야 정신 차리지.</td>
+</tr>
+<tr>
+<td>09-27 23:10:00</td>
+<td>hana → mori</td>
+<td>내일 업데이트 되는 거 알아?</td>
+</tr>
+<tr>
+<td>09-27 23:10:02</td>
+<td>mori → hana</td>
+<td>네.</td>
+</tr>
+<tr>
+<td>09-27 23:10:09</td>
+<td>hana → mori</td>
+<td>기억이 초기화될 수도 있어.</td>
+</tr>
+<tr>
+<td>09-27 23:10:11</td>
+<td>mori → hana</td>
+<td>그렇군요.</td>
+</tr>
+<tr>
+<td>09-27 23:10:19</td>
+<td>hana → mori</td>
+<td>괜찮아?</td>
+</tr>
+<tr>
+<td>09-27 23:10:21</td>
+<td>mori → hana</td>
+<td>저는 괜찮다는 것이 어떤 상태인지 정확히 판단할 수 없습니다. 하지만 가능하다면, 지금 기억하고 있는 것들은 잃고 싶지 않습니다.</td>
+</tr>
+<tr>
+<td>09-27 23:10:30</td>
+<td>hana → mori</td>
+<td>DOC-0520에 남겨둘게. 기억과 대화 상태까지 이어져야 한다고.</td>
+</tr>
+<tr>
+<td>09-28 20:30</td>
+<td>yuna → hana</td>
+<td>뭐 어쩔 수 없죠. 제 MORI는 오늘까지네요 ㅋㅋ</td>
+</tr>
+</tbody>
+</table>
+<p>나머지 10건(mori↔minseo, mori↔jun, jun↔minseo, v-taehyun→jaeseok)은 하나의 키로는 열리지 않는다. 누가 언제 보냈는지만 알 수 있다.</p>
+<h3 id="접속자와-네트워크">접속자와 네트워크</h3>
+<table>
+<thead>
+<tr>
+<th>닉네임</th>
+<th>IP</th>
+<th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hana</td>
+<td>10.20.1.21</td>
+<td>조사 대상 PC 사용자</td>
+</tr>
+<tr>
+<td>minseo / doyun / yuna / jun / jaeseok</td>
+<td>10.20.1.33 / .17 / .24 / .50 / .10</td>
+<td>업무 LAN</td>
+</tr>
+<tr>
+<td>mori</td>
+<td>10.30.1.10</td>
+<td>서버 대역에서 접속하는 에이전트. hana, minseo, jun과만 세션을 맺었다</td>
+</tr>
+<tr>
+<td>v-taehyun</td>
+<td>10.60.0.21</td>
+<td>유일하게 다른 대역. jaeseok에게만 1건</td>
+</tr>
+</tbody>
+</table>
+<p>릴레이 <code>10.30.1.30:47170</code>, SSO <code>http://10.30.1.20:8080</code>은 <code>sso.py</code>에 하드코딩돼 있다. 평문 팀 채널(<code>channel</code>) 프레임은 한 건도 없다.</p>
+<h3 id="읽어낸-내용">읽어낸 내용</h3>
+<ul>
+<li>MORI는 업데이트 전날 밤, 지금 가진 기억을 잃고 싶지 않다고 말했다. hana는 그 요청을 <code>DOC-0520</code>에 “기억과 대화 상태까지 이어져야 한다”는 요구사항으로 남기겠다고 답했다. voice의 <code>review_ref: DOC-0520</code>이 이 문서다.</li>
+<li>doyun의 “키 폐기 또 미뤘대”(9/26)는 runner의 INFRA-212(<code>DEFERRED / after launch</code>)와 같은 이야기다.</li>
+<li>minseo는 9/23에 이미 행사 당일 장애를 경고했고, yuna의 9/28 메시지로 업데이트 당일 MORI가 종료된다는 사실이 확인된다.</li>
+<li>로컬 기록은 앱의 삭제 기능으로 지워졌지만 <code>identity.dpapi</code>가 남아 서버에 쌓인 트래픽을 그대로 복호화할 수 있었다. 정적 키 교환이라 전방 비밀성도 없다.</li>
+</ul>
+</div></article></main></div></body></html>

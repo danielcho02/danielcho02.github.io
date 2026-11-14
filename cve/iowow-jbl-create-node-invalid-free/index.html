@@ -1,0 +1,178 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e0e10"><link rel="icon" type="image/png" href="/favicon.png"><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css"></noscript><meta name="description" content="iowow 1.7.0~1.7.1의 _jbl_create_node()가 iwpool에서 받은 노드를 에러 경로에서 free()로 해제한다. binn-c가 정상으로 만드는 9바이트 문서와 공개 API 호출 한 번이면 프로세스가 죽는다. 1.7.2에서 수정됐다."><link rel="alternate" type="application/rss+xml" title="kirin" href="/rss.xml"><link rel="sitemap" href="/sitemap.xml"><title>GHSA-qgfr-2pv9-8cxq: iowow 풀 메모리를 free()로 해제 | kirin</title><style>.ls[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);margin:0;padding:0;list-style:none}li[data-astro-cid-i36apd2x]{gap:var(--space-4);padding:var(--space-1) var(--space-3);border-left:2px solid #0000;grid-template-columns:10ch 10ch 9ch minmax(0,1fr) auto;align-items:baseline;display:grid}.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{grid-template-columns:10ch 10ch minmax(0,1fr) auto}li[data-astro-cid-i36apd2x]:hover,li[data-astro-cid-i36apd2x]:focus-within{background:var(--panel);border-left-color:var(--gold)}.perm[data-astro-cid-i36apd2x],time[data-astro-cid-i36apd2x]{color:var(--muted)}.locked[data-astro-cid-i36apd2x] .perm[data-astro-cid-i36apd2x]{color:var(--vermilion)}.kind[data-astro-cid-i36apd2x]{color:var(--celadon)}a[data-astro-cid-i36apd2x]{font-family:var(--font-sans);font-size:var(--text-base);color:var(--ink);text-decoration:none}a[data-astro-cid-i36apd2x]:hover{color:var(--gold);text-decoration:underline}.lock[data-astro-cid-i36apd2x]{margin-left:var(--space-2);font-size:var(--text-xs);color:var(--vermilion)}.tags[data-astro-cid-i36apd2x]{color:var(--muted);text-align:right}.empty[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted)}@media (width<=48rem){li[data-astro-cid-i36apd2x],.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{gap:0 var(--space-3);grid-template-columns:auto auto 1fr}.perm[data-astro-cid-i36apd2x]{display:none}a[data-astro-cid-i36apd2x]{grid-column:1/-1}.tags[data-astro-cid-i36apd2x]{text-align:left;grid-column:1/-1}}
+</style><link rel="stylesheet" href="/_astro/_..CotCdawi.css"><style>.site-header[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-6);padding:var(--space-4) 0;margin-bottom:var(--space-8);border-bottom:1px solid var(--line);grid-template-columns:auto minmax(0,1fr) auto;display:grid}.brand[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-3);color:var(--ink);font-family:var(--font-mono);font-weight:600;text-decoration:none;display:flex}.path[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted);white-space:nowrap;text-overflow:ellipsis;margin:0;overflow:hidden}.who[data-astro-cid-nen7h5rs]{color:var(--gold)}.where[data-astro-cid-nen7h5rs]{color:var(--celadon)}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-4);font-size:var(--text-sm);flex-wrap:wrap;margin:0;padding:0;list-style:none;display:flex}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--muted);text-decoration:none}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover,nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs][aria-current=page]{color:var(--ink);text-decoration:underline}@media (width<=48rem){.site-header[data-astro-cid-nen7h5rs]{grid-template-columns:auto 1fr}@media (width<=40rem){.site-header[data-astro-cid-nen7h5rs]{gap:var(--space-3);grid-template-columns:1fr}nav[data-astro-cid-nen7h5rs]{justify-self:start}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-3)}}.path[data-astro-cid-nen7h5rs]{display:none}nav[data-astro-cid-nen7h5rs]{justify-self:end}}:root{color-scheme:dark;--bg:#0e0e10;--panel:#17171a;--line:#2b2b30;--ink:#e8e3d4;--muted:#a0a0a8;--gold:#e2b24c;--celadon:#6fb08c;--vermilion:#e2705a;--cloud:#f4efe2;--font-mono:"IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, monospace;--font-sans:"IBM Plex Sans KR", system-ui, sans-serif;--text-xs:.8rem;--text-sm:.875rem;--text-base:1.0625rem;--text-lg:1.33rem;--text-xl:1.66rem;--text-2xl:2.3rem;--measure:68ch;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--radius:6px;--duration:.14s}*,:before,:after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{background:var(--bg);color:var(--ink);font:400 var(--text-base) / 1.7 var(--font-sans);word-break:keep-all;overflow-wrap:break-word;margin:0}a{color:var(--gold);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{text-decoration-thickness:2px}:focus-visible{outline:2px solid var(--gold);outline-offset:2px}::selection{background:var(--gold);color:var(--bg)}h1,h2,h3{margin:0;font-weight:600;line-height:1.3}code,kbd,samp,pre{font-family:var(--font-mono);font-size:.92em}:not(pre)>code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:.05em .3em}.sr-only{clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}.sr-only:focus{top:var(--space-2);left:var(--space-2);clip-path:none;width:auto;height:auto;padding:var(--space-2) var(--space-3);background:var(--panel);z-index:10;position:fixed}.page{max-width:76rem;padding:0 var(--space-4) var(--space-16);margin:0 auto}.prompt{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--ink);font-weight:400}.prompt .who{color:var(--gold)}.prompt .where{color:var(--celadon)}.prompt .sigil{color:var(--muted);margin-right:.6ch}@media (prefers-reduced-motion:reduce){*,:before,:after{transition:none!important;animation:none!important}}
+</style></head><body><a class="sr-only" href="#main">본문으로 건너뛰기</a><div class="page"><header class="site-header" data-astro-cid-nen7h5rs><a class="brand" href="/" aria-label="kirin 홈" data-astro-cid-nen7h5rs><img src="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp" srcset="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp 1x, /_astro/kirin-avatar.C3aIZXQV_Ztxad8.webp 2x" alt data-astro-cid-nen7h5rs="true" loading="lazy" decoding="async" width="40" height="40"><span data-astro-cid-nen7h5rs>kirin</span></a><p class="path" aria-hidden="true" data-astro-cid-nen7h5rs><span class="who" data-astro-cid-nen7h5rs>kirin@pwnlab</span>:<span class="where" data-astro-cid-nen7h5rs>~/cve/iowow-jbl-create-node-invalid-free</span>$</p><nav aria-label="주요 메뉴" data-astro-cid-nen7h5rs><ul data-astro-cid-nen7h5rs><li data-astro-cid-nen7h5rs><a href="/writeups/" data-astro-cid-nen7h5rs>Writeups</a></li><li data-astro-cid-nen7h5rs><a href="/cve/" aria-current="page" data-astro-cid-nen7h5rs>CVE</a></li><li data-astro-cid-nen7h5rs><a href="/notes/" data-astro-cid-nen7h5rs>Notes</a></li><li data-astro-cid-nen7h5rs><a href="/projects/" data-astro-cid-nen7h5rs>Projects</a></li><li data-astro-cid-nen7h5rs><a href="/search/" data-astro-cid-nen7h5rs>Search</a></li><li data-astro-cid-nen7h5rs><a href="/about/" data-astro-cid-nen7h5rs>About</a></li></ul></nav></header><main id="main"><article class="post" data-pagefind-body data-astro-cid-g5songws><header data-astro-cid-g5songws><div data-pagefind-ignore data-astro-cid-g5songws><p class="prompt"><span class="who">kirin@pwnlab</span>:<span class="where">~/cve</span><span class="sigil">$</span>cat iowow-jbl-create-node-invalid-free.md</p></div><h1 data-astro-cid-g5songws>GHSA-qgfr-2pv9-8cxq: iowow 풀 메모리를 free()로 해제</h1><p class="kind" data-pagefind-ignore data-astro-cid-g5songws><a href="/cve/" data-pagefind-filter="kind" data-astro-cid-g5songws>CVE</a></p><dl class="meta" data-pagefind-ignore data-astro-cid-g5songws><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>date</dt><dd data-astro-cid-g5songws>2026-11-14</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>cve</dt><dd data-astro-cid-g5songws>GHSA-qgfr-2pv9-8cxq (CVSS 6.2)</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>tags</dt><dd data-astro-cid-g5songws>iowow, ejdb, binn, double-free, invalid-free, cwe-415, cwe-590</dd></div></dl></header><aside class="toc" data-pagefind-ignore data-astro-cid-g5songws><nav class="toc" aria-labelledby="toc-title" data-toc data-astro-cid-7k3pnqyz><details data-toc-details data-astro-cid-7k3pnqyz><summary data-astro-cid-7k3pnqyz><p class="prompt" id="toc-title"><span class="who">kirin@pwnlab</span>:<span class="where">~/cve</span><span class="sigil">$</span>grep -n &#39;^#&#39; iowow-jbl-create-node-invalid-free.md<span class="sr-only" data-astro-cid-7k3pnqyz>목차</span></p><span class="count" data-astro-cid-7k3pnqyz>(8)</span></summary><ol data-astro-cid-7k3pnqyz><li class="d2" data-astro-cid-7k3pnqyz><a href="#요약" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 14</span><span class="t" data-astro-cid-7k3pnqyz>요약</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#원인" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 28</span><span class="t" data-astro-cid-7k3pnqyz>원인</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#재현" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 58</span><span class="t" data-astro-cid-7k3pnqyz>재현</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#한계" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>106</span><span class="t" data-astro-cid-7k3pnqyz>한계</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#패치" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>112</span><span class="t" data-astro-cid-7k3pnqyz>패치</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#제보-과정" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>130</span><span class="t" data-astro-cid-7k3pnqyz>제보 과정</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#타임라인" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>140</span><span class="t" data-astro-cid-7k3pnqyz>타임라인</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#참고" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>149</span><span class="t" data-astro-cid-7k3pnqyz>참고</span></a></li></ol></details></nav><script>
+  // is:inline keeps this in the page, so on protected posts it is encrypted with it
+  // instead of becoming a separate unencrypted /_astro/*.js file.
+  // Runs after parsing: the headings come after this script and the page height must be final.
+  // (Protected posts are written in by staticrypt after load, so also handle an already-parsed document.)
+  const init = () => {
+    const nav = document.querySelector('[data-toc]');
+    if (!nav) return;
+    // The desktop column is always open; on mobile the list starts collapsed.
+    const details = nav.querySelector('[data-toc-details]');
+    const desktop = matchMedia('(min-width: 64rem)');
+    const sync = () => (details.open = desktop.matches);
+    desktop.addEventListener('change', sync);
+    sync();
+
+    // Mark the last heading that has scrolled past the top of the viewport.
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+    const TOP = 120;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      let active = 0;
+      targets.forEach((el, i) => {
+        if (el && el.getBoundingClientRect().top <= TOP) active = i;
+      });
+      // Short last sections never reach the top; at the bottom of the page the last one is the one being read.
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = targets.length - 1;
+      links.forEach((a, i) => (i === active ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  };
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', init);
+  else init();
+</script></aside><div class="body" data-astro-cid-g5songws><h2 id="요약">요약</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>영향 버전</td>
+<td>iowow 1.7.0, 1.7.1</td>
+</tr>
+<tr>
+<td>수정 버전</td>
+<td>1.7.2</td>
+</tr>
+<tr>
+<td>위치</td>
+<td><code>src/json/iwjbl.c</code>, <code>_jbl_create_node()</code></td>
+</tr>
+<tr>
+<td>종류</td>
+<td>CWE-590 힙이 아닌 메모리 해제, CWE-415 이중 해제</td>
+</tr>
+<tr>
+<td>공격 조건</td>
+<td>외부에서 받은 binn 문서를 패치하거나 DOM으로 바꿀 때</td>
+</tr>
+<tr>
+<td>CVSS</td>
+<td>3.1 기준 6.2 (<code>AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H</code>)</td>
+</tr>
+<tr>
+<td>CVE</td>
+<td>요청됨, 배정 대기</td>
+</tr>
+</tbody>
+</table>
+<p><code>_jbl_create_node()</code>는 호출한 쪽이 <code>iwpool</code>을 넘기면 노드를 풀에서 받는다. 그런데 에러가 나면 풀 여부와 상관없이 <code>free()</code>로 노드를 지운다. 풀이 준 포인터는 malloc이 준 게 아니라서 이 <code>free()</code>는 잘못된 해제가 되거나 나중에 풀이 정리될 때 이중 해제가 된다.</p>
+<h2 id="원인">원인</h2>
+<p><code>src/json/iwjbl.c</code> (1.7.1):</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.t2nri.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">if (</span><span style="--0:#E2B24C">IW_LIKELY</span><span style="--0:#E8E3D4">(ctx-&gt;</span><span style="--0:#E89A7A">pool</span><span style="--0:#E8E3D4">)) {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">n = </span><span style="--0:#E2B24C">iwpool_alloc</span><span style="--0:#E8E3D4">(sizeof(*n), ctx-&gt;pool);</span><span style="--0:#8E8E97">   // 815: 풀이 소유</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">} else {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">n = </span><span style="--0:#E2B24C">malloc</span><span style="--0:#E8E3D4">(sizeof(*n));</span><span style="--0:#8E8E97">                    // 817</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">...</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">switch (bv-&gt;type) {</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">...</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">default:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">      </span></span><span style="--0:#E8E3D4">rc = JBL_ERROR_CREATION;</span><span style="--0:#8E8E97">                 // 889: BINN_TYPE_BLOB이 여기로 온다</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">      </span></span><span style="--0:#E8E3D4">goto finish;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">finish:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">if (rc) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#E2B24C">free</span><span style="--0:#E8E3D4">(n);</span><span style="--0:#8E8E97">                                   // 898: 조건 없이 해제</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="  if (IW_LIKELY(ctx->pool)) {    n = iwpool_alloc(sizeof(*n), ctx->pool);   // 815: 풀이 소유  } else {    n = malloc(sizeof(*n));                    // 817  }  ...  switch (bv->type) {    ...    default:      rc = JBL_ERROR_CREATION;                 // 889: BINN_TYPE_BLOB이 여기로 온다      goto finish;  }  ...finish:  if (rc) {    free(n);                                   // 898: 조건 없이 해제  }"><div></div></button></div></figure></div>
+<p><code>iwpool_alloc()</code>은 범프 할당자다. 풀이 잡아 둔 덩어리에서 커서를 앞으로 밀고 그 자리를 돌려준다. 그래서 <code>n</code>은 대개 덩어리 한가운데를 가리키고 여기에 <code>free()</code>를 부르면 glibc는 malloc이 준 적 없는 주소라고 판단한다. <code>n</code>이 마침 덩어리 시작에 놓이면 그 자리에서는 해제가 되지만 <code>iwpool_destroy()</code>가 같은 덩어리를 한 번 더 해제한다.</p>
+<p>에러 경로로 들어가는 데 손상된 입력은 필요 없다. <code>BINN_TYPE_BLOB</code>은 binn 형식에 정식으로 있는 타입이고 binn-c의 <code>binn_create_blob()</code>이 만들며 로드할 때도 검증을 통과한다. 그런데 위 <code>switch</code>에는 blob을 처리하는 <code>case</code>가 없다. 문자열 복사(<code>iwpool_strndup()</code>)가 실패할 때도 같은 <code>free()</code>로 간다.</p>
+<p>이 모양이 실수라는 건 같은 모듈 안에서 보인다. <code>iwjser.c</code>의 <code>_jbl_json_create_node()</code>도 똑같이 <code>ctx-&gt;pool</code>이 있으면 풀에서, 없으면 malloc으로 노드를 받는다. 그리고 해제할 때는 두 번 다 <code>if (!ctx-&gt;pool)</code>로 막는다(<code>iwjser.c:423</code>, <code>:434</code>). <code>iwjbn.c</code>의 노드 생성자들도 같은 조건을 건다. 2026-10-18 binn-c로 JSON 모듈을 다시 짠 커밋 <code>c625e64</code>에서 이 조건이 빠진 곳은 <code>_jbl_create_node()</code> 하나였다.</p>
+<h2 id="재현">재현</h2>
+<p>binn-c 함수만으로 만든 문서다. 4바이트 blob 하나가 든 리스트이고 9바이트다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="text"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">e0 09 01 c0 04 01 02 03 04</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="e0 09 01 c0 04 01 02 03 04"><div></div></button></div></figure></div>
+<p>호출은 평범하다. <code>jbl_patch_from_json()</code>이 풀을 안에서 만들기 때문에 호출하는 쪽이 특별한 일을 하지 않아도 풀 경로를 탄다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">uint8_t</span><span style="--0:#E8E3D4"> doc[] = { 0x</span><span style="--0:#F0C674">e0</span><span style="--0:#E8E3D4">, 0x</span><span style="--0:#F0C674">09</span><span style="--0:#E8E3D4">, 0x</span><span style="--0:#F0C674">01</span><span style="--0:#E8E3D4">, 0x</span><span style="--0:#F0C674">c0</span><span style="--0:#E8E3D4">, 0x</span><span style="--0:#F0C674">04</span><span style="--0:#E8E3D4">, 0x</span><span style="--0:#F0C674">01</span><span style="--0:#E8E3D4">, 0x</span><span style="--0:#F0C674">02</span><span style="--0:#E8E3D4">, 0x</span><span style="--0:#F0C674">03</span><span style="--0:#E8E3D4">, 0x</span><span style="--0:#F0C674">04</span><span style="--0:#E8E3D4"> };</span></div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">struct</span><span style="--0:#E8E3D4"> jbl *jbl = </span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">jbl_create_from_buf</span><span style="--0:#E8E3D4">(&amp;</span><span style="--0:#E89A7A">jbl</span><span style="--0:#E8E3D4">, doc, sizeof(doc), </span><span style="--0:#F0C674">false</span><span style="--0:#E8E3D4">);</span><span style="--0:#8E8E97">   // rc = 0, 정상 로드</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">jbl_patch_from_json</span><span style="--0:#E8E3D4">(jbl, </span><span style="--0:#8FCFA6">"[{\"op\":\"add\",\"path\":\"/x\",\"value\":1}]"</span><span style="--0:#E8E3D4">);</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="uint8_t doc[] = { 0xe0, 0x09, 0x01, 0xc0, 0x04, 0x01, 0x02, 0x03, 0x04 };struct jbl *jbl = 0;jbl_create_from_buf(&amp;jbl, doc, sizeof(doc), false);   // rc = 0, 정상 로드jbl_patch_from_json(jbl, &quot;[{\&quot;op\&quot;:\&quot;add\&quot;,\&quot;path\&quot;:\&quot;/x\&quot;,\&quot;value\&quot;:1}]&quot;);"><div></div></button></div></figure></div>
+<p>ASan 결과:</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="text"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">ERROR: AddressSanitizer: attempting free on address which was not malloc()-ed</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">    </span></span><span style="--0:#e8e3d4">#1 _jbl_create_node</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">    </span></span><span style="--0:#e8e3d4">#2 _jbl_node_from_binn_impl</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">    </span></span><span style="--0:#e8e3d4">#3 _jbl_node_from_binn_impl</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">    </span></span><span style="--0:#e8e3d4">#4 jbl_patch_from_json</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">0x519000000250 is located 464 bytes inside of 1024-byte region</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">allocated by thread T0 here:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">    </span></span><span style="--0:#e8e3d4">#1 iwpool_create</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="ERROR: AddressSanitizer: attempting free on address which was not malloc()-ed    #1 _jbl_create_node    #2 _jbl_node_from_binn_impl    #3 _jbl_node_from_binn_impl    #4 jbl_patch_from_json0x519000000250 is located 464 bytes inside of 1024-byte regionallocated by thread T0 here:    #1 iwpool_create"><div></div></button></div></figure></div>
+<p>1024바이트 풀 덩어리 안 464바이트 지점을 해제하려 했다. 새니타이저 없이 빌드해도 glibc가 잡고 프로세스를 끝낸다(exit 134). 노드가 놓인 위치에 따라 메시지가 다르다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="text"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">free(): invalid pointer                    # 덩어리 중간</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">free(): double free detected in tcache 2   # 덩어리 시작</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="free(): invalid pointer                    # 덩어리 중간free(): double free detected in tcache 2   # 덩어리 시작"><div></div></button></div></figure></div>
+<p>영향받는 공개 API는 이렇다.</p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>풀</th>
+<th>결과</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>jbl_patch_from_json()</code></td>
+<td>안에서 생성</td>
+<td>잘못된 해제</td>
+</tr>
+<tr>
+<td><code>jbl_merge_patch()</code></td>
+<td>안에서 생성</td>
+<td>이중 해제</td>
+</tr>
+<tr>
+<td><code>jbl_to_node(…, pool)</code></td>
+<td>호출자가 전달</td>
+<td>잘못된 해제 또는 이중 해제</td>
+</tr>
+<tr>
+<td><code>jbl_to_node(…, 0)</code></td>
+<td>없음</td>
+<td>영향 없음</td>
+</tr>
+</tbody>
+</table>
+<p><code>wrap=true</code>로 로드해도 똑같이 재현된다.</p>
+<h3 id="한계">한계</h3>
+<ul>
+<li><strong>입증한 건 서비스 거부까지다.</strong> glibc가 두 경우를 모두 잡고 abort한다. 이런 검사가 없는 할당자에서는 힙 메타데이터가 망가질 수 있지만 그 이상은 확인하지 않았다.</li>
+<li><strong>원격 공격 경로는 iowow 안에 없다.</strong> iowow는 라이브러리다. 외부에서 받은 binn 문서를 <code>jbl_create_from_buf()</code>로 읽고 패치하거나 DOM으로 바꾸는 애플리케이션이 영향을 받는다. 그래서 CVSS는 <code>AV:L</code>로 매겼다.</li>
+<li><strong>EJDB2까지는 따라가지 않았다.</strong> EJDB2는 1.7.0을 고정해서 쓰고 저장된 문서에 <code>jbl_to_node(…, pool)</code>을 호출한다. 다만 그 문서가 어디서 채워지는지는 확인하지 못했다.</li>
+</ul>
+<h2 id="패치">패치</h2>
+<p>upstream 수정은 <a href="https://github.com/Softmotions/iowow/commit/54e83fc"><code>54e83fc</code></a>이고 보고서에 붙인 패치와 같은 조건이다. 풀이 있으면 노드를 해제하지 않는다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="diff"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">finish:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">if (rc) {</span></div></div><div class="ec-line highlight del"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">free(n);</span></div></div><div class="ec-line highlight ins"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">// The node is owned by the pool when one is given: iwpool_alloc() returns pool owned memory,</span></div></div><div class="ec-line highlight ins"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">// so it must not be released with free().</span></div></div><div class="ec-line highlight ins"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">if (!ctx-&gt;pool) {</span></div></div><div class="ec-line highlight ins"><div class="code"><span class="indent"><span style="--0:#E8E3D4">      </span></span><span style="--0:#E8E3D4">free(n);</span></div></div><div class="ec-line highlight ins"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">  </span></span><span style="--0:#E8E3D4">} else {</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="finish:  if (rc) {    free(n);    // The node is owned by the pool when one is given: iwpool_alloc() returns pool owned memory,    // so it must not be released with free().    if (!ctx->pool) {      free(n);    }  } else {"><div></div></button></div></figure></div>
+<p>회귀 테스트 <code>jbl_test1_14</code>도 같이 들어갔다. 위의 9바이트 문서를 binn-c로 직접 만들고 두 로드 모드에서 패치 API 세 개와 <code>jbl_to_node()</code>가 <code>JBL_ERROR_CREATION</code>을 돌려주는지 확인한다.</p>
+<h2 id="제보-과정">제보 과정</h2>
+<p>10월 23일 오후 4시 반쯤 GitHub의 비공개 취약점 제보로 보냈다. 메인테이너는 4시간 만에 받아들였고 13분 뒤 master에 수정을 올렸다. 1.7.2는 10월 30일에 나왔다.</p>
+<p>그 뒤 advisory는 2주 동안 draft로 남아 있었다. 나는 advisory 상태만 보고 답이 없다고 생각했는데, 커밋 기록을 보니 이미 고쳐져 있었다. 원인은 advisory 페이지에 있었다. 메인테이너가 advisory용 임시 비공개 포크에 PR을 열었다가 master에 직접 커밋했고 그 PR이 열린 채로 남아 있었다. GitHub는 이런 PR이 있으면 advisory를 공개하지 못하게 막는다.</p>
+<p>11월 6일 늦게 확인해서 미안하다는 말과 함께 이 사정을 댓글로 알렸다. 이틀 뒤 advisory가 공개됐고 CVE 요청도 들어갔다.</p>
+<p>조용히 고치고 서류를 안 하는 메인테이너라고 넘겨짚을 뻔했다. 답이 없어 보이면 먼저 커밋 기록과 advisory 타임라인부터 볼 생각이다.</p>
+<h2 id="타임라인">타임라인</h2>
+<table>
+<thead>
+<tr>
+<th>날짜</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-10-18</td>
+<td>binn-c 재작성 커밋 <code>c625e64</code>에서 결함 발생</td>
+</tr>
+<tr>
+<td>2026-10-23</td>
+<td>GitHub 비공개 제보, 같은 날 수락 및 수정 커밋 <code>54e83fc</code></td>
+</tr>
+<tr>
+<td>2026-10-30</td>
+<td>iowow 1.7.2 릴리스</td>
+</tr>
+<tr>
+<td>2026-11-08</td>
+<td>GHSA-qgfr-2pv9-8cxq 공개, CVE 요청</td>
+</tr>
+</tbody>
+</table>
+<h2 id="참고">참고</h2>
+<ul>
+<li><a href="https://github.com/Softmotions/iowow/security/advisories/GHSA-qgfr-2pv9-8cxq">GHSA-qgfr-2pv9-8cxq</a></li>
+<li><a href="https://github.com/Softmotions/iowow/commit/54e83fc">수정 커밋 54e83fc</a></li>
+<li><a href="https://github.com/Softmotions/iowow/releases/tag/v1.7.2">iowow 1.7.2</a></li>
+</ul>
+</div></article></main></div></body></html>
