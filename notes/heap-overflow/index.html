@@ -1,0 +1,504 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e0e10"><link rel="icon" type="image/png" href="/favicon.png"><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css"></noscript><meta name="description" content="Heap Overflow = 힙에 할당된 버퍼의 경계를 넘어 인접한 메모리를 덮어쓰는 취약점 메커니즘은 스택 버퍼 오버플로우와 같다. 버퍼 끝을 지나 낮은 주소에서 높은 주소로 선형으로 흘러가고, 중간을 건너뛸 수 없다. 다른 것은 버퍼 뒤에 무엇이 누워 있는가 하나뿐이다.…"><link rel="alternate" type="application/rss+xml" title="kirin" href="/rss.xml"><link rel="sitemap" href="/sitemap.xml"><title>Heap Overflow | kirin</title><style>.ls[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);margin:0;padding:0;list-style:none}li[data-astro-cid-i36apd2x]{gap:var(--space-4);padding:var(--space-1) var(--space-3);border-left:2px solid #0000;grid-template-columns:10ch 10ch 9ch minmax(0,1fr) auto;align-items:baseline;display:grid}.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{grid-template-columns:10ch 10ch minmax(0,1fr) auto}li[data-astro-cid-i36apd2x]:hover,li[data-astro-cid-i36apd2x]:focus-within{background:var(--panel);border-left-color:var(--gold)}.perm[data-astro-cid-i36apd2x],time[data-astro-cid-i36apd2x]{color:var(--muted)}.locked[data-astro-cid-i36apd2x] .perm[data-astro-cid-i36apd2x]{color:var(--vermilion)}.kind[data-astro-cid-i36apd2x]{color:var(--celadon)}a[data-astro-cid-i36apd2x]{font-family:var(--font-sans);font-size:var(--text-base);color:var(--ink);text-decoration:none}a[data-astro-cid-i36apd2x]:hover{color:var(--gold);text-decoration:underline}.lock[data-astro-cid-i36apd2x]{margin-left:var(--space-2);font-size:var(--text-xs);color:var(--vermilion)}.tags[data-astro-cid-i36apd2x]{color:var(--muted);text-align:right}.empty[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted)}@media (width<=48rem){li[data-astro-cid-i36apd2x],.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{gap:0 var(--space-3);grid-template-columns:auto auto 1fr}.perm[data-astro-cid-i36apd2x]{display:none}a[data-astro-cid-i36apd2x]{grid-column:1/-1}.tags[data-astro-cid-i36apd2x]{text-align:left;grid-column:1/-1}}
+</style><link rel="stylesheet" href="/_astro/_..CotCdawi.css"><style>.site-header[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-6);padding:var(--space-4) 0;margin-bottom:var(--space-8);border-bottom:1px solid var(--line);grid-template-columns:auto minmax(0,1fr) auto;display:grid}.brand[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-3);color:var(--ink);font-family:var(--font-mono);font-weight:600;text-decoration:none;display:flex}.path[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted);white-space:nowrap;text-overflow:ellipsis;margin:0;overflow:hidden}.who[data-astro-cid-nen7h5rs]{color:var(--gold)}.where[data-astro-cid-nen7h5rs]{color:var(--celadon)}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-4);font-size:var(--text-sm);flex-wrap:wrap;margin:0;padding:0;list-style:none;display:flex}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--muted);text-decoration:none}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover,nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs][aria-current=page]{color:var(--ink);text-decoration:underline}@media (width<=48rem){.site-header[data-astro-cid-nen7h5rs]{grid-template-columns:auto 1fr}@media (width<=40rem){.site-header[data-astro-cid-nen7h5rs]{gap:var(--space-3);grid-template-columns:1fr}nav[data-astro-cid-nen7h5rs]{justify-self:start}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-3)}}.path[data-astro-cid-nen7h5rs]{display:none}nav[data-astro-cid-nen7h5rs]{justify-self:end}}:root{color-scheme:dark;--bg:#0e0e10;--panel:#17171a;--line:#2b2b30;--ink:#e8e3d4;--muted:#a0a0a8;--gold:#e2b24c;--celadon:#6fb08c;--vermilion:#e2705a;--cloud:#f4efe2;--font-mono:"IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, monospace;--font-sans:"IBM Plex Sans KR", system-ui, sans-serif;--text-xs:.8rem;--text-sm:.875rem;--text-base:1.0625rem;--text-lg:1.33rem;--text-xl:1.66rem;--text-2xl:2.3rem;--measure:68ch;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--radius:6px;--duration:.14s}*,:before,:after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{background:var(--bg);color:var(--ink);font:400 var(--text-base) / 1.7 var(--font-sans);word-break:keep-all;overflow-wrap:break-word;margin:0}a{color:var(--gold);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{text-decoration-thickness:2px}:focus-visible{outline:2px solid var(--gold);outline-offset:2px}::selection{background:var(--gold);color:var(--bg)}h1,h2,h3{margin:0;font-weight:600;line-height:1.3}code,kbd,samp,pre{font-family:var(--font-mono);font-size:.92em}:not(pre)>code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:.05em .3em}.sr-only{clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}.sr-only:focus{top:var(--space-2);left:var(--space-2);clip-path:none;width:auto;height:auto;padding:var(--space-2) var(--space-3);background:var(--panel);z-index:10;position:fixed}.page{max-width:76rem;padding:0 var(--space-4) var(--space-16);margin:0 auto}.prompt{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--ink);font-weight:400}.prompt .who{color:var(--gold)}.prompt .where{color:var(--celadon)}.prompt .sigil{color:var(--muted);margin-right:.6ch}@media (prefers-reduced-motion:reduce){*,:before,:after{transition:none!important;animation:none!important}}
+</style></head><body><a class="sr-only" href="#main">본문으로 건너뛰기</a><div class="page"><header class="site-header" data-astro-cid-nen7h5rs><a class="brand" href="/" aria-label="kirin 홈" data-astro-cid-nen7h5rs><img src="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp" srcset="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp 1x, /_astro/kirin-avatar.C3aIZXQV_Ztxad8.webp 2x" alt data-astro-cid-nen7h5rs="true" loading="lazy" decoding="async" width="40" height="40"><span data-astro-cid-nen7h5rs>kirin</span></a><p class="path" aria-hidden="true" data-astro-cid-nen7h5rs><span class="who" data-astro-cid-nen7h5rs>kirin@pwnlab</span>:<span class="where" data-astro-cid-nen7h5rs>~/notes/heap-overflow</span>$</p><nav aria-label="주요 메뉴" data-astro-cid-nen7h5rs><ul data-astro-cid-nen7h5rs><li data-astro-cid-nen7h5rs><a href="/writeups/" data-astro-cid-nen7h5rs>Writeups</a></li><li data-astro-cid-nen7h5rs><a href="/cve/" data-astro-cid-nen7h5rs>CVE</a></li><li data-astro-cid-nen7h5rs><a href="/notes/" aria-current="page" data-astro-cid-nen7h5rs>Notes</a></li><li data-astro-cid-nen7h5rs><a href="/projects/" data-astro-cid-nen7h5rs>Projects</a></li><li data-astro-cid-nen7h5rs><a href="/search/" data-astro-cid-nen7h5rs>Search</a></li><li data-astro-cid-nen7h5rs><a href="/about/" data-astro-cid-nen7h5rs>About</a></li></ul></nav></header><main id="main"><article class="post" data-pagefind-body data-astro-cid-g5songws><header data-astro-cid-g5songws><div data-pagefind-ignore data-astro-cid-g5songws><p class="prompt"><span class="who">kirin@pwnlab</span>:<span class="where">~/notes</span><span class="sigil">$</span>cat heap-overflow.md</p></div><h1 data-astro-cid-g5songws>Heap Overflow</h1><p class="kind" data-pagefind-ignore data-astro-cid-g5songws><a href="/notes/" data-pagefind-filter="kind" data-astro-cid-g5songws>Notes</a></p><dl class="meta" data-pagefind-ignore data-astro-cid-g5songws><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>date</dt><dd data-astro-cid-g5songws>2026-11-17</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>tags</dt><dd data-astro-cid-g5songws>heap-overflow</dd></div></dl></header><aside class="toc" data-pagefind-ignore data-astro-cid-g5songws><nav class="toc" aria-labelledby="toc-title" data-toc data-astro-cid-7k3pnqyz><details data-toc-details data-astro-cid-7k3pnqyz><summary data-astro-cid-7k3pnqyz><p class="prompt" id="toc-title"><span class="who">kirin@pwnlab</span>:<span class="where">~/notes</span><span class="sigil">$</span>grep -n &#39;^#&#39; heap-overflow.md<span class="sr-only" data-astro-cid-7k3pnqyz>목차</span></p><span class="count" data-astro-cid-7k3pnqyz>(39)</span></summary><ol data-astro-cid-7k3pnqyz><li class="d2" data-astro-cid-7k3pnqyz><a href="#definition" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>  7</span><span class="t" data-astro-cid-7k3pnqyz>Definition</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#1-경계는-메모리에-없다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 19</span><span class="t" data-astro-cid-7k3pnqyz>1. 경계는 메모리에 없다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#메모리는-번호-붙은-바이트-한-줄이다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 21</span><span class="t" data-astro-cid-7k3pnqyz>메모리는 번호 붙은 바이트 한 줄이다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#배열-접근은-검사가-아니라-덧셈이다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 32</span><span class="t" data-astro-cid-7k3pnqyz>배열 접근은 검사가 아니라 덧셈이다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#경계는-숫자-안에만-있다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 51</span><span class="t" data-astro-cid-7k3pnqyz>경계는 숫자 안에만 있다</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#2-스택-bof와-뭐가-다른가" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 75</span><span class="t" data-astro-cid-7k3pnqyz>2. 스택 BOF와 뭐가 다른가</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#3-힙은-어떻게-생겼나" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 95</span><span class="t" data-astro-cid-7k3pnqyz>3. 힙은 어떻게 생겼나</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#힙-영역의-출처" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 99</span><span class="t" data-astro-cid-7k3pnqyz>힙 영역의 출처</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#청크-구조" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>105</span><span class="t" data-astro-cid-7k3pnqyz>청크 구조</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#size-하위-3비트는-플래그" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>122</span><span class="t" data-astro-cid-7k3pnqyz>size 하위 3비트는 플래그</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#정렬과-최소-크기" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>134</span><span class="t" data-astro-cid-7k3pnqyz>정렬과 최소 크기</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#free-청크는-데이터-자리를-포인터-저장소로-쓴다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>156</span><span class="t" data-astro-cid-7k3pnqyz>free 청크는 데이터 자리를 포인터 저장소로 쓴다</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#4-왜-오프셋이-고정인가" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>169</span><span class="t" data-astro-cid-7k3pnqyz>4. 왜 오프셋이 고정인가</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#상대-거리는-결정론적이다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>173</span><span class="t" data-astro-cid-7k3pnqyz>상대 거리는 결정론적이다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#절대-주소는-상황에-따라-다르다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>185</span><span class="t" data-astro-cid-7k3pnqyz>절대 주소는 상황에 따라 다르다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#레이아웃이-흔들리는-요인" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>190</span><span class="t" data-astro-cid-7k3pnqyz>레이아웃이 흔들리는 요인</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#5-오버플로우를-만드는-코드-패턴" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>204</span><span class="t" data-astro-cid-7k3pnqyz>5. 오버플로우를 만드는 코드 패턴</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#a-길이를-source가-정하고-dest-용량을-안-본다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>208</span><span class="t" data-astro-cid-7k3pnqyz>A. 길이를 source가 정하고 dest 용량을 안 본다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#b-개수와-버퍼가-서로-다른-객체에서-온다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>222</span><span class="t" data-astro-cid-7k3pnqyz>B. 개수와 버퍼가 서로 다른 객체에서 온다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#c-정수-문제로-길이-검사를-무력화" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>234</span><span class="t" data-astro-cid-7k3pnqyz>C. 정수 문제로 길이 검사를 무력화</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#d-off-by-one" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>251</span><span class="t" data-astro-cid-7k3pnqyz>D. off-by-one</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#탐색-체크리스트" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>260</span><span class="t" data-astro-cid-7k3pnqyz>탐색 체크리스트</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#6-넘치면-뭐가-덮이나" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>270</span><span class="t" data-astro-cid-7k3pnqyz>6. 넘치면 뭐가 덮이나</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#-인접-객체의-데이터-필드" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>279</span><span class="t" data-astro-cid-7k3pnqyz>① 인접 객체의 데이터 필드</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#-malloc-메타데이터" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>288</span><span class="t" data-astro-cid-7k3pnqyz>② malloc 메타데이터</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#-인접-객체의-코드-포인터" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>292</span><span class="t" data-astro-cid-7k3pnqyz>③ 인접 객체의 코드 포인터</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#길에-놓인-것을-복원해야-한다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>298</span><span class="t" data-astro-cid-7k3pnqyz>길에 놓인 것을 복원해야 한다</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#7-함수-포인터와-vtable" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>307</span><span class="t" data-astro-cid-7k3pnqyz>7. 함수 포인터와 vtable</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#왜-함수-포인터가-최고의-타겟인가" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>319</span><span class="t" data-astro-cid-7k3pnqyz>왜 함수 포인터가 최고의 타겟인가</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#c에서는-공짜로-생긴다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>326</span><span class="t" data-astro-cid-7k3pnqyz>C++에서는 공짜로 생긴다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#어디로-점프할-것인가" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>344</span><span class="t" data-astro-cid-7k3pnqyz>어디로 점프할 것인가</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#8-메타데이터-손상-계열" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>355</span><span class="t" data-astro-cid-7k3pnqyz>8. 메타데이터 손상 계열</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#9-왜-힙은-조용한가" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>373</span><span class="t" data-astro-cid-7k3pnqyz>9. 왜 힙은 조용한가</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#카나리는-힙에-없다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>377</span><span class="t" data-astro-cid-7k3pnqyz>카나리는 힙에 없다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#탐지가-지연된다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>383</span><span class="t" data-astro-cid-7k3pnqyz>탐지가 지연된다</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#10-접근-순서" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>400</span><span class="t" data-astro-cid-7k3pnqyz>10. 접근 순서</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#11-측정-pwndbg" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>432</span><span class="t" data-astro-cid-7k3pnqyz>11. 측정 (pwndbg)</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#워크플로" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>450</span><span class="t" data-astro-cid-7k3pnqyz>워크플로</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#key-takeaways" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>463</span><span class="t" data-astro-cid-7k3pnqyz>Key Takeaways</span></a></li></ol></details></nav><script>
+  // is:inline keeps this in the page, so on protected posts it is encrypted with it
+  // instead of becoming a separate unencrypted /_astro/*.js file.
+  // Runs after parsing: the headings come after this script and the page height must be final.
+  // (Protected posts are written in by staticrypt after load, so also handle an already-parsed document.)
+  const init = () => {
+    const nav = document.querySelector('[data-toc]');
+    if (!nav) return;
+    // The desktop column is always open; on mobile the list starts collapsed.
+    const details = nav.querySelector('[data-toc-details]');
+    const desktop = matchMedia('(min-width: 64rem)');
+    const sync = () => (details.open = desktop.matches);
+    desktop.addEventListener('change', sync);
+    sync();
+
+    // Mark the last heading that has scrolled past the top of the viewport.
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+    const TOP = 120;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      let active = 0;
+      targets.forEach((el, i) => {
+        if (el && el.getBoundingClientRect().top <= TOP) active = i;
+      });
+      // Short last sections never reach the top; at the bottom of the page the last one is the one being read.
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = targets.length - 1;
+      links.forEach((a, i) => (i === active ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  };
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', init);
+  else init();
+</script></aside><div class="body" data-astro-cid-g5songws><h2 id="definition">Definition</h2>
+<p>Heap Overflow = 힙에 할당된 버퍼의 경계를 넘어 인접한 메모리를 덮어쓰는 취약점</p>
+<p>메커니즘은 스택 버퍼 오버플로우와 같다. 버퍼 끝을 지나 <strong>낮은 주소에서 높은 주소로 선형으로</strong> 흘러가고, 중간을 건너뛸 수 없다.
+다른 것은 <strong>버퍼 뒤에 무엇이 누워 있는가</strong> 하나뿐이다.</p>
+<ul>
+<li>스택: 호출 규약이 SFP와 리턴 주소를 고정된 자리에 깔아둔다. 타겟이 정해져 있고 카나리가 막는다.</li>
+<li>힙: 뒤에 오는 것은 <strong>프로그램이 그 다음에 무엇을 할당했는지</strong>에 달려 있다. 타겟을 직접 찾아야 하고, 대신 막는 것도 거의 없다.</li>
+</ul>
+<hr>
+<h2 id="1-경계는-메모리에-없다">1. 경계는 메모리에 없다</h2>
+<h3 id="메모리는-번호-붙은-바이트-한-줄이다">메모리는 번호 붙은 바이트 한 줄이다</h3>
+<p>프로세스 메모리를 칸막이 있는 서랍장으로 상상하면 틀렸다. 정확한 그림은 <strong>번호가 붙은 바이트가 한 줄로 늘어선 테이프</strong>다.</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.t2nri.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">0x617040  0x617041  0x617042  0x617043  0x617044  ...</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">[ byte ]  [ byte ]  [ byte ]  [ byte ]  [ byte ]  ...</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="0x617040  0x617041  0x617042  0x617043  0x617044  ...[ byte ]  [ byte ]  [ byte ]  [ byte ]  [ byte ]  ..."><div></div></button></div></figure></div>
+<p>중요한 건 없는 것이다. “0x617040부터 0x61704b까지는 <code>src</code>의 소유”라는 기록이 <strong>하드웨어 어디에도 없다.</strong> CPU는 메모리가 누구 것인지 모르고, 알 필요도 없게 설계되어 있다.</p>
+<h3 id="배열-접근은-검사가-아니라-덧셈이다">배열 접근은 검사가 아니라 덧셈이다</h3>
+<p><code>a[i]</code>는 다음 한 줄의 주소 산술로 환원된다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">주소 = 배열_시작_주소 + (i × sizeof(원소))</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="주소 = 배열_시작_주소 + (i × sizeof(원소))"><div></div></button></div></figure></div>
+<p><code>int</code> 배열이면 <code>a[3]</code>은 <code>시작 + 12</code>, <code>a[100]</code>은 <code>시작 + 400</code>. 끝이다.
+<strong><code>i</code>가 범위를 벗어났는지 확인하는 기계어는 생성되지 않는다.</strong></p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">int</span><span style="--0:#E8E3D4"> a[</span><span style="--0:#F0C674">3</span><span style="--0:#E8E3D4">];</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">a[</span><span style="--0:#F0C674">100</span><span style="--0:#E8E3D4">] = </span><span style="--0:#F0C674">1</span><span style="--0:#E8E3D4">;</span><span style="--0:#8E8E97">    // 컴파일 통과. 실행도 됨. 에러 없음.</span></div></div><div class="ec-line"><div class="code"><span class="indent">               </span><span style="--0:#8E8E97">// (시작 + 400) 번지에 1을 쓴다. 거기가 누구 땅이든.</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="int a[3];a[100] = 1;    // 컴파일 통과. 실행도 됨. 에러 없음.               // (시작 + 400) 번지에 1을 쓴다. 거기가 누구 땅이든."><div></div></button></div></figure></div>
+<p>Python이면 <code>IndexError</code>, Java면 <code>ArrayIndexOutOfBoundsException</code>이 나지만 C/C++은 그 검사를 <strong>의도적으로 생략</strong>한다. 매 접근마다 비교문을 넣으면 느려지니, “범위는 프로그래머가 지킨다”를 언어 계약으로 삼았다. 이게 메모리 안전성(memory safety)이 없다는 말의 실체다.</p>
+<h3 id="경계는-숫자-안에만-있다">경계는 숫자 안에만 있다</h3>
+<p>그럼 평소에는 왜 안 터지는가. 프로그램이 스스로 지키기 때문이다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">for (i = </span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">; i &lt; size; i++)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">buf[i] = input[i];</span></div></div><div class="ec-line"><div class="code"><span class="indent">         </span><span style="--0:#8E8E97">// ↑ 이 숫자 하나가 버퍼를 지키는 유일한 장치</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="for (i = 0; i < size; i++)    buf[i] = input[i];         // ↑ 이 숫자 하나가 버퍼를 지키는 유일한 장치"><div></div></button></div></figure></div>
+<p><code>buf</code>를 보호하는 것은 울타리가 아니라 <code>size</code>라는 <strong>숫자</strong>다. 그래서 결론은 이렇게 된다.</p>
+<blockquote>
+<p><strong>경계는 메모리에 존재하지 않는다. 경계는 코드가 들고 있는 숫자 안에만 존재한다.</strong></p>
+</blockquote>
+<p>그리고 오버플로우는 <strong>두 숫자가 어긋나는 사건</strong>으로 정의된다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">쓰는 개수  &gt;  버퍼 용량</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="쓰는 개수  >  버퍼 용량"><div></div></button></div></figure></div>
+<p>이 부등식을 만들 수 있는 길목을 찾는 것이 분석의 전부다.</p>
+<hr>
+<h2 id="2-스택-bof와-뭐가-다른가">2. 스택 BOF와 뭐가 다른가</h2>
+<table>
+<thead>
+<tr>
+<th>항목</th>
+<th>스택 오버플로우</th>
+<th>힙 오버플로우</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>넘친 뒤 바로 나오는 것</td>
+<td>SFP, <strong>리턴 주소</strong> (호출 규약이 고정)</td>
+<td>청크 헤더, <strong>다음에 할당된 객체</strong></td>
+</tr>
+<tr>
+<td>RIP를 먹는 경로</td>
+<td>리턴 주소 덮기 → <code>ret</code></td>
+<td>함수 포인터 / vtable 덮기 → <code>call</code></td>
+</tr>
+<tr>
+<td>전용 탐지 장치</td>
+<td><strong>스택 카나리</strong></td>
+<td><strong>없음</strong> — 카나리는 힙에 안 깔린다</td>
+</tr>
+<tr>
+<td>터지는 시점</td>
+<td>함수 리턴 시 (즉시)</td>
+<td><strong>지연</strong> — 나중의 malloc/free에서</td>
+</tr>
+<tr>
+<td>레이아웃 결정 요인</td>
+<td>컴파일러 (변수 배치)</td>
+<td><strong>런타임 할당 순서</strong> + allocator 정책</td>
+</tr>
+<tr>
+<td>레이아웃 조작</td>
+<td>거의 불가</td>
+<td><strong>가능</strong> — malloc/free를 유도해 설계 (heap grooming)</td>
+</tr>
+<tr>
+<td>오프셋 구하는 법</td>
+<td>소스·디컴파일로 계산</td>
+<td><strong>런타임 실측 필수</strong></td>
+</tr>
+</tbody>
+</table>
+<p>스택 BOF는 타겟이 정해져 있고 <strong>방어(카나리)가 문제</strong>다. 힙 BOF는 방어가 거의 없는 대신 <strong>타겟을 직접 찾아야</strong> 한다. 난이도의 성격이 “뚫기”에서 “정찰하기”로 이동한다.</p>
+<p>그래서 <code>checksec</code>에 <code>Canary found</code>가 떠 있어도 공격 경로가 힙이면 카나리는 <strong>완전히 무관하다.</strong> 카나리는 스택 프레임의 리턴 주소 앞에만 깔리는 장치이고, 힙 경로는 그 앞을 지나가지 않는다. NX도, Partial RELRO도 경로에 따라 똑같이 무관해진다.</p>
+<blockquote>
+<p>보호 기법 표는 경로를 정해주지 않는다. 경로를 정한 뒤에 읽는 참고표다.</p>
+</blockquote>
+<hr>
+<h2 id="3-힙은-어떻게-생겼나">3. 힙은 어떻게 생겼나</h2>
+<p>glibc(ptmalloc2) 기준.</p>
+<h3 id="힙-영역의-출처">힙 영역의 출처</h3>
+<ul>
+<li><strong>작은 힙</strong>: <code>brk</code>/<code>sbrk</code>로 데이터 세그먼트 끝을 밀어내 연속 영역을 확보. main arena가 관리한다.</li>
+<li><strong>큰 요청</strong> (기본 128KB 이상): <code>mmap</code>으로 별도 영역. <code>IS_MMAPPED</code> 플래그가 붙고 free 시 바로 <code>munmap</code>.</li>
+<li><strong>top chunk</strong>: 힙 맨 끝의 아직 쪼개지지 않은 덩어리. 재활용할 free 청크가 없으면 <strong>여기서 앞에서부터 잘라낸다.</strong> 이것이 “할당 순서 = 주소 증가 순서”가 되는 이유다.</li>
+</ul>
+<h3 id="청크-구조">청크 구조</h3>
+<p>malloc은 요청한 크기만 주지 않는다. <strong>관리용 헤더를 앞에 붙여서</strong> 준다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">chunk ptr ─→ ┌────────────────────────────┐</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">             </span></span><span style="--0:#e8e3d4">│ prev_size  (8B)            │  앞 청크가 free일 때만 유효</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">             </span></span><span style="--0:#e8e3d4">├────────────────────────────┤</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">             </span></span><span style="--0:#e8e3d4">│ size       (8B) + 하위 3비트 플래그 │</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">             </span></span><span style="--0:#e8e3d4">├────────────────────────────┤  ← malloc()이 반환하는 주소</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">mem ptr ───→ │   사용자 데이터 (payload)      │</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">             </span></span><span style="--0:#e8e3d4">└────────────────────────────┘</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">             </span></span><span style="--0:#e8e3d4">│ 다음 청크의 prev_size …      │  ← 경계가 맞닿아 있다</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="chunk ptr ─→ ┌────────────────────────────┐             │ prev_size  (8B)            │  앞 청크가 free일 때만 유효             ├────────────────────────────┤             │ size       (8B) + 하위 3비트 플래그 │             ├────────────────────────────┤  ← malloc()이 반환하는 주소mem ptr ───→ │   사용자 데이터 (payload)      │             └────────────────────────────┘             │ 다음 청크의 prev_size …      │  ← 경계가 맞닿아 있다"><div></div></button></div></figure></div>
+<p><strong><code>malloc()</code>이 돌려주는 포인터는 청크의 시작이 아니다.</strong> 청크 시작보다 <strong>16바이트 뒤</strong>다. 오프셋 계산에서 가장 흔한 실수 지점.</p>
+<h3 id="size-하위-3비트는-플래그">size 하위 3비트는 플래그</h3>
+<p>청크 크기는 항상 16의 배수라 하위 4비트가 비어 있다. glibc는 그 중 3비트를 쓴다.</p>
+<table>
+<thead>
+<tr>
+<th>플래그</th>
+<th>의미</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PREV_INUSE</code> (0x1)</td>
+<td>물리적으로 앞 청크가 사용 중이면 1. 0이면 <code>prev_size</code>가 유효해져 병합 대상이 된다</td>
+</tr>
+<tr>
+<td><code>IS_MMAPPED</code> (0x2)</td>
+<td><code>mmap</code>으로 직접 받은 청크</td>
+</tr>
+<tr>
+<td><code>NON_MAIN_ARENA</code> (0x4)</td>
+<td>main arena가 아닌 arena 소속</td>
+</tr>
+</tbody>
+</table>
+<p>덤프에서 <code>0x21</code>을 보면 “크기 <code>0x20</code> + <code>PREV_INUSE</code>“로 읽어야 한다. <code>0x21</code> 크기의 청크는 존재하지 않는다.</p>
+<h3 id="정렬과-최소-크기">정렬과 최소 크기</h3>
+<p>x86-64에서 청크는 <strong>16바이트 정렬</strong>, <strong>최소 크기 0x20(32바이트)</strong>.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">chunk_size = max(0x20, align16(요청크기 + 8))</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">                                      </span></span><span style="--0:#e8e3d4">↑</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">                     </span></span><span style="--0:#e8e3d4">헤더 16B 중 8B만 더한다 —</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">                     </span></span><span style="--0:#e8e3d4">다음 청크의 prev_size 자리를 데이터로 빌려 쓰기 때문</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="chunk_size = max(0x20, align16(요청크기 + 8))                                      ↑                     헤더 16B 중 8B만 더한다 —                     다음 청크의 prev_size 자리를 데이터로 빌려 쓰기 때문"><div></div></button></div></figure></div>
+<table>
+<thead>
+<tr>
+<th>요청</th>
+<th>실제 청크</th>
+<th>usable</th>
+<th>size 필드</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>malloc(1)</code></td>
+<td>0x20</td>
+<td>24 B</td>
+<td><code>0x21</code></td>
+</tr>
+<tr>
+<td><code>malloc(8)</code></td>
+<td>0x20</td>
+<td>24 B</td>
+<td><code>0x21</code></td>
+</tr>
+<tr>
+<td><code>malloc(12)</code></td>
+<td>0x20</td>
+<td>24 B</td>
+<td><code>0x21</code></td>
+</tr>
+<tr>
+<td><code>malloc(24)</code></td>
+<td>0x20</td>
+<td>24 B</td>
+<td><code>0x21</code></td>
+</tr>
+<tr>
+<td><code>malloc(25)</code></td>
+<td>0x30</td>
+<td>40 B</td>
+<td><code>0x31</code></td>
+</tr>
+<tr>
+<td><code>malloc(40)</code></td>
+<td>0x30</td>
+<td>40 B</td>
+<td><code>0x31</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>malloc(8)</code>, <code>malloc(12)</code>, <code>malloc(24)</code>가 <strong>전부 같은 0x20 청크</strong>다. 그래서 크기가 다른 작은 객체들이 <strong>32바이트 간격으로 나란히</strong> 깔리는 일이 아주 흔하다. 멤버 하나(8바이트)뿐인 C++ 객체도 32바이트를 차지하고, <code>int</code> 3개짜리 벡터 버퍼(12바이트)도 32바이트를 차지한다. <strong>“간격 0x20”은 힙 문제에서 가장 자주 나오는 숫자다.</strong></p>
+<h3 id="free-청크는-데이터-자리를-포인터-저장소로-쓴다">free 청크는 데이터 자리를 포인터 저장소로 쓴다</h3>
+<p>청크가 free되면 사용자 데이터 자리는 의미가 없으므로 allocator가 거기에 연결 리스트 포인터를 써 넣는다. tcache/fastbin은 <code>fd</code> 하나, smallbin/largebin은 <code>fd</code>/<code>bk</code>.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">mem ptr ───→ │ fd  ← 다음 free 청크 포인터   │  덮으면 malloc을 속일 수 있다</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">             </span></span><span style="--0:#e8e3d4">│ key ← tcache 소속 표식 (2.29+) │  double free 탐지용</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="mem ptr ───→ │ fd  ← 다음 free 청크 포인터   │  덮으면 malloc을 속일 수 있다             │ key ← tcache 소속 표식 (2.29+) │  double free 탐지용"><div></div></button></div></figure></div>
+<p>여기서 중요한 사실 하나. <strong>사용자 데이터와 allocator 메타데이터가 같은 메모리를 공유한다.</strong> 그래서 “데이터를 덮는 것”과 “메타데이터를 덮는 것”이 물리적으로 구분되지 않는다. 이 설계가 힙 익스플로잇의 토양 전체다.</p>
+<hr>
+<h2 id="4-왜-오프셋이-고정인가">4. 왜 오프셋이 고정인가</h2>
+<p>힙은 런타임에 결정되는데 왜 오프셋을 상수로 박아도 동작하는가. <strong>절대 주소</strong>와 <strong>상대 거리</strong>를 구분해야 한다.</p>
+<h3 id="상대-거리는-결정론적이다">상대 거리는 결정론적이다</h3>
+<p>ASLR이 켜져 있어도 힙 <strong>내부</strong>의 배치 순서는 할당 코드가 결정한다. 같은 입력이면 같은 malloc 호출 순서가 나오고, allocator는 결정론적이므로 <strong>청크 사이의 상대 거리는 매 실행마다 같다.</strong></p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">A = </span><span style="--0:#E2B24C">malloc</span><span style="--0:#E8E3D4">(</span><span style="--0:#F0C674">12</span><span style="--0:#E8E3D4">);</span><span style="--0:#8E8E97">   // 0x...020</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">B = </span><span style="--0:#E2B24C">malloc</span><span style="--0:#E8E3D4">(</span><span style="--0:#F0C674">12</span><span style="--0:#E8E3D4">);</span><span style="--0:#8E8E97">   // 0x...040   (A + 0x20)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">C = new </span><span style="--0:#E2B24C">Obj</span><span style="--0:#E8E3D4">();</span><span style="--0:#8E8E97">    // 0x...060   (B + 0x20)   ← 이 간격은 실행마다 같다</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="A = malloc(12);   // 0x...020B = malloc(12);   // 0x...040   (A + 0x20)C = new Obj();    // 0x...060   (B + 0x20)   ← 이 간격은 실행마다 같다"><div></div></button></div></figure></div>
+<p>익스에 필요한 것은 대개 절대 주소가 아니라 이 거리뿐이다.</p>
+<h3 id="절대-주소는-상황에-따라-다르다">절대 주소는 상황에 따라 다르다</h3>
+<ul>
+<li><strong>No PIE</strong>: 바이너리가 <code>0x400000</code>에 고정 로드되고 <code>brk</code> 힙이 그 바로 뒤에 붙는다. 결과적으로 <strong>힙 절대 주소마저 고정</strong>되는 경우가 많다 → 힙 leak 불필요.</li>
+<li><strong>PIE</strong>: 힙 베이스가 랜덤화된다. 힙 주소를 써야 하면 <strong>leak 1회</strong>가 필요하지만, 상대 거리는 여전히 고정이라 하나만 leak하면 나머지는 산술로 구한다.</li>
+</ul>
+<h3 id="레이아웃이-흔들리는-요인">레이아웃이 흔들리는 요인</h3>
+<table>
+<thead>
+<tr>
+<th>요인</th>
+<th>효과</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>이전 free</td>
+<td>top chunk가 아니라 재활용분이 반환된다. tcache는 <strong>LIFO</strong>라 free 순서가 할당 주소를 바꾼다</td>
+</tr>
+<tr>
+<td>realloc / 컨테이너 증가</td>
+<td><code>vector</code>가 capacity를 넘으면 <strong>새 버퍼를 할당하고 옛 버퍼를 free</strong>한다. 데이터가 이사하고 free 청크가 하나 생긴다</td>
+</tr>
+<tr>
+<td>stdio / iostream 초기화</td>
+<td><code>printf</code>, <code>cout</code> 첫 사용 시 버퍼를 malloc한다</td>
+</tr>
+<tr>
+<td><code>tcache_perthread_struct</code></td>
+<td>glibc 2.26+에서 <strong>힙의 첫 청크</strong>(0x290)로 자동 할당된다</td>
+</tr>
+<tr>
+<td>스레드</td>
+<td>스레드별 arena가 따로 생겨 전혀 다른 영역에 할당된다</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>오프셋은 추측하지 않는다. 계산한 뒤 반드시 디버거로 검증한다. 힙 문제에서 “대충 이쯤”은 100% 틀린다.</p>
+</blockquote>
+<hr>
+<h2 id="5-오버플로우를-만드는-코드-패턴">5. 오버플로우를 만드는 코드 패턴</h2>
+<p>전부 <code>쓰는 개수 &gt; 버퍼 용량</code>을 만드는 방법들이다.</p>
+<h3 id="a-길이를-source가-정하고-dest-용량을-안-본다">A. 길이를 source가 정하고 dest 용량을 안 본다</h3>
+<p>가장 흔하다. 다음 함수군은 <strong>경계 책임을 호출자에게 떠넘기도록 설계</strong>되어 있다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#E2B24C">memcpy</span><span style="--0:#E8E3D4">(dst, src, src_len);</span><span style="--0:#8E8E97">              // dst 용량 인자가 아예 없다</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">strcpy</span><span style="--0:#E8E3D4">(dst, src);</span><span style="--0:#8E8E97">                       // src의 NUL까지 전부 복사</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">sprintf</span><span style="--0:#E8E3D4">(dst, </span><span style="--0:#8FCFA6">"</span><span style="--0:#F0C674">%s</span><span style="--0:#8FCFA6">"</span><span style="--0:#E8E3D4">, src);</span><span style="--0:#8E8E97">                // 길이 제한 없음</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">std::</span><span style="--0:#E2B24C">copy</span><span style="--0:#E8E3D4">(src.</span><span style="--0:#E2B24C">begin</span><span style="--0:#E8E3D4">(), src.</span><span style="--0:#E2B24C">end</span><span style="--0:#E8E3D4">(), dst.</span><span style="--0:#E2B24C">begin</span><span style="--0:#E8E3D4">());</span></div></div><div class="ec-line"><div class="code"><span class="indent">                                        </span><span style="--0:#8E8E97">// 출력 범위의 '끝'을 받지 않는다</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="memcpy(dst, src, src_len);              // dst 용량 인자가 아예 없다strcpy(dst, src);                       // src의 NUL까지 전부 복사sprintf(dst, &quot;%s&quot;, src);                // 길이 제한 없음std::copy(src.begin(), src.end(), dst.begin());                                        // 출력 범위의 &#x27;끝&#x27;을 받지 않는다"><div></div></button></div></figure></div>
+<p><strong>인자를 세어보는 습관</strong>이 여기서 결정적이다. <code>std::copy</code>의 3-인자 버전은 입력 범위 <code>[first, last)</code>와 출력 <strong>시작점</strong>만 받는다. 출력의 끝이 인자에 없다는 것은 “담을 자리가 있는지는 호출자가 보장하라”는 계약이고, 그 보장 코드가 없으면 그게 취약점이다. <code>memcpy</code>와 논리적으로 동일한 버그가 C++ 컨테이너 문법으로 포장된 형태다.</p>
+<h3 id="b-개수와-버퍼가-서로-다른-객체에서-온다">B. 개수와 버퍼가 서로 다른 객체에서 온다</h3>
+<p>단일 객체 안에서는 size와 버퍼가 항상 일치한다. <code>vector::resize</code>는 숫자와 버퍼를 같이 갱신하므로 혼자서는 절대 안 넘친다. 어긋남은 <strong>두 객체가 섞일 때만</strong> 생긴다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#E2B24C">copy</span><span style="--0:#E8E3D4">(A.</span><span style="--0:#E2B24C">begin</span><span style="--0:#E8E3D4">(), A.</span><span style="--0:#E2B24C">end</span><span style="--0:#E8E3D4">(), B.</span><span style="--0:#E2B24C">begin</span><span style="--0:#E8E3D4">());</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">write</span><span style="--0:#E8E3D4">(B.buf, A.len);</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">for (i = </span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">; i &lt; A-&gt;count; i++) B-&gt;buf[i] = ...;</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="copy(A.begin(), A.end(), B.begin());write(B.buf, A.len);for (i = 0; i < A->count; i++) B->buf[i] = ...;"><div></div></button></div></figure></div>
+<p>그래서 소스를 볼 때 <strong>두 개 이상의 버퍼를 동시에 인자로 받는 함수</strong>를 전부 의심 목록에 올리고, 각각에 “한쪽의 숫자로 다른 쪽 버퍼에 쓰는가”를 묻는다.</p>
+<h3 id="c-정수-문제로-길이-검사를-무력화">C. 정수 문제로 길이 검사를 무력화</h3>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#8E8E97">// C-1. size_t 언더플로우</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">if (len &lt;= cap) </span><span style="--0:#E2B24C">memcpy</span><span style="--0:#E8E3D4">(buf, src, cap - len);</span><span style="--0:#8E8E97">   // len &gt; cap 이면 거대한 값</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#8E8E97">// C-2. signed → unsigned 변환</span></div></div><div class="ec-line"><div class="code"><span style="--0:#7FC8D6">int</span><span style="--0:#E8E3D4"> n = </span><span style="--0:#E2B24C">get_int</span><span style="--0:#E8E3D4">();</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">if (n &lt; MAX) </span><span style="--0:#E2B24C">memcpy</span><span style="--0:#E8E3D4">(buf, src, n);</span><span style="--0:#8E8E97">              // n = -1 → 0xffff...ffff</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#8E8E97">// C-3. 곱셈 오버플로우</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">p = </span><span style="--0:#E2B24C">malloc</span><span style="--0:#E8E3D4">(count * </span><span style="--0:#E89A7A">size</span><span style="--0:#E8E3D4">);</span><span style="--0:#8E8E97">                      // 곱이 wrap → 작은 버퍼</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">for (i = </span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">; i &lt; count; i++) p[i] = ...;</span><span style="--0:#8E8E97">        // 원래 개수만큼 쓴다</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="// C-1. size_t 언더플로우if (len <= cap) memcpy(buf, src, cap - len);   // len > cap 이면 거대한 값// C-2. signed → unsigned 변환int n = get_int();if (n < MAX) memcpy(buf, src, n);              // n = -1 → 0xffff...ffff// C-3. 곱셈 오버플로우p = malloc(count * size);                      // 곱이 wrap → 작은 버퍼for (i = 0; i < count; i++) p[i] = ...;        // 원래 개수만큼 쓴다"><div></div></button></div></figure></div>
+<p>C-3이 특히 중요하다. <strong>할당 크기 계산식과 쓰기 루프 상한식이 다르면</strong> 언제든 어긋날 수 있다. (<code>calloc</code>은 이 곱셈을 검사한다.)</p>
+<h3 id="d-off-by-one">D. off-by-one</h3>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">for (i = </span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">; i &lt;= size; i++) buf[i] = ...;</span><span style="--0:#8E8E97">   // 1칸 초과</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">buf[</span><span style="--0:#E2B24C">strlen</span><span style="--0:#E8E3D4">(s)] = </span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">;</span><span style="--0:#8E8E97">                         // NUL 1바이트 초과</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="for (i = 0; i <= size; i++) buf[i] = ...;   // 1칸 초과buf[strlen(s)] = 0;                         // NUL 1바이트 초과"><div></div></button></div></figure></div>
+<p>고작 1바이트지만 힙에서는 치명적일 수 있다. 다음 청크 <code>size</code> 필드의 <strong>최하위 바이트</strong>를 건드리기 때문이다. <code>PREV_INUSE</code>를 0으로 만들면 allocator가 “앞 청크는 free”라고 믿고(poison null byte 계열), 크기를 키우면 다른 청크와 겹치는 overlapping chunk가 만들어진다.</p>
+<h3 id="탐색-체크리스트">탐색 체크리스트</h3>
+<ol>
+<li>입력 지점(<code>read</code>, <code>scanf</code>, <code>cin</code>, <code>recv</code>)을 전부 나열한다.</li>
+<li>그중 <strong>값이 아니라 크기·개수·인덱스를 받는 것</strong>에 밑줄을 친다. 거의 항상 여기가 출발점이다.</li>
+<li>그 숫자가 흘러가는 경로를 추적해 <strong>경계 검사 없는 복사/루프</strong>에 닿는지 본다.</li>
+<li>복사 함수의 <strong>인자 개수</strong>를 세어 출력 용량을 받는 인자가 있는지 확인한다.</li>
+<li>할당 크기 계산식과 쓰기 루프 상한식이 <strong>같은 식인지</strong> 비교한다.</li>
+</ol>
+<hr>
+<h2 id="6-넘치면-뭐가-덮이나">6. 넘치면 뭐가 덮이나</h2>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">← 쓰기 방향: 낮은 주소 → 높은 주소. 중간을 건너뛸 수 없다 →</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">[ 내 버퍼 ][ 청크 헤더 ][ 인접 객체 ][ 그 다음 청크 ]</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">  </span></span><span style="--0:#e8e3d4">합법 영역   ② 메타데이터   ①③ 데이터/포인터</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="← 쓰기 방향: 낮은 주소 → 높은 주소. 중간을 건너뛸 수 없다 →[ 내 버퍼 ][ 청크 헤더 ][ 인접 객체 ][ 그 다음 청크 ]  합법 영역   ② 메타데이터   ①③ 데이터/포인터"><div></div></button></div></figure></div>
+<h3 id="-인접-객체의-데이터-필드">① 인접 객체의 데이터 필드</h3>
+<p>RIP를 바로 먹지는 못하지만 <strong>다른 취약점을 만들어내는</strong> 가장 안정적인 수단이다. allocator를 건드리지 않으므로 터질 위험이 없다.</p>
+<ul>
+<li><strong>길이·크기 필드</strong>: 다른 객체의 <code>len</code>/<code>size</code>/<code>capacity</code>를 키워 <strong>더 긴 읽기·쓰기</strong>를 얻는다. 전형적인 권한 상승 사다리.</li>
+<li><strong>인덱스·카운터</strong>: 배열 접근 인덱스를 키워 OOB로 전환.</li>
+<li><strong>플래그·권한 비트</strong>: <code>is_admin</code>, 상태 머신 변수를 뒤집어 로직 우회.</li>
+<li><strong>데이터 포인터</strong>: 객체가 들고 있는 버퍼 포인터를 바꿔 <strong>임의 주소 읽기/쓰기(AAR/AAW)</strong> 로 승급. 여기까지 가면 사실상 끝이다.</li>
+</ul>
+<h3 id="-malloc-메타데이터">② malloc 메타데이터</h3>
+<p><code>size</code>, <code>prev_size</code>, free 청크의 <code>fd</code>/<code>bk</code>를 덮어 <strong>allocator 자체를 속인다.</strong> 강력하지만 glibc 버전마다 검사가 달라 까다롭고, 실패하면 abort로 죽는다.</p>
+<h3 id="-인접-객체의-코드-포인터">③ 인접 객체의 코드 포인터</h3>
+<p><strong>함수 포인터, C++ vtable 포인터, 콜백 구조체.</strong> 덮는 즉시 RIP가 내 것이 되는 가장 짧은 경로.</p>
+<blockquote>
+<p><strong>우선순위는 ③ → ① → ②.</strong> ②는 다른 길이 없을 때 꺼내는 카드다. 초보자가 가장 많이 하는 실수가, ③이 바로 옆에 있는데도 “힙 문제니까 tcache poisoning”부터 꺼내는 것이다.</p>
+</blockquote>
+<h3 id="길에-놓인-것을-복원해야-한다">길에 놓인 것을 복원해야 한다</h3>
+<p>타겟이 ①이나 ③이어도 거기까지 가는 길에는 <strong>반드시 ②(청크 헤더)가 끼어 있다.</strong> 선형 쓰기는 중간을 건너뛸 수 없으므로 헤더를 지나가며 뭉갠다.</p>
+<ul>
+<li>덮은 뒤 <strong>malloc/free가 한 번도 호출되지 않고</strong> 바로 타겟이 사용된다면 뭉개진 헤더는 문제를 일으키지 않는다.</li>
+<li>이후 malloc/free가 일어난다면 <strong>원래 헤더 값을 복원해서 써야</strong> 한다. 보통 <code>0x21</code>, <code>0x31</code> 같은 값이고, 디버거 덤프에서 원본을 읽어다 쓰는 것이 정석이다.</li>
+</ul>
+<hr>
+<h2 id="7-함수-포인터와-vtable">7. 함수 포인터와 vtable</h2>
+<p>“RIP를 가져온다”를 메모리 수준으로 번역하면 <strong>CPU가 점프 목적지를 메모리에서 읽어오는 순간을 노린다</strong>는 뜻이다. 그런 순간은 세 종류뿐이다.</p>
+<table>
+<thead>
+<tr>
+<th>후보</th>
+<th>어디 사는가</th>
+<th>발동</th>
+<th>힙 쓰기로 닿나</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>리턴 주소</td>
+<td>스택</td>
+<td><code>ret</code></td>
+<td>✗</td>
+</tr>
+<tr>
+<td>GOT 엔트리</td>
+<td>데이터 섹션 (<code>.got.plt</code>)</td>
+<td><code>jmp *GOT</code></td>
+<td>✗</td>
+</tr>
+<tr>
+<td><strong>함수 포인터 / vtable</strong></td>
+<td><strong>어디든. 힙 포함</strong></td>
+<td><code>call *reg</code></td>
+<td><strong>✓</strong></td>
+</tr>
+</tbody>
+</table>
+<p>여기서 중요한 추론이 나온다. <strong>능력이 “힙 쓰기”로 한정되면 앞의 두 후보는 자동 탈락한다.</strong> 기법이 어려워서 포기하는 게 아니라, <strong>능력이 물리적으로 닿지 않아서 애초에 후보가 아니다.</strong> 그래서 카나리와 RELRO를 아무리 들여다봐도 길이 안 보인다.</p>
+<h3 id="왜-함수-포인터가-최고의-타겟인가">왜 함수 포인터가 최고의 타겟인가</h3>
+<ul>
+<li><strong>간접 비용 0</strong>: leak 없이, ROP 체인 없이, 주소 하나만 쓰면 끝.</li>
+<li><strong>NX 무관</strong>: 코드를 주입하는 게 아니라 이미 존재하는 코드로 점프한다.</li>
+<li><strong>카나리 무관</strong>: 스택 프레임을 건드리지 않는다.</li>
+<li><strong>발동 시점이 명확</strong>: 다음 호출에서 즉시. 루프 안이면 바로 다음 턴.</li>
+</ul>
+<h3 id="c에서는-공짜로-생긴다">C++에서는 공짜로 생긴다</h3>
+<p>virtual 함수가 하나라도 있으면 컴파일러가 객체 맨 앞에 <code>vptr</code>을 자동으로 심는다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">객체 (obj ptr)</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">  </span></span><span style="--0:#e8e3d4">+0x00 │ vptr ──────→  vtable  ┌ +0x00 &amp;Foo::~Foo</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">  </span></span><span style="--0:#e8e3d4">+0x08 │ 멤버 1                 │ +0x08 &amp;Foo::method_a</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">  </span></span><span style="--0:#e8e3d4">+0x10 │ 멤버 2                 └ +0x10 &amp;Foo::method_b</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">obj-&gt;method_a();  →  mov rax,[obj]      ; vptr 로드   ← 여기를 덮으면</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#e8e3d4">                     </span></span><span style="--0:#e8e3d4">call [rax+0x08]    ; vtable에서 꺼내 호출</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="객체 (obj ptr)  +0x00 │ vptr ──────→  vtable  ┌ +0x00 &amp;Foo::~Foo  +0x08 │ 멤버 1                 │ +0x08 &amp;Foo::method_a  +0x10 │ 멤버 2                 └ +0x10 &amp;Foo::method_bobj->method_a();  →  mov rax,[obj]      ; vptr 로드   ← 여기를 덮으면                     call [rax+0x08]    ; vtable에서 꺼내 호출"><div></div></button></div></figure></div>
+<p>공격은 두 가지다. <strong>(A) vptr을 가짜 테이블로 돌린다</strong> — 쓰기 가능한 곳에 함수 주소 배열을 깔아두고 vptr을 거기로. <strong>(B) vtable 자체를 덮는다</strong> — 보통 <code>.rodata</code>라 읽기 전용이어서 대개 불가. 실전은 거의 항상 (A)다.</p>
+<p>virtual이 없는 클래스라면 <code>vptr</code>이 없지만, 멤버로 선언된 함수 포인터(<code>void (*fp)(void)</code>)가 정확히 같은 역할을 한다. 이쪽이 더 쉽다 — 가짜 테이블 없이 <strong>주소 하나만 쓰면 되기 때문</strong>이다.</p>
+<h3 id="어디로-점프할-것인가">어디로 점프할 것인가</h3>
+<table>
+<thead>
+<tr>
+<th>선택지</th>
+<th>조건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>원샷 가젯 (<code>getshell</code>, <code>win</code>)</td>
+<td>CTF에 심어져 있으면 그걸 쓴다. No PIE면 leak조차 불필요</td>
+</tr>
+<tr>
+<td><code>system("/bin/sh")</code></td>
+<td>인자(<code>rdi</code>)를 통제할 수 있어야 한다. 호출 직전 레지스터를 확인해야 쓸 수 있다</td>
+</tr>
+<tr>
+<td>one_gadget</td>
+<td>레지스터 전제조건(constraints)이 있다. libc leak 필요</td>
+</tr>
+<tr>
+<td>스택 피보팅</td>
+<td>인자 통제가 안 되면 <code>leave; ret</code> 류로 스택을 옮겨 ROP로 전환</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="8-메타데이터-손상-계열">8. 메타데이터 손상 계열</h2>
+<p>인접 객체에 쓸모 있는 게 없을 때 꺼내는 카드. <strong>allocator를 속여 “malloc이 내가 원하는 주소를 반환하게” 만드는</strong> 기법군이다. 지도만 그려둔다.</p>
+<table>
+<thead>
+<tr>
+<th>기법</th>
+<th>요지</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tcache poisoning</td>
+<td>free 청크의 <code>fd</code>를 임의 주소로 덮어 다음 <code>malloc</code>이 그 주소를 반환하게. 전제: <strong>free된 청크에 쓸 수 있어야</strong> 한다(UAF, double free)</td>
+</tr>
+<tr>
+<td>safe-linking</td>
+<td>glibc 2.32+는 <code>fd</code>를 <code>(주소 &gt;&gt; 12) XOR 실제값</code>으로 난독화. poisoning 전에 <strong>힙 주소 leak</strong>이 필요해졌다</td>
+</tr>
+<tr>
+<td>fastbin dup</td>
+<td>같은 청크를 fastbin에 두 번 넣어 두 포인터가 같은 메모리를 가리키게 (= 인공 UAF)</td>
+</tr>
+<tr>
+<td>unsafe unlink</td>
+<td><code>fd</code>/<code>bk</code>를 조작해 병합 시 <code>unlink</code>가 임의 쓰기를 하게. 현대 glibc는 <code>fd-&gt;bk == P</code> 검사로 차단</td>
+</tr>
+<tr>
+<td>house of force</td>
+<td>top chunk <code>size</code>를 <code>-1</code>로 덮어 임의 크기 요청으로 top을 원하는 곳까지 밀어낸다. 2.29+에서 차단</td>
+</tr>
+<tr>
+<td>overlapping chunks</td>
+<td>청크 <code>size</code>를 키워 두 할당이 같은 메모리를 공유하게. off-by-one과 궁합이 좋고 검사를 덜 건드려 안정적</td>
+</tr>
+<tr>
+<td>poison null byte</td>
+<td>1바이트 NUL 오버플로우로 <code>PREV_INUSE</code>를 지워 잘못된 병합을 유도</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>이 기법들은 모두 <strong>“쓰기 권한이 없어서 미래의 malloc을 속여 권한을 얻는”</strong> 우회로다. 이미 직접 쓰기 능력이 있다면 쓸 이유가 없고, 전제조건(UAF 등)도 대개 성립하지 않는다. 순서는 항상 <strong>가진 primitive → 타겟 → 닿는가</strong>이고, 닿지 않을 때 비로소 이 장을 펼친다.</p>
+</blockquote>
+<hr>
+<h2 id="9-왜-힙은-조용한가">9. 왜 힙은 조용한가</h2>
+<p>같은 “버퍼를 넘쳤다”인데 스택은 <code>*** stack smashing detected ***</code>로 즉시 죽고, 힙은 아무 말 없이 지나가는 경우가 많다.</p>
+<h3 id="카나리는-힙에-없다">카나리는 힙에 없다</h3>
+<p>스택 카나리는 컴파일러가 <strong>함수 프롤로그/에필로그에 삽입</strong>하는 코드다. 지역 버퍼와 리턴 주소 사이에 난수를 깔고, 리턴 직전에 값이 그대로인지 비교한다. 이게 가능한 건 <strong>스택 프레임 구조가 컴파일 타임에 고정</strong>이고 <strong>검사 지점(리턴)이 명확</strong>하기 때문이다.</p>
+<p>힙은 둘 다 성립하지 않는다. 어떤 객체가 어떤 객체 옆에 올지는 런타임에 결정되고, “언제 검사해야 하는가”라는 자연스러운 시점도 없다. 그래서 <strong>힙 객체 사이에는 카나리가 깔리지 않는다.</strong></p>
+<h3 id="탐지가-지연된다">탐지가 지연된다</h3>
+<p>힙 오버플로우의 탐지는 allocator가 <strong>그 메타데이터를 다시 읽는 순간</strong>에나 일어난다. 즉 다음 <code>malloc</code>/<code>free</code>까지 미뤄진다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">malloc(): invalid size (unsorted)         size 필드가 깨졌다</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">malloc(): memory corruption               bin 링크 불일치</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">free(): invalid next size (fast)          다음 청크 size가 비정상</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">free(): double free detected in tcache 2  tcache key 중복</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">corrupted size vs. prev_size              양방향 크기 불일치</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">munmap_chunk(): invalid pointer           정렬/플래그 이상</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="malloc(): invalid size (unsorted)         size 필드가 깨졌다malloc(): memory corruption               bin 링크 불일치free(): invalid next size (fast)          다음 청크 size가 비정상free(): double free detected in tcache 2  tcache key 중복corrupted size vs. prev_size              양방향 크기 불일치munmap_chunk(): invalid pointer           정렬/플래그 이상"><div></div></button></div></figure></div>
+<p>실전에서 이 메시지들은 <strong>디버깅 단서</strong>로 읽어야 한다. “어떤 검사를 통과하지 못했는가”가 곧 “무엇을 더 그럴듯하게 위조해야 하는가”다. 그리고 <strong>덮은 뒤 malloc/free 전에 타겟이 사용되면 이 검사들은 전혀 작동하지 않는다.</strong> 그래서 “헤더를 뭉갰는데도 익스가 되는” 상황이 생긴다.</p>
+<hr>
+<h2 id="10-접근-순서">10. 접근 순서</h2>
+<p>기법 이름에서 시작하지 않는 것이 핵심이다. 기법은 결론이고, 결론부터 고르면 거의 항상 틀린 길로 간다.</p>
+<p><strong>1. 이기는 순간을 정의한다 (끝에서 거꾸로)</strong>
+“이 프로그램이 셸을 띄우는 순간은 정확히 어떤 상태인가?” 목표를 메모리 상태로 번역해둔다.</p>
+<p><strong>2. 입력 지점과 “크기를 받는 곳”을 찾는다</strong>
+값은 내용물이지만 <strong>크기는 쓰기 범위의 주인</strong>이다.</p>
+<p><strong>3. 버그를 찾고 능력으로 번역한다</strong>
+기법 이름이 아니라 능력을 한 문장으로. 예: <em>“dest 버퍼 시작점부터 내가 정한 개수만큼 임의의 4바이트 값을 연속해서 쓸 수 있다.”</em> 이 문장이 이후 모든 판단의 기준이 된다.</p>
+<p><strong>4. 타겟을 찾는다</strong>
+능력이 닿는 범위 안에서 ③→①→② 순으로. <strong>“내 능력이 물리적으로 닿는가”</strong> 로 후보를 먼저 걸러낸다.</p>
+<p><strong>5. 보호 기법을 점검한다 (여기서 처음 checksec)</strong>
+정해진 경로에 대해서만. 대부분의 항목은 경로에 따라 무관해진다.</p>
+<p><strong>6. 남은 미지수를 적고 그것만 측정한다</strong>
+보통 한두 개로 좁혀진다 — 대개 오프셋. 소스로는 안 나오니 <strong>그래서</strong> 디버거를 켠다. “일단 둘러보자”가 아니라 질문을 들고 가는 것이다.</p>
+<p><strong>7. 제약을 나열하고 페이로드를 조립한다</strong>
+쓰기 단위가 타겟보다 작은가 / 엔디안 / 값 제약(필터, signed 범위) / 길에 놓인 메타데이터 복원 / 발동 시점.</p>
+<p><strong>8. 로컬 성공 후 원격으로</strong>
+libc 버전이 다르면 오프셋과 allocator 동작이 달라진다.</p>
+<blockquote>
+<p><strong>가장 흔한 실패</strong>: 코드 포인터를 덮으면 그 함수가 더 이상 원래 일을 하지 않는다. 메뉴 출력 함수 포인터를 덮었다면 <strong>메뉴 프롬프트가 더는 나오지 않는다.</strong> 그런데 하네스는 여전히 프롬프트를 기다리고 있어서 영원히 블록된다. <strong>익스는 성공했는데 실패처럼 보인다.</strong></p>
+</blockquote>
+<hr>
+<h2 id="11-측정-pwndbg">11. 측정 (pwndbg)</h2>
+<div class="expressive-code"><figure class="frame is-terminal"><figcaption class="header"><span class="title"></span><span class="sr-only">Terminal window</span></figcaption><pre data-language="bash"><code><div class="ec-line"><div class="code"><span style="--0:#E2B24C">heap</span><span style="--0:#E8E3D4">                 </span><span style="--0:#8E8E97"># 모든 청크를 순서대로 — 주소, size, 상태</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">vis_heap_chunks</span><span style="--0:#E8E3D4">      </span><span style="--0:#8E8E97"># 청크 경계 시각화 — 가장 직관적</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">bins</span><span style="--0:#E8E3D4">                 </span><span style="--0:#8E8E97"># tcache, fastbin, unsorted, small, large</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">x/20gx</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">0x617040</span><span style="--0:#E8E3D4">      </span><span style="--0:#8E8E97"># 8바이트 단위 20개</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">x/40wx</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">0x617040</span><span style="--0:#E8E3D4">      </span><span style="--0:#8E8E97"># 4바이트 단위 40개 (int 배열 볼 때)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">x/20gx</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">0x617040-0x10</span><span style="--0:#E8E3D4"> </span><span style="--0:#8E8E97"># 청크 헤더부터 보려면 16바이트 앞에서</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">telescope</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">0x617040</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">20</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">search</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">-p</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">0x400f83</span><span style="--0:#E8E3D4">   </span><span style="--0:#8E8E97"># 이 값이 저장된 곳을 전부 찾는다 (함수 포인터 역추적)</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">p/d</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">0x617060</span><span style="--0:#E8E3D4"> </span><span style="--0:#8FCFA6">-</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">0x617040</span><span style="--0:#E8E3D4">        </span><span style="--0:#8E8E97"># 거리 (바이트)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">p/d</span><span style="--0:#E8E3D4"> (0x617060 </span><span style="--0:#8FCFA6">-</span><span style="--0:#E8E3D4"> </span><span style="--0:#F0C674">0x617040</span><span style="--0:#E8E3D4">)/4    </span><span style="--0:#8E8E97"># int 인덱스</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="heap                 # 모든 청크를 순서대로 — 주소, size, 상태vis_heap_chunks      # 청크 경계 시각화 — 가장 직관적bins                 # tcache, fastbin, unsorted, small, largex/20gx 0x617040      # 8바이트 단위 20개x/40wx 0x617040      # 4바이트 단위 40개 (int 배열 볼 때)x/20gx 0x617040-0x10 # 청크 헤더부터 보려면 16바이트 앞에서telescope 0x617040 20search -p 0x400f83   # 이 값이 저장된 곳을 전부 찾는다 (함수 포인터 역추적)p/d 0x617060 - 0x617040        # 거리 (바이트)p/d (0x617060 - 0x617040)/4    # int 인덱스"><div></div></button></div></figure></div>
+<h3 id="워크플로">워크플로</h3>
+<ol>
+<li><strong>계산 먼저</strong> — allocator 규칙으로 간격을 예측한다. 작은 객체끼리면 보통 <code>0x20</code>.</li>
+<li><strong>버퍼 주소 확보</strong> — 취약 지점에 브레이크를 걸고 내 버퍼 시작 주소를 읽는다.</li>
+<li><strong>타겟 주소 확보</strong> — 주변을 덤프해 <strong>알고 있는 값</strong>(원래 함수 주소, 매직 넘버)을 찾는다. <code>search</code>도 좋다.</li>
+<li><strong>차이를 쓰기 단위로 나눈다</strong> — <code>int</code> 쓰기면 ÷4.</li>
+<li><strong>길의 원본 값을 기록</strong> — 지나갈 청크 헤더 값을 적어둔다.</li>
+<li><strong>검증</strong> — 패딩만 채워 덮은 뒤 다시 덤프해 경계가 맞았는지 확인한다.</li>
+</ol>
+<blockquote>
+<p>오프셋을 찾을 때는 <code>0x11111111</code>, <code>0x22222222</code> 같은 <strong>식별 가능한 패턴</strong>이나 <code>cyclic()</code>을 쓴다. 덤프에서 어느 값이 어디 떨어졌는지 역으로 읽으면 계산 없이 오프셋이 나온다. 0으로 채우면 아무것도 안 보인다.</p>
+</blockquote>
+<hr>
+<h2 id="key-takeaways">Key Takeaways</h2>
+<ul>
+<li>경계는 메모리에 없다. <strong>코드가 들고 있는 숫자 안에만</strong> 있다.</li>
+<li>오버플로우 = <code>쓰는 개수 &gt; 버퍼 용량</code>. 단일 객체 안에서는 어긋나지 않는다. <strong>개수와 버퍼가 다른 출처에서 올 때</strong>를 의심한다.</li>
+<li>스택 BOF와 메커니즘은 같고 <strong>이웃이 다르다.</strong> 힙에서는 이웃을 할당 순서가 결정한다.</li>
+<li><code>malloc</code>이 주는 포인터는 <strong>청크 시작이 아니라 16바이트 뒤</strong>다. x86-64 최소 청크는 <code>0x20</code>이고 작은 객체는 흔히 <strong>0x20 간격</strong>으로 깔린다.</li>
+<li>사용자 데이터와 allocator 메타데이터는 <strong>같은 메모리를 공유한다.</strong></li>
+<li>절대 주소는 랜덤일 수 있어도 <strong>상대 거리는 결정론적</strong>이다. 익스에 필요한 건 대개 거리다.</li>
+<li>RIP 후보는 셋 — 리턴 주소, GOT, 함수 포인터/vtable. <strong>힙 쓰기로는 세 번째만 닿는다.</strong> 능력이 후보를 걸러낸다.</li>
+<li><strong>힙에는 카나리가 없다.</strong> <code>Canary found</code>는 힙 경로에 무의미하다. 탐지는 다음 malloc/free까지 지연된다.</li>
+<li>기법에서 시작하지 않는다. <strong>가진 primitive → 타겟 → 닿는가 → 안 닿을 때만 간접 기법.</strong></li>
+<li><code>checksec</code>은 경로를 정한 <strong>뒤에</strong> 읽는다.</li>
+<li>오프셋은 계산하고 <strong>반드시 실측한다.</strong> 디버거는 미지수 하나를 재려고 켠다.</li>
+<li>코드 포인터를 덮으면 <strong>원래 기능이 사라진다.</strong> 익스 성공이 실패처럼 보이는 가장 흔한 함정이다.</li>
+</ul>
+<hr>
+<p>원문: <a href="https://github.com/danielcho02/pwnable_lab/blob/HEAD/pwnable/linux_advanced/heap_overflow/README.md">pwnable_lab/pwnable/linux_advanced/heap_overflow/README.md</a></p>
+</div></article></main></div></body></html>

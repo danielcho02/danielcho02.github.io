@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e0e10"><link rel="icon" type="image/png" href="/favicon.png"><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css"></noscript><meta name="description" content="금고 관리망 PCAP의 MQTT 이벤트로 분실 신고된 하드웨어 지갑이 빠진 시각을 구한다."><link rel="alternate" type="application/rss+xml" title="kirin" href="/rss.xml"><link rel="sitemap" href="/sitemap.xml"><title>Empty Slot | kirin</title><style>.ls[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);margin:0;padding:0;list-style:none}li[data-astro-cid-i36apd2x]{gap:var(--space-4);padding:var(--space-1) var(--space-3);border-left:2px solid #0000;grid-template-columns:10ch 10ch 9ch minmax(0,1fr) auto;align-items:baseline;display:grid}.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{grid-template-columns:10ch 10ch minmax(0,1fr) auto}li[data-astro-cid-i36apd2x]:hover,li[data-astro-cid-i36apd2x]:focus-within{background:var(--panel);border-left-color:var(--gold)}.perm[data-astro-cid-i36apd2x],time[data-astro-cid-i36apd2x]{color:var(--muted)}.locked[data-astro-cid-i36apd2x] .perm[data-astro-cid-i36apd2x]{color:var(--vermilion)}.kind[data-astro-cid-i36apd2x]{color:var(--celadon)}a[data-astro-cid-i36apd2x]{font-family:var(--font-sans);font-size:var(--text-base);color:var(--ink);text-decoration:none}a[data-astro-cid-i36apd2x]:hover{color:var(--gold);text-decoration:underline}.lock[data-astro-cid-i36apd2x]{margin-left:var(--space-2);font-size:var(--text-xs);color:var(--vermilion)}.tags[data-astro-cid-i36apd2x]{color:var(--muted);text-align:right}.empty[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted)}@media (width<=48rem){li[data-astro-cid-i36apd2x],.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{gap:0 var(--space-3);grid-template-columns:auto auto 1fr}.perm[data-astro-cid-i36apd2x]{display:none}a[data-astro-cid-i36apd2x]{grid-column:1/-1}.tags[data-astro-cid-i36apd2x]{text-align:left;grid-column:1/-1}}
+</style><link rel="stylesheet" href="/_astro/_..CotCdawi.css"><style>.site-header[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-6);padding:var(--space-4) 0;margin-bottom:var(--space-8);border-bottom:1px solid var(--line);grid-template-columns:auto minmax(0,1fr) auto;display:grid}.brand[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-3);color:var(--ink);font-family:var(--font-mono);font-weight:600;text-decoration:none;display:flex}.path[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted);white-space:nowrap;text-overflow:ellipsis;margin:0;overflow:hidden}.who[data-astro-cid-nen7h5rs]{color:var(--gold)}.where[data-astro-cid-nen7h5rs]{color:var(--celadon)}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-4);font-size:var(--text-sm);flex-wrap:wrap;margin:0;padding:0;list-style:none;display:flex}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--muted);text-decoration:none}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover,nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs][aria-current=page]{color:var(--ink);text-decoration:underline}@media (width<=48rem){.site-header[data-astro-cid-nen7h5rs]{grid-template-columns:auto 1fr}@media (width<=40rem){.site-header[data-astro-cid-nen7h5rs]{gap:var(--space-3);grid-template-columns:1fr}nav[data-astro-cid-nen7h5rs]{justify-self:start}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-3)}}.path[data-astro-cid-nen7h5rs]{display:none}nav[data-astro-cid-nen7h5rs]{justify-self:end}}:root{color-scheme:dark;--bg:#0e0e10;--panel:#17171a;--line:#2b2b30;--ink:#e8e3d4;--muted:#a0a0a8;--gold:#e2b24c;--celadon:#6fb08c;--vermilion:#e2705a;--cloud:#f4efe2;--font-mono:"IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, monospace;--font-sans:"IBM Plex Sans KR", system-ui, sans-serif;--text-xs:.8rem;--text-sm:.875rem;--text-base:1.0625rem;--text-lg:1.33rem;--text-xl:1.66rem;--text-2xl:2.3rem;--measure:68ch;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--radius:6px;--duration:.14s}*,:before,:after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{background:var(--bg);color:var(--ink);font:400 var(--text-base) / 1.7 var(--font-sans);word-break:keep-all;overflow-wrap:break-word;margin:0}a{color:var(--gold);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{text-decoration-thickness:2px}:focus-visible{outline:2px solid var(--gold);outline-offset:2px}::selection{background:var(--gold);color:var(--bg)}h1,h2,h3{margin:0;font-weight:600;line-height:1.3}code,kbd,samp,pre{font-family:var(--font-mono);font-size:.92em}:not(pre)>code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:.05em .3em}.sr-only{clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}.sr-only:focus{top:var(--space-2);left:var(--space-2);clip-path:none;width:auto;height:auto;padding:var(--space-2) var(--space-3);background:var(--panel);z-index:10;position:fixed}.page{max-width:76rem;padding:0 var(--space-4) var(--space-16);margin:0 auto}.prompt{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--ink);font-weight:400}.prompt .who{color:var(--gold)}.prompt .where{color:var(--celadon)}.prompt .sigil{color:var(--muted);margin-right:.6ch}@media (prefers-reduced-motion:reduce){*,:before,:after{transition:none!important;animation:none!important}}
+</style></head><body><a class="sr-only" href="#main">본문으로 건너뛰기</a><div class="page"><header class="site-header" data-astro-cid-nen7h5rs><a class="brand" href="/" aria-label="kirin 홈" data-astro-cid-nen7h5rs><img src="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp" srcset="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp 1x, /_astro/kirin-avatar.C3aIZXQV_Ztxad8.webp 2x" alt data-astro-cid-nen7h5rs="true" loading="lazy" decoding="async" width="40" height="40"><span data-astro-cid-nen7h5rs>kirin</span></a><p class="path" aria-hidden="true" data-astro-cid-nen7h5rs><span class="who" data-astro-cid-nen7h5rs>kirin@pwnlab</span>:<span class="where" data-astro-cid-nen7h5rs>~/writeups/forensics/whs4-empty-slot</span>$</p><nav aria-label="주요 메뉴" data-astro-cid-nen7h5rs><ul data-astro-cid-nen7h5rs><li data-astro-cid-nen7h5rs><a href="/writeups/" aria-current="page" data-astro-cid-nen7h5rs>Writeups</a></li><li data-astro-cid-nen7h5rs><a href="/cve/" data-astro-cid-nen7h5rs>CVE</a></li><li data-astro-cid-nen7h5rs><a href="/notes/" data-astro-cid-nen7h5rs>Notes</a></li><li data-astro-cid-nen7h5rs><a href="/projects/" data-astro-cid-nen7h5rs>Projects</a></li><li data-astro-cid-nen7h5rs><a href="/search/" data-astro-cid-nen7h5rs>Search</a></li><li data-astro-cid-nen7h5rs><a href="/about/" data-astro-cid-nen7h5rs>About</a></li></ul></nav></header><main id="main"><article class="post" data-pagefind-body data-astro-cid-g5songws><header data-astro-cid-g5songws><div data-pagefind-ignore data-astro-cid-g5songws><p class="prompt"><span class="who">kirin@pwnlab</span>:<span class="where">~/writeups</span><span class="sigil">$</span>cat whs4-empty-slot.md</p></div><h1 data-astro-cid-g5songws>Empty Slot</h1><p class="kind" data-pagefind-ignore data-astro-cid-g5songws><a href="/writeups/" data-pagefind-filter="kind" data-astro-cid-g5songws>Writeups</a></p><dl class="meta" data-pagefind-ignore data-astro-cid-g5songws><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>date</dt><dd data-astro-cid-g5songws>2026-11-05</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>event</dt><dd data-astro-cid-g5songws>WHS 4th CTF</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>tags</dt><dd data-astro-cid-g5songws>pcap, mqtt, timeline</dd></div></dl></header><aside class="toc" data-pagefind-ignore data-astro-cid-g5songws><nav class="toc" aria-labelledby="toc-title" data-toc data-astro-cid-7k3pnqyz><details data-toc-details data-astro-cid-7k3pnqyz><summary data-astro-cid-7k3pnqyz><p class="prompt" id="toc-title"><span class="who">kirin@pwnlab</span>:<span class="where">~/writeups</span><span class="sigil">$</span>grep -n &#39;^#&#39; whs4-empty-slot.md<span class="sr-only" data-astro-cid-7k3pnqyz>목차</span></p><span class="count" data-astro-cid-7k3pnqyz>(13)</span></summary><ol data-astro-cid-7k3pnqyz><li class="d2" data-astro-cid-7k3pnqyz><a href="#획득한-flag" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 15</span><span class="t" data-astro-cid-7k3pnqyz>획득한 Flag</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#풀이-방법" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 23</span><span class="t" data-astro-cid-7k3pnqyz>풀이 방법</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#0-전수-대입이-안-되는-이유" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 27</span><span class="t" data-astro-cid-7k3pnqyz>0. 전수 대입이 안 되는 이유</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#1-신고자와-슬롯-확인" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 31</span><span class="t" data-astro-cid-7k3pnqyz>1. 신고자와 슬롯 확인</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#2-mqtt에서-이벤트-꺼내기" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 40</span><span class="t" data-astro-cid-7k3pnqyz>2. MQTT에서 이벤트 꺼내기</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#3-업타임을-벽시계로-환산" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 50</span><span class="t" data-astro-cid-7k3pnqyz>3. 업타임을 벽시계로 환산</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#헷갈리기-쉬운-부분" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 77</span><span class="t" data-astro-cid-7k3pnqyz>헷갈리기 쉬운 부분</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#획득한-단서" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 83</span><span class="t" data-astro-cid-7k3pnqyz>획득한 단서</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#지갑은-두-개가-사라졌다" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 85</span><span class="t" data-astro-cid-7k3pnqyz>지갑은 두 개가 사라졌다</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#통신-장애와-배지" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 94</span><span class="t" data-astro-cid-7k3pnqyz>통신 장애와 배지</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#망-구성" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>101</span><span class="t" data-astro-cid-7k3pnqyz>망 구성</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#다른-문제와의-연결" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>112</span><span class="t" data-astro-cid-7k3pnqyz>다른 문제와의 연결</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#타임라인-kst" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>118</span><span class="t" data-astro-cid-7k3pnqyz>타임라인 (KST)</span></a></li></ol></details></nav><script>
+  // is:inline keeps this in the page, so on protected posts it is encrypted with it
+  // instead of becoming a separate unencrypted /_astro/*.js file.
+  // Runs after parsing: the headings come after this script and the page height must be final.
+  // (Protected posts are written in by staticrypt after load, so also handle an already-parsed document.)
+  const init = () => {
+    const nav = document.querySelector('[data-toc]');
+    if (!nav) return;
+    // The desktop column is always open; on mobile the list starts collapsed.
+    const details = nav.querySelector('[data-toc-details]');
+    const desktop = matchMedia('(min-width: 64rem)');
+    const sync = () => (details.open = desktop.matches);
+    desktop.addEventListener('change', sync);
+    sync();
+
+    // Mark the last heading that has scrolled past the top of the viewport.
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+    const TOP = 120;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      let active = 0;
+      targets.forEach((el, i) => {
+        if (el && el.getBoundingClientRect().top <= TOP) active = i;
+      });
+      // Short last sections never reach the top; at the bottom of the page the last one is the one being read.
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = targets.length - 1;
+      links.forEach((a, i) => (i === active ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  };
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', init);
+  else init();
+</script></aside><div class="body" data-astro-cid-g5songws><blockquote>
+<p>WHS 4th CTF · Phase 2 · 200점</p>
+</blockquote>
+<h2 id="획득한-flag">획득한 Flag</h2>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.t2nri.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">WHS4{C_w4ll37_v4n15h3d_46de2400}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="WHS4{C_w4ll37_v4n15h3d_46de2400}"><div></div></button></div></figure></div>
+<p>정답 입력값: <code>23:47</code> (KST)</p>
+<h2 id="풀이-방법">풀이 방법</h2>
+<p>사내 스마트 금고(VAULT-01) 관리망을 미러링한 PCAP이 주어진다. 분실 신고된 하드웨어 지갑이 금고에서 빠진 시각(KST, <code>HH:MM</code>)을 <code>unlock.py</code>에 넣으면 플래그가 나온다.</p>
+<h3 id="0-전수-대입이-안-되는-이유">0. 전수 대입이 안 되는 이유</h3>
+<p><code>flag.lock</code>은 scrypt(n=2^20, r=8)를 30번 연달아 돌린다. 한 후보에 1 GiB 메모리와 약 58초가 든다. 후보는 24×60 = 1,440개라 전부 넣으면 약 23시간이다. 정확한 시각을 먼저 구해야 한다. 검증은 HMAC이라 맞으면 복호화되고 틀리면 실패한다.</p>
+<h3 id="1-신고자와-슬롯-확인">1. 신고자와 슬롯 확인</h3>
+<p>HTTP 요청 대부분은 메뉴·공지·캘린더 같은 일상 트래픽이다. 의미 있는 건 두 건이다.</p>
+<ul>
+<li>11-04 09:12:44, <code>POST security.corp.local/api/incidents</code>: 신고자 <code>C</code>, 종류 <code>lost_device</code>. 본문은 “사고 소식을 듣고 금고를 확인했는데 하드웨어 지갑이 사라졌습니다! 11월 2일 퇴근할 때까지는 분명히 있었습니다.”</li>
+<li>11-04 09:05:10, <code>GET vault-mgmt.corp.local/api/vault01/slots</code>: slot 1 = D, slot 2 = C, slot 3 = A, slot 4 = B</li>
+</ul>
+<p>슬롯 번호와 소유자 알파벳이 일부러 어긋나 있다. C의 지갑은 slot 2다.</p>
+<h3 id="2-mqtt에서-이벤트-꺼내기">2. MQTT에서 이벤트 꺼내기</h3>
+<p>1883/tcp MQTT PUBLISH가 691건 있다. 슬롯마다 600초 간격으로 상태를 보고하고(<code>vault01/slot/N/state</code>), 이벤트는 <code>vault01/event</code>로 따로 나간다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">{</span><span style="--0:#7FC8D6">"dev"</span><span style="--0:#E8E3D4">: </span><span style="--0:#8FCFA6">"VAULT-01"</span><span style="--0:#E8E3D4">, </span><span style="--0:#7FC8D6">"slot"</span><span style="--0:#E8E3D4">: </span><span style="--0:#F0C674">1</span><span style="--0:#E8E3D4">, </span><span style="--0:#7FC8D6">"state"</span><span style="--0:#E8E3D4">: </span><span style="--0:#8FCFA6">"present"</span><span style="--0:#E8E3D4">, </span><span style="--0:#7FC8D6">"weight_g"</span><span style="--0:#E8E3D4">: </span><span style="--0:#F0C674">41.9</span><span style="--0:#E8E3D4">, </span><span style="--0:#7FC8D6">"up"</span><span style="--0:#E8E3D4">: </span><span style="--0:#F0C674">143739487</span><span style="--0:#E8E3D4">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{&quot;dev&quot;: &quot;VAULT-01&quot;, &quot;slot&quot;: 1, &quot;state&quot;: &quot;present&quot;, &quot;weight_g&quot;: 41.9, &quot;up&quot;: 143739487}"><div></div></button></div></figure></div>
+<p><code>up</code>은 부팅 뒤 경과한 밀리초다. 주기 보고는 23:20:00 다음에 06:20:00이 와서 정확히 7시간이 비어 있다. 06:12:31에 <code>{"msg": "link restored", "queued": 4}</code>가 오고 이벤트 4건이 0.05초 안에 한꺼번에 들어온다. 이 네 건의 패킷 시각은 전송 시각일 뿐이고 실제 발생 시각은 <code>up</code>으로 구해야 한다.</p>
+<h3 id="3-업타임을-벽시계로-환산">3. 업타임을 벽시계로 환산</h3>
+<p>주기 보고는 큐를 거치지 않고 바로 전송되므로 <code>패킷 epoch − up/1000</code>이 부팅 시각이다. 주기 보고 684건으로 계산하면 35시간 동안 값의 차이가 1 ms 안에 들어온다. 부팅 시각은 epoch <code>1793486592.512</code>, 2026-11-01 07:43:12 KST다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="python"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">offs = [t - j[</span><span style="--0:#8FCFA6">"up"</span><span style="--0:#E8E3D4">] / </span><span style="--0:#F0C674">1000</span><span style="--0:#E8E3D4"> for t, topic, j in pubs if topic.endswith(</span><span style="--0:#8FCFA6">"/state"</span><span style="--0:#E8E3D4">)]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#F0C674">OFF</span><span style="--0:#E8E3D4"> = statistics.median(offs)                       </span><span style="--0:#8E8E97"># 1793486592.512, spread 0.001 s</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">for t, topic, j in pubs:</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#E8E3D4">    </span></span><span style="--0:#E8E3D4">if topic == </span><span style="--0:#8FCFA6">"vault01/event"</span><span style="--0:#E8E3D4">:</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#E2B24C">print</span><span style="--0:#E8E3D4">(datetime.fromtimestamp(</span><span style="--0:#F0C674">OFF</span><span style="--0:#E8E3D4"> + j[</span><span style="--0:#8FCFA6">"up"</span><span style="--0:#E8E3D4">] / </span><span style="--0:#F0C674">1000</span><span style="--0:#E8E3D4">, </span><span style="--0:#F0C674">KST</span><span style="--0:#E8E3D4">), j)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="offs = [t - j[&quot;up&quot;] / 1000 for t, topic, j in pubs if topic.endswith(&quot;/state&quot;)]OFF = statistics.median(offs)                       # 1793486592.512, spread 0.001 sfor t, topic, j in pubs:    if topic == &quot;vault01/event&quot;:        print(datetime.fromtimestamp(OFF + j[&quot;up&quot;] / 1000, KST), j)"><div></div></button></div></figure></div>
+<table>
+<thead>
+<tr>
+<th><code>up</code> (ms)</th>
+<th>실제 시각 (KST)</th>
+<th>이벤트</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>143739487</td>
+<td>11-02 23:38:51</td>
+<td><code>door_open</code>, badge <code>0x3F2A91</code></td>
+</tr>
+<tr>
+<td>143874487</td>
+<td>11-02 23:41:06</td>
+<td>slot 3 absent (A의 지갑)</td>
+</tr>
+<tr>
+<td>144246487</td>
+<td>11-02 23:47:18</td>
+<td>slot 2 absent (C의 지갑)</td>
+</tr>
+<tr>
+<td>144377487</td>
+<td>11-02 23:49:29</td>
+<td><code>door_close</code></td>
+</tr>
+</tbody>
+</table>
+<p>C의 지갑은 23:47에 빠졌다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">$ python3 unlock.py 23:47</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">키 유도 중... (1분 안팎, 메모리 1GB 사용)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">WHS4{C_w4ll37_v4n15h3d_46de2400}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="$ python3 unlock.py 23:47키 유도 중... (1분 안팎, 메모리 1GB 사용)WHS4{C_w4ll37_v4n15h3d_46de2400}"><div></div></button></div></figure></div>
+<h3 id="헷갈리기-쉬운-부분">헷갈리기 쉬운 부분</h3>
+<ul>
+<li>패킷 시각 06:12:31을 그대로 쓰면 틀린다. <code>queued: 4</code>가 큐에 쌓였던 이벤트임을 알려 준다.</li>
+<li>주기 보고에서 slot 2가 absent로 바뀌는 건 06:20:00이다. 링크 복구 뒤 첫 보고일 뿐이다.</li>
+<li><code>weight_g</code>는 41.6~42.4 사이에서 흔들리는 센서 지터다. 빠진 슬롯은 0.0으로 떨어져 구분이 분명하다.</li>
+</ul>
+<h2 id="획득한-단서">획득한 단서</h2>
+<h3 id="지갑은-두-개가-사라졌다">지갑은 두 개가 사라졌다</h3>
+<table>
+<thead>
+<tr>
+<th>슬롯</th>
+<th>소유자</th>
+<th>빠진 시각 (KST)</th>
+<th>캡처 종료(11-04 09:20) 상태</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>slot 3</td>
+<td>A</td>
+<td>11-02 23:41:06</td>
+<td>absent, 0.0 g</td>
+</tr>
+<tr>
+<td>slot 2</td>
+<td>C</td>
+<td>11-02 23:47:18</td>
+<td>absent, 0.0 g</td>
+</tr>
+</tbody>
+</table>
+<p>한 번 열린 문(23:38:51~23:49:29, 638초) 안에서 A와 C의 지갑이 6분 12초 간격으로 나갔다. 둘 다 끝까지 돌아오지 않았는데 신고한 사람은 C뿐이다. A는 신고하지 않았다.</p>
+<h3 id="통신-장애와-배지">통신 장애와 배지</h3>
+<ul>
+<li>주기 보고가 23:20~06:20 정확히 7시간 끊겼고, 문이 열렸다 닫힌 10분 38초가 통째로 이 구간 안에 있다. 의도적 차단일 수 있지만 끊긴 구간의 트래픽이 캡처에 없어 PCAP만으로는 단정하지 못한다.</li>
+<li>지갑이 나간 세션은 배지 <code>0x3F2A91</code>로 열렸다. 배지와 사람의 매핑은 이 PCAP에 없다.</li>
+<li>11-03 14:10:21에 다른 배지 <code>0x51C0D7</code>로 문이 1분 43초 열렸지만 슬롯 변화는 없다.</li>
+<li>slot absent 상태가 33시간 넘게 이어졌는데도 아무도 반응하지 않았고, C는 “사고 소식을 듣고” 나서야 금고를 확인했다.</li>
+</ul>
+<h3 id="망-구성">망 구성</h3>
+<table>
+<thead>
+<tr>
+<th>이름</th>
+<th>주소</th>
+<th>역할</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>intranet.corp.local</td>
+<td>10.20.0.30</td>
+<td>사내 포털</td>
+</tr>
+<tr>
+<td>security.corp.local</td>
+<td>10.20.0.20</td>
+<td>보안 포털 (사고 신고)</td>
+</tr>
+<tr>
+<td>vault-mgmt.corp.local</td>
+<td>10.20.0.10</td>
+<td>금고 관리 서버, MQTT 브로커</td>
+</tr>
+<tr>
+<td>VAULT-01 게이트웨이</td>
+<td>10.20.0.50</td>
+<td>MQTT 퍼블리셔</td>
+</tr>
+</tbody>
+</table>
+<p>직원 PC는 <code>10.20.1.x</code>다. MQTT는 평문이고 인증 흔적이 없다. 금고 장치에는 NTP도 RTC도 없어 <code>up</code>만 보고한다.</p>
+<h3 id="다른-문제와의-연결">다른 문제와의 연결</h3>
+<ul>
+<li>Dead Frame: 금고 문이 닫히고 12분 42초 뒤인 11-03 00:02:11에 출금 <code>WD-20261102-31A0</code>(12 BTC)이 물리 콘솔에서 만들어졌다. 서명자는 A와 C로, 금고에서 나간 두 지갑의 주인과 같다. 이 거래는 보류(hold)됐다. 실제로 12.4 BTC가 나간 11-03 21:17 거래는 B와 D가 서명했다.</li>
+<li>네 명(A·B·C·D)은 Dead Frame 멀티시그 서명자와 같다. A는 wallet manager, B는 security researcher, C는 finance manager, D는 security engineer다.</li>
+<li>Unplugged: 같은 밤 01:55에 ALEX 자택 서재에서 <code>WALLET</code> 라벨 백업 디스크가 반출됐다. 라벨과 시간대가 겹칠 뿐, 금고의 하드웨어 지갑과 같은 자산이라는 증거는 없다.</li>
+</ul>
+<h3 id="타임라인-kst">타임라인 (KST)</h3>
+<table>
+<thead>
+<tr>
+<th>시각</th>
+<th>사건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11-01 07:43:12</td>
+<td>VAULT-01 부팅</td>
+</tr>
+<tr>
+<td>11-02 23:20:00</td>
+<td>마지막 정상 주기 보고</td>
+</tr>
+<tr>
+<td>23:38:51</td>
+<td>금고 문 열림 (<code>0x3F2A91</code>)</td>
+</tr>
+<tr>
+<td>23:41:06</td>
+<td>slot 3 (A) absent</td>
+</tr>
+<tr>
+<td>23:47:18</td>
+<td>slot 2 (C) absent</td>
+</tr>
+<tr>
+<td>23:49:29</td>
+<td>금고 문 닫힘</td>
+</tr>
+<tr>
+<td>11-03 00:02:11</td>
+<td>(Dead Frame) 콘솔에서 12 BTC 출금 생성, A·C 서명, 보류</td>
+</tr>
+<tr>
+<td>06:12:31</td>
+<td>링크 복구, 큐 이벤트 4건 전송</td>
+</tr>
+<tr>
+<td>14:10:21</td>
+<td>다른 배지 <code>0x51C0D7</code>로 문 열림, 슬롯 변화 없음</td>
+</tr>
+<tr>
+<td>21:17:42</td>
+<td>(Dead Frame) 12.4 BTC 전송, B·D 서명</td>
+</tr>
+<tr>
+<td>11-04 09:12:44</td>
+<td>C 분실 신고</td>
+</tr>
+</tbody>
+</table>
+</div></article></main></div></body></html>

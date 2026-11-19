@@ -1,0 +1,183 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e0e10"><link rel="icon" type="image/png" href="/favicon.png"><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="/_astro/fonts.CLaWOyno.css"></noscript><meta name="description" content="민서 PC와 USB 이미지에서 USB 최초 연결 시각, 파일 마지막 사용 시각, 절대 경로를 찾는다."><link rel="alternate" type="application/rss+xml" title="kirin" href="/rss.xml"><link rel="sitemap" href="/sitemap.xml"><title>voice | kirin</title><style>.ls[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);margin:0;padding:0;list-style:none}li[data-astro-cid-i36apd2x]{gap:var(--space-4);padding:var(--space-1) var(--space-3);border-left:2px solid #0000;grid-template-columns:10ch 10ch 9ch minmax(0,1fr) auto;align-items:baseline;display:grid}.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{grid-template-columns:10ch 10ch minmax(0,1fr) auto}li[data-astro-cid-i36apd2x]:hover,li[data-astro-cid-i36apd2x]:focus-within{background:var(--panel);border-left-color:var(--gold)}.perm[data-astro-cid-i36apd2x],time[data-astro-cid-i36apd2x]{color:var(--muted)}.locked[data-astro-cid-i36apd2x] .perm[data-astro-cid-i36apd2x]{color:var(--vermilion)}.kind[data-astro-cid-i36apd2x]{color:var(--celadon)}a[data-astro-cid-i36apd2x]{font-family:var(--font-sans);font-size:var(--text-base);color:var(--ink);text-decoration:none}a[data-astro-cid-i36apd2x]:hover{color:var(--gold);text-decoration:underline}.lock[data-astro-cid-i36apd2x]{margin-left:var(--space-2);font-size:var(--text-xs);color:var(--vermilion)}.tags[data-astro-cid-i36apd2x]{color:var(--muted);text-align:right}.empty[data-astro-cid-i36apd2x]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted)}@media (width<=48rem){li[data-astro-cid-i36apd2x],.no-kind[data-astro-cid-i36apd2x] li[data-astro-cid-i36apd2x]{gap:0 var(--space-3);grid-template-columns:auto auto 1fr}.perm[data-astro-cid-i36apd2x]{display:none}a[data-astro-cid-i36apd2x]{grid-column:1/-1}.tags[data-astro-cid-i36apd2x]{text-align:left;grid-column:1/-1}}
+</style><link rel="stylesheet" href="/_astro/_..CotCdawi.css"><style>.site-header[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-6);padding:var(--space-4) 0;margin-bottom:var(--space-8);border-bottom:1px solid var(--line);grid-template-columns:auto minmax(0,1fr) auto;display:grid}.brand[data-astro-cid-nen7h5rs]{align-items:center;gap:var(--space-3);color:var(--ink);font-family:var(--font-mono);font-weight:600;text-decoration:none;display:flex}.path[data-astro-cid-nen7h5rs]{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--muted);white-space:nowrap;text-overflow:ellipsis;margin:0;overflow:hidden}.who[data-astro-cid-nen7h5rs]{color:var(--gold)}.where[data-astro-cid-nen7h5rs]{color:var(--celadon)}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-4);font-size:var(--text-sm);flex-wrap:wrap;margin:0;padding:0;list-style:none;display:flex}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]{color:var(--muted);text-decoration:none}nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs]:hover,nav[data-astro-cid-nen7h5rs] a[data-astro-cid-nen7h5rs][aria-current=page]{color:var(--ink);text-decoration:underline}@media (width<=48rem){.site-header[data-astro-cid-nen7h5rs]{grid-template-columns:auto 1fr}@media (width<=40rem){.site-header[data-astro-cid-nen7h5rs]{gap:var(--space-3);grid-template-columns:1fr}nav[data-astro-cid-nen7h5rs]{justify-self:start}ul[data-astro-cid-nen7h5rs]{gap:var(--space-1) var(--space-3)}}.path[data-astro-cid-nen7h5rs]{display:none}nav[data-astro-cid-nen7h5rs]{justify-self:end}}:root{color-scheme:dark;--bg:#0e0e10;--panel:#17171a;--line:#2b2b30;--ink:#e8e3d4;--muted:#a0a0a8;--gold:#e2b24c;--celadon:#6fb08c;--vermilion:#e2705a;--cloud:#f4efe2;--font-mono:"IBM Plex Mono", "IBM Plex Sans KR", ui-monospace, monospace;--font-sans:"IBM Plex Sans KR", system-ui, sans-serif;--text-xs:.8rem;--text-sm:.875rem;--text-base:1.0625rem;--text-lg:1.33rem;--text-xl:1.66rem;--text-2xl:2.3rem;--measure:68ch;--space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-6:1.5rem;--space-8:2rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--radius:6px;--duration:.14s}*,:before,:after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{background:var(--bg);color:var(--ink);font:400 var(--text-base) / 1.7 var(--font-sans);word-break:keep-all;overflow-wrap:break-word;margin:0}a{color:var(--gold);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{text-decoration-thickness:2px}:focus-visible{outline:2px solid var(--gold);outline-offset:2px}::selection{background:var(--gold);color:var(--bg)}h1,h2,h3{margin:0;font-weight:600;line-height:1.3}code,kbd,samp,pre{font-family:var(--font-mono);font-size:.92em}:not(pre)>code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:.05em .3em}.sr-only{clip-path:inset(50%);white-space:nowrap;width:1px;height:1px;position:absolute;overflow:hidden}.sr-only:focus{top:var(--space-2);left:var(--space-2);clip-path:none;width:auto;height:auto;padding:var(--space-2) var(--space-3);background:var(--panel);z-index:10;position:fixed}.page{max-width:76rem;padding:0 var(--space-4) var(--space-16);margin:0 auto}.prompt{font-family:var(--font-mono);font-size:var(--text-sm);color:var(--ink);font-weight:400}.prompt .who{color:var(--gold)}.prompt .where{color:var(--celadon)}.prompt .sigil{color:var(--muted);margin-right:.6ch}@media (prefers-reduced-motion:reduce){*,:before,:after{transition:none!important;animation:none!important}}
+</style></head><body><a class="sr-only" href="#main">본문으로 건너뛰기</a><div class="page"><header class="site-header" data-astro-cid-nen7h5rs><a class="brand" href="/" aria-label="kirin 홈" data-astro-cid-nen7h5rs><img src="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp" srcset="/_astro/kirin-avatar.C3aIZXQV_Z2rVrcY.webp 1x, /_astro/kirin-avatar.C3aIZXQV_Ztxad8.webp 2x" alt data-astro-cid-nen7h5rs="true" loading="lazy" decoding="async" width="40" height="40"><span data-astro-cid-nen7h5rs>kirin</span></a><p class="path" aria-hidden="true" data-astro-cid-nen7h5rs><span class="who" data-astro-cid-nen7h5rs>kirin@pwnlab</span>:<span class="where" data-astro-cid-nen7h5rs>~/writeups/forensics/whs4-voice</span>$</p><nav aria-label="주요 메뉴" data-astro-cid-nen7h5rs><ul data-astro-cid-nen7h5rs><li data-astro-cid-nen7h5rs><a href="/writeups/" aria-current="page" data-astro-cid-nen7h5rs>Writeups</a></li><li data-astro-cid-nen7h5rs><a href="/cve/" data-astro-cid-nen7h5rs>CVE</a></li><li data-astro-cid-nen7h5rs><a href="/notes/" data-astro-cid-nen7h5rs>Notes</a></li><li data-astro-cid-nen7h5rs><a href="/projects/" data-astro-cid-nen7h5rs>Projects</a></li><li data-astro-cid-nen7h5rs><a href="/search/" data-astro-cid-nen7h5rs>Search</a></li><li data-astro-cid-nen7h5rs><a href="/about/" data-astro-cid-nen7h5rs>About</a></li></ul></nav></header><main id="main"><article class="post" data-pagefind-body data-astro-cid-g5songws><header data-astro-cid-g5songws><div data-pagefind-ignore data-astro-cid-g5songws><p class="prompt"><span class="who">kirin@pwnlab</span>:<span class="where">~/writeups</span><span class="sigil">$</span>cat whs4-voice.md</p></div><h1 data-astro-cid-g5songws>voice</h1><p class="kind" data-pagefind-ignore data-astro-cid-g5songws><a href="/writeups/" data-pagefind-filter="kind" data-astro-cid-g5songws>Writeups</a></p><dl class="meta" data-pagefind-ignore data-astro-cid-g5songws><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>date</dt><dd data-astro-cid-g5songws>2026-11-05</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>event</dt><dd data-astro-cid-g5songws>WHS 4th CTF</dd></div><div data-astro-cid-g5songws><dt data-astro-cid-g5songws>tags</dt><dd data-astro-cid-g5songws>windows, usb, registry</dd></div></dl></header><aside class="toc" data-pagefind-ignore data-astro-cid-g5songws><nav class="toc" aria-labelledby="toc-title" data-toc data-astro-cid-7k3pnqyz><details data-toc-details data-astro-cid-7k3pnqyz><summary data-astro-cid-7k3pnqyz><p class="prompt" id="toc-title"><span class="who">kirin@pwnlab</span>:<span class="where">~/writeups</span><span class="sigil">$</span>grep -n &#39;^#&#39; whs4-voice.md<span class="sr-only" data-astro-cid-7k3pnqyz>목차</span></p><span class="count" data-astro-cid-7k3pnqyz>(11)</span></summary><ol data-astro-cid-7k3pnqyz><li class="d2" data-astro-cid-7k3pnqyz><a href="#획득한-flag" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 15</span><span class="t" data-astro-cid-7k3pnqyz>획득한 Flag</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#풀이-방법" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 21</span><span class="t" data-astro-cid-7k3pnqyz>풀이 방법</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#0-이미지-구조와-시간대" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 25</span><span class="t" data-astro-cid-7k3pnqyz>0. 이미지 구조와 시간대</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#1-usb-최초-연결-시각" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 33</span><span class="t" data-astro-cid-7k3pnqyz>1. USB 최초 연결 시각</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#2-파일-사용-기록" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 49</span><span class="t" data-astro-cid-7k3pnqyz>2. 파일 사용 기록</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#헷갈리기-쉬운-부분" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 75</span><span class="t" data-astro-cid-7k3pnqyz>헷갈리기 쉬운 부분</span></a></li><li class="d2" data-astro-cid-7k3pnqyz><a href="#획득한-단서" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 82</span><span class="t" data-astro-cid-7k3pnqyz>획득한 단서</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#usb-안의-텍스트-파일" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz> 84</span><span class="t" data-astro-cid-7k3pnqyz>USB 안의 텍스트 파일</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#읽어낸-내용" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>106</span><span class="t" data-astro-cid-7k3pnqyz>읽어낸 내용</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#사건-당일-흐름-kst" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>114</span><span class="t" data-astro-cid-7k3pnqyz>사건 당일 흐름 (KST)</span></a></li><li class="d3" data-astro-cid-7k3pnqyz><a href="#다른-문제와의-연결" data-astro-cid-7k3pnqyz><span class="ln" aria-hidden="true" data-astro-cid-7k3pnqyz>124</span><span class="t" data-astro-cid-7k3pnqyz>다른 문제와의 연결</span></a></li></ol></details></nav><script>
+  // is:inline keeps this in the page, so on protected posts it is encrypted with it
+  // instead of becoming a separate unencrypted /_astro/*.js file.
+  // Runs after parsing: the headings come after this script and the page height must be final.
+  // (Protected posts are written in by staticrypt after load, so also handle an already-parsed document.)
+  const init = () => {
+    const nav = document.querySelector('[data-toc]');
+    if (!nav) return;
+    // The desktop column is always open; on mobile the list starts collapsed.
+    const details = nav.querySelector('[data-toc-details]');
+    const desktop = matchMedia('(min-width: 64rem)');
+    const sync = () => (details.open = desktop.matches);
+    desktop.addEventListener('change', sync);
+    sync();
+
+    // Mark the last heading that has scrolled past the top of the viewport.
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
+    const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))));
+    const TOP = 120;
+    let queued = false;
+    const update = () => {
+      queued = false;
+      let active = 0;
+      targets.forEach((el, i) => {
+        if (el && el.getBoundingClientRect().top <= TOP) active = i;
+      });
+      // Short last sections never reach the top; at the bottom of the page the last one is the one being read.
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) active = targets.length - 1;
+      links.forEach((a, i) => (i === active ? a.setAttribute('aria-current', 'location') : a.removeAttribute('aria-current')));
+    };
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  };
+  if (document.readyState === 'loading') addEventListener('DOMContentLoaded', init);
+  else init();
+</script></aside><div class="body" data-astro-cid-g5songws><blockquote>
+<p>WHS 4th CTF · Phase 1 · 200점</p>
+</blockquote>
+<h2 id="획득한-flag">획득한 Flag</h2>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.t2nri.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">WHS4{2026-09-28-22:00:00_2026-09-28-22:00:15_E:\voice_pack\take_087.wav}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="WHS4{2026-09-28-22:00:00_2026-09-28-22:00:15_E:\voice_pack\take_087.wav}"><div></div></button></div></figure></div>
+<h2 id="풀이-방법">풀이 방법</h2>
+<p>민서 PC 디스크(<code>minseo-evidence.raw</code>)와 USB 이미지(<code>voice-usb.raw</code>)가 주어진다. USB가 처음 연결된 시각, USB 파일의 마지막 사용 시각, 그 파일의 절대 경로를 구한다. 이미지를 오프라인으로 파싱했기 때문에 주어진 로그인 비밀번호는 쓰지 않았다.</p>
+<h3 id="0-이미지-구조와-시간대">0. 이미지 구조와 시간대</h3>
+<ul>
+<li>PC: MBR + NTFS(섹터 2048부터), 컴퓨터 이름 <code>MINSEO-LAPTOP</code></li>
+<li>USB: MBR + FAT16(섹터 128부터), 볼륨 라벨 <code>VOICEPACK</code>, MBR 시그니처 <code>0x6F9D3CA7</code>, 볼륨 시리얼 <code>0x0A5ECD95</code></li>
+<li>시간대: <code>TimeZoneInformation</code> = Korea Standard Time(UTC+9). 레지스트리와 EVTX는 UTC로, setupapi 로그와 FAT 타임스탬프는 KST로 저장돼 있다.</li>
+</ul>
+<p><code>NTUSER.DAT</code>와 <code>Amcache.hve</code>는 이미지에 없다. ShellBags나 UserAssist는 쓸 수 없고 SYSTEM 하이브와 Jump List로 풀어야 한다.</p>
+<h3 id="1-usb-최초-연결-시각">1. USB 최초 연결 시각</h3>
+<p>SYSTEM 하이브 <code>ControlSet001\Enum\USBSTOR</code>에는 장치가 하나뿐이다(<code>Disk&amp;Ven_VBOX&amp;Prod_HARDDISK&amp;Rev_1.0\6&amp;36787cab&amp;0</code>). 그 아래 <code>Properties\{83da6326-97a6-4088-9453-a1923f573b29}</code>의 <code>0064</code>(InstallDate)와 <code>0065</code>(FirstInstallDate)가 모두 <code>2026-09-28 13:00:00.556942 UTC</code>다. KST로 22:00:00이고 소수점은 버린다.</p>
+<p><code>MountedDevices</code>의 <code>\DosDevices\E:</code> 값은 <code>a73c9d6f</code> + 오프셋 <code>0x10000</code>이다. USB의 MBR 시그니처, 파티션 시작 위치(128섹터 = 65,536 B)와 같으므로 이 USB가 <code>E:</code>로 붙었다.</p>
+<p>다른 아티팩트도 같은 초를 가리킨다.</p>
+<table>
+<thead>
+<tr>
+<th>아티팩트</th>
+<th>원본 값</th>
+<th>KST</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>USBSTOR <code>0064</code>/<code>0065</code></td>
+<td>13:00:00.556942 UTC</td>
+<td>22:00:00.556</td>
+</tr>
+<tr>
+<td><code>Enum\USB\VID_80EE&amp;PID_0030</code> <code>0064</code></td>
+<td>13:00:00.531168 UTC</td>
+<td>22:00:00.531</td>
+</tr>
+<tr>
+<td>Partition/Diagnostic EID 1006 (<code>BusType=7</code>)</td>
+<td>13:00:00.569925 UTC</td>
+<td>22:00:00.569</td>
+</tr>
+<tr>
+<td>StorageVolume EID 1001 (USBSTOR 경로)</td>
+<td>13:00:00.571779 UTC</td>
+<td>22:00:00.571</td>
+</tr>
+<tr>
+<td>setupapi.dev.log WPDBUSENUM 설치</td>
+<td>22:00:00.802 (로컬)</td>
+<td>22:00:00.802</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-파일-사용-기록">2. 파일 사용 기록</h3>
+<p><code>Users/minseo/AppData/Roaming/Microsoft/Windows/Recent/AutomaticDestinations/59357ad5a1d9f6a5.automaticDestinations-ms</code>를 <code>olefile</code>로 열었다. <code>DestList</code> 스트림에 엔트리가 하나 있다.</p>
+<table>
+<thead>
+<tr>
+<th>필드</th>
+<th>값</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>오프셋 <code>0x64</code> 마지막 접근 FILETIME</td>
+<td><code>134350740152285517</code> = 2026-09-28 13:00:15.228551 UTC</td>
+</tr>
+<tr>
+<td>접근 횟수</td>
+<td>1</td>
+</tr>
+<tr>
+<td>경로</td>
+<td><code>E:\voice_pack\take_087.wav</code></td>
+</tr>
+</tbody>
+</table>
+<p>KST로 22:00:15다. 같은 Jump List의 LNK 스트림 <code>1</code>을 <code>LnkParse3</code>로 파싱하면 <code>drive_serial_number 0xa5ecd95</code>, <code>volume_label VOICEPACK</code>, <code>file_size 148686</code>이 나온다. USB 볼륨 시리얼, 라벨, <code>/voice_pack/TAKE_087.WAV</code>의 크기와 모두 일치한다.</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="python"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">import olefile, struct, datetime</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">ole = olefile.OleFileIO(</span><span style="--0:#8FCFA6">"59357ad5a1d9f6a5.automaticDestinations-ms"</span><span style="--0:#E8E3D4">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">d = ole.openstream(</span><span style="--0:#8FCFA6">"DestList"</span><span style="--0:#E8E3D4">).read()</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">e = d[</span><span style="--0:#F0C674">32</span><span style="--0:#E8E3D4">:]                                   </span><span style="--0:#8E8E97"># 헤더 32 B 다음이 엔트리</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">ft = struct.unpack_from(</span><span style="--0:#8FCFA6">"&lt;Q"</span><span style="--0:#E8E3D4">, e, </span><span style="--0:#7FC8D6">0x</span><span style="--0:#F0C674">64</span><span style="--0:#E8E3D4">)[</span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">n = struct.unpack_from(</span><span style="--0:#8FCFA6">"&lt;H"</span><span style="--0:#E8E3D4">, e, </span><span style="--0:#7FC8D6">0x</span><span style="--0:#F0C674">80</span><span style="--0:#E8E3D4">)[</span><span style="--0:#F0C674">0</span><span style="--0:#E8E3D4">]</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">path = e[</span><span style="--0:#7FC8D6">0x</span><span style="--0:#F0C674">82</span><span style="--0:#E8E3D4">:</span><span style="--0:#7FC8D6">0x</span><span style="--0:#F0C674">82</span><span style="--0:#E8E3D4"> + n * </span><span style="--0:#F0C674">2</span><span style="--0:#E8E3D4">].decode(</span><span style="--0:#8FCFA6">"utf-16le"</span><span style="--0:#E8E3D4">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">kst = datetime.datetime(</span><span style="--0:#F0C674">1601</span><span style="--0:#E8E3D4">, </span><span style="--0:#F0C674">1</span><span style="--0:#E8E3D4">, </span><span style="--0:#F0C674">1</span><span style="--0:#E8E3D4">) + datetime.timedelta(</span><span style="--0:#E89A7A">microseconds</span><span style="--0:#E8E3D4">=ft // </span><span style="--0:#F0C674">10</span><span style="--0:#E8E3D4">) + datetime.timedelta(</span><span style="--0:#E89A7A">hours</span><span style="--0:#E8E3D4">=</span><span style="--0:#F0C674">9</span><span style="--0:#E8E3D4">)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#E2B24C">print</span><span style="--0:#E8E3D4">(kst, path)                             </span><span style="--0:#8E8E97"># 2026-09-28 22:00:15.228551 E:\voice_pack\take_087.wav</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="import olefile, struct, datetimeole = olefile.OleFileIO(&quot;59357ad5a1d9f6a5.automaticDestinations-ms&quot;)d = ole.openstream(&quot;DestList&quot;).read()e = d[32:]                                   # 헤더 32 B 다음이 엔트리ft = struct.unpack_from(&quot;<Q&quot;, e, 0x64)[0]n = struct.unpack_from(&quot;<H&quot;, e, 0x80)[0]path = e[0x82:0x82 + n * 2].decode(&quot;utf-16le&quot;)kst = datetime.datetime(1601, 1, 1) + datetime.timedelta(microseconds=ft // 10) + datetime.timedelta(hours=9)print(kst, path)                             # 2026-09-28 22:00:15.228551 E:\voice_pack\take_087.wav"><div></div></button></div></figure></div>
+<p>답 2 = <code>2026-09-28-22:00:15</code>, 답 3 = <code>E:\voice_pack\take_087.wav</code></p>
+<h3 id="헷갈리기-쉬운-부분">헷갈리기 쉬운 부분</h3>
+<ul>
+<li>9/21 기록: 같은 32 MiB 디스크가 2026-09-21 09:13:37 KST에 붙은 기록이 레지스트리(<code>Enum\SCSI</code>)와 EVTX에 있다. 이 기록은 <code>BusType=11</code>(SATA)이고 USBSTOR에는 없다. 출제 과정에서 VM에 디스크를 SATA로 붙여 FAT16으로 포맷하고 파일을 채운 흔적이다.</li>
+<li><code>E:\sample_audio\take_087.wav</code>: 이름이 같은 파일이 하나 더 있지만 크기가 139,306 B로 다르고 사용 기록이 없다.</li>
+<li><code>Recent/voice_pack.lnk</code>: 대상이 <code>E:\voice_pack</code> 폴더다. 헤더의 시간 세 개는 링크 대상의 MACB를 복사한 값이라 9/21을 가리킨다. 이 값을 쓰면 답 2가 틀린다.</li>
+<li>경로는 DestList 문자열을 그대로 쓴다. FAT 8.3 이름(<code>TAKE_087.WAV</code>)을 쓰면 안 된다.</li>
+</ul>
+<h2 id="획득한-단서">획득한 단서</h2>
+<h3 id="usb-안의-텍스트-파일">USB 안의 텍스트 파일</h3>
+<p><code>E:\delivery.txt</code></p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">Student Voice Pack / jun -&gt; minseo</span></div></div><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">132 takes recorded; selected candidate clips for v2.4 review.</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="Student Voice Pack / jun -> minseo132 takes recorded; selected candidate clips for v2.4 review."><div></div></button></div></figure></div>
+<p><code>E:\voice_pack\review.json</code> (생성·수정 2026-09-28 22:00:14)</p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="json"><code><div class="ec-line"><div class="code"><span style="--0:#E8E3D4">{</span><span style="--0:#7FC8D6">"file"</span><span style="--0:#E8E3D4">: </span><span style="--0:#8FCFA6">"take_087.wav"</span><span style="--0:#E8E3D4">, </span><span style="--0:#7FC8D6">"reviewer"</span><span style="--0:#E8E3D4">: </span><span style="--0:#8FCFA6">"hana"</span><span style="--0:#E8E3D4">, </span><span style="--0:#7FC8D6">"review_ref"</span><span style="--0:#E8E3D4">: </span><span style="--0:#8FCFA6">"DOC-0520"</span><span style="--0:#E8E3D4">,</span></div></div><div class="ec-line"><div class="code"><span class="indent"> </span><span style="--0:#7FC8D6">"package"</span><span style="--0:#E8E3D4">: </span><span style="--0:#8FCFA6">"identity-voice"</span><span style="--0:#E8E3D4">, </span><span style="--0:#7FC8D6">"status"</span><span style="--0:#E8E3D4">: </span><span style="--0:#8FCFA6">"reviewed"</span><span style="--0:#E8E3D4">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="{&quot;file&quot;: &quot;take_087.wav&quot;, &quot;reviewer&quot;: &quot;hana&quot;, &quot;review_ref&quot;: &quot;DOC-0520&quot;, &quot;package&quot;: &quot;identity-voice&quot;, &quot;status&quot;: &quot;reviewed&quot;}"><div></div></button></div></figure></div>
+<p><code>E:\test_asset\readme.txt</code></p>
+<div class="expressive-code"><figure class="frame"><figcaption class="header"></figcaption><pre data-language="plaintext"><code><div class="ec-line"><div class="code"><span style="--0:#e8e3d4">v2.4 voice integration review assets.</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="v2.4 voice integration review assets."><div></div></button></div></figure></div>
+<h3 id="읽어낸-내용">읽어낸 내용</h3>
+<ul>
+<li>준이 민서에게 전달한 학생 목소리 녹음 모음이다. 132개 테이크 중 3개(<code>take_041</code>, <code>take_087</code>, <code>take_132</code>)만 들어 있다.</li>
+<li>검수자는 hana이고 검수 문서 번호는 <code>DOC-0520</code>이다. 패키지 이름은 <code>identity-voice</code>, 용도는 v2.4 음성 통합 검수다.</li>
+<li>USB의 다른 파일은 전부 9/21에 만들어졌는데 <code>review.json</code>만 사건 당일 22:00:14에 PC에서 작성됐다.</li>
+<li>USB 연결(22:00:00) 후 14초 만에 <code>review.json</code>이 쓰였고 15초 만에 <code>take_087.wav</code>가 열렸다. 다른 파일을 둘러본 흔적이 없어서 어느 파일을 볼지 미리 알았던 것으로 보인다.</li>
+<li><code>0067</code>(LastRemovalDate)이 없고 SYSTEM 하이브 마지막 수정이 22:00:24다. USB가 꽂힌 채로 증거가 수집됐다.</li>
+</ul>
+<h3 id="사건-당일-흐름-kst">사건 당일 흐름 (KST)</h3>
+<table>
+<thead>
+<tr>
+<th>시각</th>
+<th>사건</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>21:57:36</td>
+<td>PC 부팅</td>
+</tr>
+<tr>
+<td>22:00:00</td>
+<td>USB 연결, E: 마운트</td>
+</tr>
+<tr>
+<td>22:00:14</td>
+<td><code>review.json</code> 작성 (<code>status: reviewed</code>)</td>
+</tr>
+<tr>
+<td>22:00:15</td>
+<td><code>E:\voice_pack\take_087.wav</code> 열람</td>
+</tr>
+<tr>
+<td>22:00:24</td>
+<td>증거 수집</td>
+</tr>
+</tbody>
+</table>
+<h3 id="다른-문제와의-연결">다른 문제와의 연결</h3>
+<ul>
+<li>runner: 이 열람에서 약 17분 뒤인 22:17:35에 MORI가 종료된다.</li>
+<li>nevermories: hana가 MORI와 대화한 뒤 <code>DOC-0520</code>에 기록을 남기겠다고 말한다. <code>review.json</code>의 <code>review_ref</code>와 같은 문서다.</li>
+<li><code>identity-voice</code>라는 이름이 MORI의 정체성과 관련이 있어 보이지만, 이 이미지만으로는 확정할 수 없다.</li>
+</ul>
+</div></article></main></div></body></html>
